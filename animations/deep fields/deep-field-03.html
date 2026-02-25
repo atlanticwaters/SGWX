@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deep Field 03 — Lime Surge</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #020e04;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.055;
+      mix-blend-mode: screen;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+    }
+
+    #vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      background: radial-gradient(ellipse 88% 78% at 50% 50%, transparent 30%, rgba(2, 14, 4, 0.62) 68%, #020e04 100%);
+    }
+
+    #label {
+      position: fixed;
+      bottom: 36px;
+      left: 40px;
+      z-index: 10;
+      font-family: 'Courier New', monospace;
+      font-size: 7px;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: rgba(160, 210, 80, 0.3);
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="c"></canvas>
+  <div id="grain"></div>
+  <div id="vignette"></div>
+  <div id="label"></div>
+  <script>
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resize(); window.addEventListener('resize', resize);
+
+    // Lime / yellow-green energy — high voltage feel, darker green base
+    const pools = [
+      // Dark forest green base — slow and wide
+      { x: 0.18, y: 0.42, r: 0.55, col: [8, 40, 10], spd: 0.00020, ph: 0.0, amp: 0.060, pulse: 0.00015 },
+      { x: 0.78, y: 0.52, r: 0.50, col: [6, 35, 8], spd: 0.00016, ph: 2.2, amp: 0.050, pulse: 0.00012 },
+      { x: 0.48, y: 0.20, r: 0.48, col: [10, 48, 12], spd: 0.00025, ph: 3.8, amp: 0.070, pulse: 0.00020 },
+      { x: 0.28, y: 0.80, r: 0.45, col: [5, 30, 8], spd: 0.00014, ph: 5.2, amp: 0.045, pulse: 0.00011 },
+      // Mid lime pools — medium speed
+      { x: 0.62, y: 0.35, r: 0.38, col: [28, 75, 12], spd: 0.00032, ph: 1.5, amp: 0.085, pulse: 0.00026 },
+      { x: 0.15, y: 0.65, r: 0.36, col: [22, 65, 10], spd: 0.00028, ph: 4.0, amp: 0.080, pulse: 0.00022 },
+      { x: 0.82, y: 0.70, r: 0.34, col: [32, 80, 15], spd: 0.00035, ph: 0.7, amp: 0.090, pulse: 0.00028 },
+      { x: 0.40, y: 0.55, r: 0.32, col: [18, 60, 8], spd: 0.00030, ph: 6.0, amp: 0.075, pulse: 0.00024 },
+      // Bright lime-yellow surges — fast, large radius
+      { x: 0.50, y: 0.38, r: 0.28, col: [75, 110, 8], spd: 0.00048, ph: 2.0, amp: 0.110, pulse: 0.00040 },
+      { x: 0.25, y: 0.22, r: 0.24, col: [88, 125, 10], spd: 0.00055, ph: 4.5, amp: 0.125, pulse: 0.00046 },
+      { x: 0.75, y: 0.28, r: 0.22, col: [65, 100, 6], spd: 0.00042, ph: 1.2, amp: 0.100, pulse: 0.00036 },
+      { x: 0.58, y: 0.78, r: 0.20, col: [95, 135, 12], spd: 0.00060, ph: 3.5, amp: 0.135, pulse: 0.00052 },
+      // Electric yellow-white hot spots — tiny, very fast
+      { x: 0.44, y: 0.44, r: 0.10, col: [140, 165, 18], spd: 0.00085, ph: 0.4, amp: 0.185, pulse: 0.00078 },
+      { x: 0.70, y: 0.60, r: 0.09, col: [155, 175, 22], spd: 0.00090, ph: 3.0, amp: 0.190, pulse: 0.00082 },
+      { x: 0.20, y: 0.35, r: 0.08, col: [120, 150, 14], spd: 0.00078, ph: 5.8, amp: 0.175, pulse: 0.00070 },
+      // Teal undertone — small, adds depth
+      { x: 0.90, y: 0.40, r: 0.18, col: [8, 52, 38], spd: 0.00038, ph: 2.8, amp: 0.095, pulse: 0.00030 },
+    ];
+
+    let frame = 0;
+    function draw() {
+      frame++;
+      const W = canvas.width, H = canvas.height;
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = '#020e04';
+      ctx.fillRect(0, 0, W, H);
+
+      pools.forEach(p => {
+        const t = frame * p.spd;
+        const tp = frame * p.pulse;
+        const bx = p.x + Math.sin(t + p.ph) * p.amp;
+        const by = p.y + Math.cos(t + p.ph * 1.5) * p.amp * 0.60;
+        const br = p.r * (1 + Math.sin(tp + p.ph * 0.6) * 0.065);
+        const cx2 = bx * W, cy2 = by * H;
+        const rad = br * Math.max(W, H);
+        const [r, g, b] = p.col;
+        const grad = ctx.createRadialGradient(cx2, cy2, 0, cx2, cy2, rad);
+        grad.addColorStop(0, `rgba(${r},${g},${b},0.78)`);
+        grad.addColorStop(0.32, `rgba(${r},${g},${b},0.32)`);
+        grad.addColorStop(0.62, `rgba(${r},${g},${b},0.09)`);
+        grad.addColorStop(1, `rgba(${r},${g},${b},0.00)`);
+        ctx.globalCompositeOperation = 'screen';
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, W, H);
+      });
+
+      ctx.globalCompositeOperation = 'multiply';
+      const depth = ctx.createRadialGradient(W * 0.5, H * 0.5, 0, W * 0.5, H * 0.5, W * 0.70);
+      depth.addColorStop(0, 'rgba(15,35,8,0.0)');
+      depth.addColorStop(0.50, 'rgba(4,14,3,0.38)');
+      depth.addColorStop(1, 'rgba(1,6,1,0.88)');
+      ctx.fillStyle = depth;
+      ctx.fillRect(0, 0, W, H);
+
+      const atm = ctx.createLinearGradient(0, 0, 0, H);
+      atm.addColorStop(0, 'rgba(1,6,1,0.60)');
+      atm.addColorStop(0.14, 'rgba(2,8,2,0.0)');
+      atm.addColorStop(0.86, 'rgba(2,8,2,0.0)');
+      atm.addColorStop(1, 'rgba(1,6,1,0.65)');
+      ctx.fillStyle = atm;
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.globalCompositeOperation = 'source-over';
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+</body>
+
+</html>

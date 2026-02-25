@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deep Field 02 — Abyssal Blue</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #01080f;
+      overflow: hidden;
+    }
+
+    canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.05;
+      mix-blend-mode: screen;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+    }
+
+    #vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      background: radial-gradient(ellipse 80% 70% at 50% 50%, transparent 25%, rgba(1, 8, 15, 0.60) 65%, #01080f 100%);
+    }
+
+    #label {
+      position: fixed;
+      bottom: 36px;
+      left: 40px;
+      z-index: 10;
+      font-family: 'Courier New', monospace;
+      font-size: 7px;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: rgba(100, 160, 210, 0.3);
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="c"></canvas>
+  <div id="grain"></div>
+  <div id="vignette"></div>
+  <div id="label"></div>
+  <script>
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    resize(); window.addEventListener('resize', resize);
+
+    // Deep ocean blue — nearly black with cold cyan fissures and teal undercurrent
+    const pools = [
+      // Cold blue mass pools — very large, very slow
+      { x: 0.20, y: 0.45, r: 0.60, col: [3, 22, 48], spd: 0.00015, ph: 0.0, amp: 0.045, pulse: 0.00010 },
+      { x: 0.75, y: 0.50, r: 0.58, col: [2, 18, 40], spd: 0.00012, ph: 2.1, amp: 0.040, pulse: 0.00008 },
+      { x: 0.48, y: 0.22, r: 0.52, col: [4, 28, 58], spd: 0.00018, ph: 4.5, amp: 0.055, pulse: 0.00014 },
+      { x: 0.25, y: 0.78, r: 0.50, col: [3, 15, 35], spd: 0.00010, ph: 1.3, amp: 0.035, pulse: 0.00009 },
+      { x: 0.88, y: 0.20, r: 0.44, col: [5, 32, 62], spd: 0.00020, ph: 3.7, amp: 0.060, pulse: 0.00016 },
+      // Mid-depth teal undercurrent
+      { x: 0.12, y: 0.58, r: 0.38, col: [5, 42, 52], spd: 0.00025, ph: 5.2, amp: 0.070, pulse: 0.00020 },
+      { x: 0.65, y: 0.75, r: 0.36, col: [4, 36, 48], spd: 0.00022, ph: 0.8, amp: 0.065, pulse: 0.00018 },
+      { x: 0.40, y: 0.55, r: 0.40, col: [6, 45, 55], spd: 0.00028, ph: 6.2, amp: 0.075, pulse: 0.00022 },
+      // Pale cyan light cracks — thin, bright, fast
+      { x: 0.55, y: 0.32, r: 0.14, col: [12, 88, 115], spd: 0.00050, ph: 1.8, amp: 0.130, pulse: 0.00044 },
+      { x: 0.30, y: 0.15, r: 0.11, col: [8, 70, 98], spd: 0.00062, ph: 3.3, amp: 0.150, pulse: 0.00054 },
+      { x: 0.82, y: 0.62, r: 0.13, col: [10, 80, 110], spd: 0.00045, ph: 2.6, amp: 0.120, pulse: 0.00038 },
+      { x: 0.18, y: 0.88, r: 0.09, col: [15, 95, 125], spd: 0.00068, ph: 5.8, amp: 0.160, pulse: 0.00060 },
+      // Faint green tinge — ghost of the other panels
+      { x: 0.58, y: 0.65, r: 0.20, col: [5, 40, 32], spd: 0.00032, ph: 4.0, amp: 0.085, pulse: 0.00026 },
+      // Icy white-blue micro sparks
+      { x: 0.72, y: 0.18, r: 0.07, col: [40, 105, 140], spd: 0.00078, ph: 0.3, amp: 0.180, pulse: 0.00070 },
+      { x: 0.35, y: 0.72, r: 0.06, col: [28, 90, 120], spd: 0.00082, ph: 4.2, amp: 0.185, pulse: 0.00074 },
+    ];
+
+    let frame = 0;
+    function draw() {
+      frame++;
+      const W = canvas.width, H = canvas.height;
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.fillStyle = '#01080f';
+      ctx.fillRect(0, 0, W, H);
+
+      pools.forEach(p => {
+        const t = frame * p.spd;
+        const tp = frame * p.pulse;
+        const bx = p.x + Math.sin(t + p.ph) * p.amp;
+        const by = p.y + Math.cos(t + p.ph * 1.3) * p.amp * 0.70;
+        const br = p.r * (1 + Math.sin(tp + p.ph * 0.8) * 0.055);
+        const cx2 = bx * W, cy2 = by * H;
+        const rad = br * Math.max(W, H);
+        const [r, g, b] = p.col;
+        const grad = ctx.createRadialGradient(cx2, cy2, 0, cx2, cy2, rad);
+        grad.addColorStop(0, `rgba(${r},${g},${b},0.72)`);
+        grad.addColorStop(0.38, `rgba(${r},${g},${b},0.28)`);
+        grad.addColorStop(0.68, `rgba(${r},${g},${b},0.06)`);
+        grad.addColorStop(1, `rgba(${r},${g},${b},0.00)`);
+        ctx.globalCompositeOperation = 'screen';
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, W, H);
+      });
+
+      ctx.globalCompositeOperation = 'multiply';
+      // Cold blue depth crush
+      const depth = ctx.createRadialGradient(W * 0.5, H * 0.5, 0, W * 0.5, H * 0.5, W * 0.75);
+      depth.addColorStop(0, 'rgba(8,20,38,0.0)');
+      depth.addColorStop(0.5, 'rgba(2,8,18,0.40)');
+      depth.addColorStop(1, 'rgba(1,4,10,0.92)');
+      ctx.fillStyle = depth;
+      ctx.fillRect(0, 0, W, H);
+
+      // Downward pressure — heavier at top
+      const press = ctx.createLinearGradient(0, 0, 0, H);
+      press.addColorStop(0, 'rgba(1,5,12,0.70)');
+      press.addColorStop(0.18, 'rgba(1,5,12,0.0)');
+      press.addColorStop(0.82, 'rgba(1,5,12,0.0)');
+      press.addColorStop(1, 'rgba(1,5,12,0.60)');
+      ctx.fillStyle = press;
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.globalCompositeOperation = 'source-over';
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+</body>
+
+</html>
