@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deep Field 06 — Thermal Drift</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#010d08; overflow:hidden; }
+  canvas { display:block; width:100vw; height:100vh; }
+  #grain {
+    position:fixed; inset:0; pointer-events:none; z-index:2;
+    opacity:0.052; mix-blend-mode:screen;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size:220px 220px;
+  }
+  #vignette {
+    position:fixed; inset:0; pointer-events:none; z-index:3;
+    background:
+      radial-gradient(ellipse 92% 80% at 50% 50%, transparent 30%, rgba(1,12,7,0.55) 65%, #010d08 100%),
+      linear-gradient(to top, rgba(1,8,5,0.0) 0%, transparent 20%),
+      linear-gradient(to bottom, rgba(1,8,5,0.6) 0%, transparent 18%);
+  }
+  #label {
+    position:fixed; bottom:36px; left:40px; z-index:10;
+    font-family:'Courier New',monospace; font-size:7px;
+    letter-spacing:0.5em; text-transform:uppercase;
+    color:rgba(150,190,100,0.28);
+  }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="grain"></div>
+<div id="vignette"></div>
+<div id="label">Deep Field 06 — Thermal Drift</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx    = canvas.getContext('2d');
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+
+// Thermal columns — pools have a vertical bias.
+// "Hot" pools rise upward (y offsets drift toward 0 over time),
+// "cold" pools sink. Creates a convection current feel.
+// Colors: warm gold-green at bottom, cold deep blue-teal at top.
+
+const pools = [
+  // COLD CEILING — blue-teal pools near top, barely moving
+  { x:0.22, y:0.08, r:0.45, col:[3,22,45],    spd:0.00012, ph:0.0,  ampX:0.035, ampY:0.015, bias: 0.0 },
+  { x:0.65, y:0.12, r:0.42, col:[4,18,40],    spd:0.00010, ph:2.3,  ampX:0.030, ampY:0.012, bias: 0.0 },
+  { x:0.88, y:0.06, r:0.38, col:[5,28,52],    spd:0.00014, ph:4.8,  ampX:0.038, ampY:0.016, bias: 0.0 },
+  // MID ZONE — teal, medium motion
+  { x:0.15, y:0.40, r:0.36, col:[7,45,35],    spd:0.00025, ph:1.5,  ampX:0.060, ampY:0.040, bias: 0.0 },
+  { x:0.48, y:0.38, r:0.38, col:[6,38,48],    spd:0.00022, ph:3.6,  ampX:0.055, ampY:0.035, bias: 0.0 },
+  { x:0.78, y:0.42, r:0.34, col:[8,48,38],    spd:0.00028, ph:0.7,  ampX:0.062, ampY:0.042, bias: 0.0 },
+  // THERMAL COLUMNS — these rise. y position drifts upward using sine with phase offset
+  { x:0.30, y:0.65, r:0.30, col:[22,62,15],   spd:0.00040, ph:0.4,  ampX:0.070, ampY:0.120, bias:-0.08 },
+  { x:0.55, y:0.72, r:0.28, col:[18,55,12],   spd:0.00045, ph:2.8,  ampX:0.065, ampY:0.130, bias:-0.10 },
+  { x:0.82, y:0.68, r:0.26, col:[25,68,18],   spd:0.00038, ph:5.2,  ampX:0.072, ampY:0.115, bias:-0.07 },
+  // HOT BASE — gold-green, wide, anchored to bottom
+  { x:0.20, y:0.85, r:0.48, col:[42,72,8],    spd:0.00018, ph:1.0,  ampX:0.045, ampY:0.025, bias: 0.0 },
+  { x:0.50, y:0.90, r:0.52, col:[55,85,10],   spd:0.00015, ph:3.4,  ampX:0.040, ampY:0.020, bias: 0.0 },
+  { x:0.80, y:0.88, r:0.45, col:[38,65,7],    spd:0.00020, ph:5.8,  ampX:0.048, ampY:0.028, bias: 0.0 },
+  // RISING PLUMES — yellow-bright, fast, narrow, drift strongly upward
+  { x:0.38, y:0.78, r:0.14, col:[90,118,12],  spd:0.00065, ph:0.9,  ampX:0.085, ampY:0.200, bias:-0.18 },
+  { x:0.62, y:0.82, r:0.12, col:[105,132,15], spd:0.00072, ph:4.1,  ampX:0.090, ampY:0.210, bias:-0.20 },
+  { x:0.12, y:0.76, r:0.11, col:[78,105,10],  spd:0.00058, ph:2.5,  ampX:0.078, ampY:0.185, bias:-0.16 },
+  { x:0.88, y:0.80, r:0.10, col:[115,140,18], spd:0.00078, ph:1.6,  ampX:0.095, ampY:0.220, bias:-0.22 },
+  // APEX SPARKS — tiny, arrive at top, fade
+  { x:0.32, y:0.22, r:0.08, col:[130,155,20], spd:0.00095, ph:3.2,  ampX:0.100, ampY:0.080, bias: 0.0 },
+  { x:0.68, y:0.18, r:0.07, col:[110,138,16], spd:0.00088, ph:0.5,  ampX:0.095, ampY:0.075, bias: 0.0 },
+];
+
+let frame = 0;
+function draw() {
+  frame++;
+  const W = canvas.width, H = canvas.height;
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.fillStyle = '#010d08';
+  ctx.fillRect(0, 0, W, H);
+
+  pools.forEach(p => {
+    const t  = frame * p.spd;
+    const tp = frame * p.spd * 1.8;
+
+    // Thermal drift: y oscillates with vertical bias (bias is negative = upward)
+    const bx = p.x + Math.sin(t + p.ph) * p.ampX;
+    const by = p.y + Math.sin(t + p.ph) * p.ampY + p.bias * Math.abs(Math.sin(t * 0.4 + p.ph));
+    const br = p.r * (1 + Math.sin(tp + p.ph * 0.7) * 0.06);
+
+    const cx2 = bx * W, cy2 = by * H;
+    const rad  = br * Math.max(W, H);
+    const [r,g,b] = p.col;
+
+    const grad = ctx.createRadialGradient(cx2, cy2, 0, cx2, cy2, rad);
+    grad.addColorStop(0,   `rgba(${r},${g},${b},0.76)`);
+    grad.addColorStop(0.30,`rgba(${r},${g},${b},0.32)`);
+    grad.addColorStop(0.60,`rgba(${r},${g},${b},0.08)`);
+    grad.addColorStop(1,   `rgba(${r},${g},${b},0.00)`);
+    ctx.globalCompositeOperation = 'screen';
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+  });
+
+  // Depth multiply — slightly cooler at top, warmer at bottom
+  ctx.globalCompositeOperation = 'multiply';
+  const depth = ctx.createLinearGradient(0, 0, 0, H);
+  depth.addColorStop(0,   'rgba(1,5,12,0.65)');
+  depth.addColorStop(0.35,'rgba(2,10,6,0.0)');
+  depth.addColorStop(0.65,'rgba(5,12,2,0.0)');
+  depth.addColorStop(1,   'rgba(3,8,1,0.40)');
+  ctx.fillStyle = depth;
+  ctx.fillRect(0, 0, W, H);
+
+  // Radial depth
+  const rdepth = ctx.createRadialGradient(W*0.5,H*0.5,0, W*0.5,H*0.5,W*0.72);
+  rdepth.addColorStop(0,   'rgba(10,28,15,0.0)');
+  rdepth.addColorStop(0.52,'rgba(2,10,5,0.32)');
+  rdepth.addColorStop(1,   'rgba(1,6,3,0.88)');
+  ctx.fillStyle = rdepth;
+  ctx.fillRect(0, 0, W, H);
+
+  ctx.globalCompositeOperation = 'source-over';
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+</body>
+</html>
