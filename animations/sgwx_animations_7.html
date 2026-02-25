@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wireframe City</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #010e0a; overflow: hidden; font-family: 'Courier New', monospace; }
+  canvas { display: block; }
+  #vignette {
+    position: fixed; inset: 0; pointer-events: none; z-index: 5;
+    background:
+      radial-gradient(ellipse 90% 80% at 50% 45%, transparent 38%, rgba(1,12,8,0.5) 70%, rgba(1,8,5,0.88) 100%),
+      linear-gradient(to bottom, rgba(1,12,8,0.6) 0%, transparent 15%, transparent 80%, rgba(1,8,5,0.8) 100%);
+  }
+  #grain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 6;
+    opacity: 0.04; mix-blend-mode: screen;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+  }
+  #hud {
+    position: fixed; bottom: 48px; left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none; z-index: 10;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  #industry-name {
+    font-size: 10px; letter-spacing: 0.38em;
+    text-transform: uppercase; color: rgba(160,255,200,0.0);
+    transition: color 1.2s ease;
+  }
+  #industry-name.visible { color: rgba(160,255,200,0.75); }
+  #progress-bar {
+    width: 120px; height: 1px;
+    background: rgba(255,255,255,0.1);
+    position: relative; overflow: hidden;
+  }
+  #progress-fill {
+    position: absolute; left: -100%; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(160,255,200,0.5);
+    transition: background 1s;
+  }
+  #district-dots {
+    display: flex; gap: 8px;
+  }
+  .ddot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transition: background 0.8s;
+  }
+  .ddot.active { background: rgba(160,255,200,0.8); }
+</style>
+</head>
+<body>
+<div id="vignette"></div>
+<div id="grain"></div>
+<div id="hud">
+  <div id="industry-name">Agriculture</div>
+  <div id="progress-bar"><div id="progress-fill"></div></div>
+  <div id="district-dots">
+    <div class="ddot active" id="dot-0"></div>
+    <div class="ddot" id="dot-1"></div>
+    <div class="ddot" id="dot-2"></div>
+    <div class="ddot" id="dot-3"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ─── Renderer ────────────────────────────────────────────────────────────────
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0x010e0a, 1);
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x010e0a, 0.009);
+
+const camera = new THREE.PerspectiveCamera(52, window.innerWidth / window.innerHeight, 0.1, 800);
+camera.position.set(0, 70, 120);
+camera.lookAt(0, 0, -10);
+
+// ─── Wireframe geometry helpers ───────────────────────────────────────────────
+function pushLine(arr, x1,y1,z1, x2,y2,z2) {
+  arr.push(x1,y1,z1, x2,y2,z2);
+}
+
+function addBox(arr, cx,cy,cz, w,h,d, subdW=0, subdH=0) {
+  const x0=cx-w/2, x1=cx+w/2, y0=cy, y1=cy+h, z0=cz-d/2, z1=cz+d/2;
+  // 12 edges
+  pushLine(arr, x0,y0,z0, x1,y0,z0); pushLine(arr, x1,y0,z0, x1,y0,z1);
+  pushLine(arr, x1,y0,z1, x0,y0,z1); pushLine(arr, x0,y0,z1, x0,y0,z0);
+  pushLine(arr, x0,y1,z0, x1,y1,z0); pushLine(arr, x1,y1,z0, x1,y1,z1);
+  pushLine(arr, x1,y1,z1, x0,y1,z1); pushLine(arr, x0,y1,z1, x0,y1,z0);
+  pushLine(arr, x0,y0,z0, x0,y1,z0); pushLine(arr, x1,y0,z0, x1,y1,z0);
+  pushLine(arr, x1,y0,z1, x1,y1,z1); pushLine(arr, x0,y0,z1, x0,y1,z1);
+  // Optional floor subdivisions (window grid feel)
+  if (subdW > 0) {
+    for (let i = 1; i < subdW; i++) {
+      const xp = x0 + (w/subdW)*i;
+      pushLine(arr, xp,y0,z0, xp,y1,z0); pushLine(arr, xp,y0,z1, xp,y1,z1);
+    }
+  }
+  if (subdH > 0) {
+    for (let i = 1; i < subdH; i++) {
+      const yp = y0 + (h/subdH)*i;
+      pushLine(arr, x0,yp,z0, x1,yp,z0); pushLine(arr, x0,yp,z1, x1,yp,z1);
+      pushLine(arr, x0,yp,z0, x0,yp,z1); pushLine(arr, x1,yp,z0, x1,yp,z1);
+    }
+  }
+}
+
+function addRoof(arr, cx,cy,cz, w,d, peakH) {
+  const x0=cx-w/2, x1=cx+w/2, z0=cz-d/2, z1=cz+d/2;
+  const px=cx, py=cy+peakH;
+  pushLine(arr, x0,cy,z0, px,py,z0); pushLine(arr, x1,cy,z0, px,py,z0);
+  pushLine(arr, x0,cy,z1, px,py,z1); pushLine(arr, x1,cy,z1, px,py,z1);
+  pushLine(arr, px,py,z0, px,py,z1);
+  pushLine(arr, x0,cy,z0, x0,cy,z1); pushLine(arr, x1,cy,z0, x1,cy,z1);
+}
+
+function addCylinder(arr, cx,cy,cz, r,h, segs=10, rings=3) {
+  const pts = [];
+  for (let ri = 0; ri <= rings; ri++) {
+    const y = cy + (ri/rings)*h;
+    const row = [];
+    for (let s = 0; s < segs; s++) {
+      const a = (s/segs)*Math.PI*2;
+      row.push([cx+Math.cos(a)*r, y, cz+Math.sin(a)*r]);
+    }
+    pts.push(row);
+    for (let s = 0; s < segs; s++)
+      pushLine(arr, ...row[s], ...row[(s+1)%segs]);
+  }
+  for (let s = 0; s < segs; s++)
+    pushLine(arr, ...pts[0][s], ...pts[rings][s]);
+}
+
+function addCircle(arr, cx,cy,cz, r, segs=24, axis='y') {
+  for (let s = 0; s < segs; s++) {
+    const a0=(s/segs)*Math.PI*2, a1=((s+1)/segs)*Math.PI*2;
+    if (axis==='y') {
+      pushLine(arr, cx+Math.cos(a0)*r,cy,cz+Math.sin(a0)*r,
+                    cx+Math.cos(a1)*r,cy,cz+Math.sin(a1)*r);
+    } else {
+      pushLine(arr, cx+Math.cos(a0)*r,cy+Math.sin(a0)*r,cz,
+                    cx+Math.cos(a1)*r,cy+Math.sin(a1)*r,cz);
+    }
+  }
+}
+
+function addEllipse(arr, cx,cy,cz, rx,rz, segs=32) {
+  for (let s = 0; s < segs; s++) {
+    const a0=(s/segs)*Math.PI*2, a1=((s+1)/segs)*Math.PI*2;
+    pushLine(arr, cx+Math.cos(a0)*rx,cy,cz+Math.sin(a0)*rz,
+                  cx+Math.cos(a1)*rx,cy,cz+Math.sin(a1)*rz);
+  }
+}
+
+function buildGeo(arr) {
+  const verts = new Float32Array(arr);
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(verts, 3));
+  return geo;
+}
+
+function buildDistrict(arr, col) {
+  const mat = new THREE.LineBasicMaterial({
+    color: col, transparent: true, opacity: 0.12,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  const mesh = new THREE.LineSegments(buildGeo(arr), mat);
+  scene.add(mesh);
+  return mesh;
+}
+
+// ─── GROUND GRID ─────────────────────────────────────────────────────────────
+{
+  const arr = [];
+  const GS = 6, GW = 42, GD = 38;
+  for (let i = -GW; i <= GW; i++)
+    pushLine(arr, i*GS,-0.1,-GD*GS, i*GS,-0.1,GD*GS);
+  for (let i = -GD; i <= GD; i++)
+    pushLine(arr, -GW*GS,-0.1,i*GS, GW*GS,-0.1,i*GS);
+  const groundMat = new THREE.LineBasicMaterial({
+    color: 0x0a3020, transparent: true, opacity: 0.35,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  scene.add(new THREE.LineSegments(buildGeo(arr), groundMat));
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DISTRICT 0 — AGRICULTURE  (left-back)
+// Color identity: warm yellow-green
+// ─────────────────────────────────────────────────────────────────────────────
+const farmArr = [];
+{
+  const OX=-62, OZ=30;
+  // Field rows — undulating furrows
+  for (let row = 0; row < 10; row++) {
+    const z = OZ - 28 + row*5.8;
+    for (let seg = 0; seg < 16; seg++) {
+      const x0 = OX-36+seg*4.5, x1 = x0+4.5;
+      const y0 = Math.sin(seg*0.5+row)*0.4, y1 = Math.sin((seg+1)*0.5+row)*0.4;
+      pushLine(farmArr, x0,y0,z, x1,y1,z);
+    }
+  }
+  // Irrigation cross lines
+  for (let col = 0; col < 8; col++) {
+    const x = OX-36+col*10.5;
+    pushLine(farmArr, x,0,OZ-28, x,0,OZ+28);
+  }
+  // BARN
+  addBox(farmArr, OX+14,0,OZ+2, 18,10,12);
+  addRoof(farmArr, OX+14,10,OZ+2, 18,12, 6);
+  // Barn door
+  pushLine(farmArr, OX+5,0,OZ-4, OX+5,6,OZ-4);
+  pushLine(farmArr, OX+23,0,OZ-4, OX+23,6,OZ-4);
+  pushLine(farmArr, OX+5,6,OZ-4, OX+23,6,OZ-4);
+  // SILO 1
+  addCylinder(farmArr, OX+28,0,OZ+4, 4,22, 10, 6);
+  addCircle(farmArr,   OX+28,22,OZ+4, 4, 10, 'y');
+  // Silo dome
+  for (let s=0;s<10;s++){
+    const a0=(s/10)*Math.PI*2, a1=((s+1)/10)*Math.PI*2;
+    pushLine(farmArr, OX+28+Math.cos(a0)*4,22,OZ+4+Math.sin(a0)*4,
+                      OX+28,26,OZ+4);
+  }
+  // SILO 2
+  addCylinder(farmArr, OX+22,0,OZ+4, 3.2,18, 10, 5);
+  for (let s=0;s<10;s++){
+    const a0=(s/10)*Math.PI*2, a1=((s+1)/10)*Math.PI*2;
+    pushLine(farmArr, OX+22+Math.cos(a0)*3.2,18,OZ+4+Math.sin(a0)*3.2,
+                      OX+22,22,OZ+4);
+  }
+  // WINDMILL
+  const wx=OX-18, wz=OZ+8;
+  pushLine(farmArr, wx,0,wz, wx,24,wz); // tower
+  // Cross braces on tower
+  for (let i=0;i<4;i++){
+    const y=i*6;
+    pushLine(farmArr, wx-1.5,y,wz, wx+1.5,y+3,wz);
+    pushLine(farmArr, wx+1.5,y,wz, wx-1.5,y+3,wz);
+  }
+  // Blades (4 blades as a cross + diagonals)
+  const bLen=9, bY=24;
+  pushLine(farmArr, wx,bY,wz, wx+bLen,bY+2,wz);
+  pushLine(farmArr, wx,bY,wz, wx,bY+bLen,wz);
+  pushLine(farmArr, wx,bY,wz, wx-bLen,bY-2,wz);
+  pushLine(farmArr, wx,bY,wz, wx,bY-bLen,wz);
+  pushLine(farmArr, wx+bLen,bY+2,wz, wx,bY+bLen,wz);
+  pushLine(farmArr, wx,bY+bLen,wz, wx-bLen,bY-2,wz);
+  pushLine(farmArr, wx-bLen,bY-2,wz, wx,bY-bLen,wz);
+  pushLine(farmArr, wx,bY-bLen,wz, wx+bLen,bY+2,wz);
+  // Fence line
+  for (let i=0;i<14;i++){
+    const fx=OX-38+i*5.5;
+    pushLine(farmArr, fx,0,OZ-30, fx,2,OZ-30);
+    pushLine(farmArr, fx+5.5,0,OZ-30, fx,0,OZ-30);
+    pushLine(farmArr, fx,2,OZ-30, fx+5.5,2,OZ-30);
+  }
+  // Water tower
+  addCylinder(farmArr, OX-30,8,OZ+15, 4,5, 8, 2);
+  // Legs
+  for (let l=0;l<4;l++){
+    const la=(l/4)*Math.PI*2;
+    pushLine(farmArr, OX-30+Math.cos(la)*4,8,OZ+15+Math.sin(la)*4,
+                      OX-30+Math.cos(la)*5,0,OZ+15+Math.sin(la)*5);
+  }
+}
+const farmDistrict = buildDistrict(farmArr, 0xd4e840);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DISTRICT 1 — AUTO INDUSTRY  (right-back)
+// Color identity: electric blue
+// ─────────────────────────────────────────────────────────────────────────────
+const autoArr = [];
+{
+  const OX=62, OZ=28;
+  // MAIN FACTORY SHED — wide low building
+  addBox(autoArr, OX-8,0,OZ, 52,12,32, 5, 3);
+  // Sawtooth roof (shed-style)
+  for (let i=0;i<5;i++){
+    const rx=OX-32+i*11.5;
+    pushLine(autoArr, rx,12,OZ-16, rx+6,18,OZ-16);
+    pushLine(autoArr, rx+6,18,OZ-16, rx+11.5,12,OZ-16);
+    pushLine(autoArr, rx,12,OZ+16, rx+6,18,OZ+16);
+    pushLine(autoArr, rx+6,18,OZ+16, rx+11.5,12,OZ+16);
+    pushLine(autoArr, rx,12,OZ-16, rx,12,OZ+16);
+    pushLine(autoArr, rx+6,18,OZ-16, rx+6,18,OZ+16);
+  }
+  // SMOKESTACKS
+  for (let s=0;s<3;s++){
+    addCylinder(autoArr, OX-28+s*16,12,OZ-16, 2,20, 8, 3);
+    // Stack rim
+    addCircle(autoArr, OX-28+s*16,32,OZ-16, 3, 12);
+  }
+  // ASSEMBLY LINE CONVEYORS
+  for (let lane=0;lane<3;lane++){
+    const lz=OZ-10+lane*10;
+    // Elevated belt
+    pushLine(autoArr, OX-30,5,lz, OX+15,5,lz);
+    pushLine(autoArr, OX-30,5,lz+1, OX+15,5,lz+1);
+    // Support legs
+    for (let l=0;l<5;l++){
+      const lx=OX-30+l*11;
+      pushLine(autoArr, lx,0,lz, lx,5,lz);
+      pushLine(autoArr, lx,0,lz+1, lx,5,lz+1);
+      pushLine(autoArr, lx,5,lz, lx,5,lz+1);
+    }
+    // Roller lines
+    for (let r=0;r<10;r++){
+      const rx=OX-30+r*4.5;
+      pushLine(autoArr, rx,5.5,lz-0.5, rx,5.5,lz+1.5);
+    }
+  }
+  // CAR SILHOUETTES (simplified wireframe)
+  const carDefs = [
+    {x:OX+18,z:OZ-12}, {x:OX+18,z:OZ}, {x:OX+18,z:OZ+12}
+  ];
+  carDefs.forEach(({x,z})=>{
+    // Body
+    addBox(autoArr, x,1,z, 10,3,5);
+    // Cabin
+    addBox(autoArr, x+0.5,4,z, 7,2.5,4.5);
+    // Wheels (4 flat circles)
+    const wps=[[x-3.5,z-2.5],[x+3.5,z-2.5],[x-3.5,z+2.5],[x+3.5,z+2.5]];
+    wps.forEach(([wx,wz])=>addCircle(autoArr,wx,1,wz,1.4,8,'x'));
+    // Grill lines
+    for (let g=0;g<3;g++)
+      pushLine(autoArr, x-5,1.5+g*0.8,z-2.5, x-5,1.5+g*0.8,z+2.5);
+  });
+  // ROBOT ARMS (2)
+  const raDefs = [{x:OX-28,z:OZ+18},{x:OX-10,z:OZ+18}];
+  raDefs.forEach(({x,z})=>{
+    addBox(autoArr, x,0,z, 2,3,2); // base
+    pushLine(autoArr, x,3,z, x+4,8,z); // arm 1
+    pushLine(autoArr, x+4,8,z, x+6,12,z); // arm 2
+    // gripper
+    pushLine(autoArr, x+6,12,z, x+8,12,z-1);
+    pushLine(autoArr, x+6,12,z, x+8,12,z+1);
+  });
+  // Loading dock
+  addBox(autoArr, OX+26,0,OZ, 10,5,22, 2, 1);
+}
+const autoDistrict = buildDistrict(autoArr, 0x20aaff);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DISTRICT 2 — SPORTS STADIUM  (left-front)
+// Color identity: vivid lime green
+// ─────────────────────────────────────────────────────────────────────────────
+const stadArr = [];
+{
+  const OX=-28, OZ=-40;
+  const RA=42, RB=28; // outer ellipse radii x,z
+  // BOWL — stacked ellipses
+  for (let ring=0;ring<6;ring++){
+    const t=ring/5, y=ring*4, ra=RA-ring*3, rb=RB-ring*2;
+    addEllipse(stadArr, OX,y,OZ, ra,rb, 36);
+  }
+  // Vertical ribs (structural columns)
+  for (let rib=0;rib<24;rib++){
+    const a=(rib/24)*Math.PI*2;
+    const x0=OX+Math.cos(a)*RA, z0=OZ+Math.sin(a)*RB;
+    const x1=OX+Math.cos(a)*(RA-14), z1=OZ+Math.sin(a)*(RB-9);
+    pushLine(stadArr, x0,0,z0, x1,20,z1);
+  }
+  // PLAYING FIELD MARKINGS
+  pushLine(stadArr, OX-30,0.1,OZ-18, OX+30,0.1,OZ-18); // touchline
+  pushLine(stadArr, OX-30,0.1,OZ+18, OX+30,0.1,OZ+18);
+  pushLine(stadArr, OX-30,0.1,OZ-18, OX-30,0.1,OZ+18);
+  pushLine(stadArr, OX+30,0.1,OZ-18, OX+30,0.1,OZ+18);
+  pushLine(stadArr, OX,0.1,OZ-18, OX,0.1,OZ+18); // midfield
+  addCircle(stadArr, OX,0.1,OZ, 8, 24, 'y'); // center circle
+  // Penalty boxes
+  addBox(stadArr, OX-21,0.1,OZ, 8,0,14); // left goal area (flat)
+  pushLine(stadArr, OX-30,0.1,OZ-7, OX-22,0.1,OZ-7);
+  pushLine(stadArr, OX-30,0.1,OZ+7, OX-22,0.1,OZ+7);
+  pushLine(stadArr, OX-22,0.1,OZ-7, OX-22,0.1,OZ+7);
+  pushLine(stadArr, OX+30,0.1,OZ-7, OX+22,0.1,OZ-7);
+  pushLine(stadArr, OX+30,0.1,OZ+7, OX+22,0.1,OZ+7);
+  pushLine(stadArr, OX+22,0.1,OZ-7, OX+22,0.1,OZ+7);
+  // LIGHT TOWERS (4 corners)
+  const towerPos = [[RA*0.8,RB*0.8],[-RA*0.8,RB*0.8],[RA*0.8,-RB*0.8],[-RA*0.8,-RB*0.8]];
+  towerPos.forEach(([tx,tz])=>{
+    const tpx=OX+tx, tpz=OZ+tz;
+    pushLine(stadArr, tpx,0,tpz, tpx,28,tpz); // pole
+    // Cross arm
+    pushLine(stadArr, tpx-4,26,tpz, tpx+4,26,tpz);
+    pushLine(stadArr, tpx-4,28,tpz, tpx+4,28,tpz);
+    // Light heads
+    for (let l=0;l<5;l++){
+      const lx=tpx-4+l*2;
+      pushLine(stadArr, lx,28,tpz, lx+0.5,30,tpz);
+      pushLine(stadArr, lx,28,tpz, lx-0.5,30,tpz);
+    }
+    // Bracing
+    pushLine(stadArr, tpx,0,tpz, tpx+4,14,tpz);
+    pushLine(stadArr, tpx,0,tpz, tpx-4,14,tpz);
+  });
+  // SCOREBOARD STRUCTURE
+  addBox(stadArr, OX,20,OZ-RB-2, 20,8,4, 4, 2);
+  // Scoreboard support legs
+  pushLine(stadArr, OX-10,0,OZ-RB-2, OX-8,20,OZ-RB-2);
+  pushLine(stadArr, OX+10,0,OZ-RB-2, OX+8,20,OZ-RB-2);
+  // Roof edge canopy (partial arc)
+  for (let s=0;s<20;s++){
+    const a0=(-0.3+s/20*1.8)*Math.PI;
+    const a1=(-0.3+(s+1)/20*1.8)*Math.PI;
+    pushLine(stadArr,
+      OX+Math.cos(a0)*(RA+2),21,OZ+Math.sin(a0)*(RB+2),
+      OX+Math.cos(a1)*(RA+2),21,OZ+Math.sin(a1)*(RB+2));
+    pushLine(stadArr,
+      OX+Math.cos(a0)*(RA-6),21,OZ+Math.sin(a0)*(RB-4),
+      OX+Math.cos(a1)*(RA-6),21,OZ+Math.sin(a1)*(RB-4));
+  }
+}
+const stadDistrict = buildDistrict(stadArr, 0x30ff88);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DISTRICT 3 — HIGH-TECH SKYSCRAPERS  (right-front)
+// Color identity: icy cyan-white
+// ─────────────────────────────────────────────────────────────────────────────
+const techArr = [];
+{
+  const OX=52, OZ=-38;
+  // TOWER A — main landmark, very tall
+  addBox(techArr, OX-10,0,OZ-6, 14,80,10, 7, 16);
+  // Antenna
+  pushLine(techArr, OX-10,80,OZ-6, OX-10,95,OZ-6);
+  pushLine(techArr, OX-10,88,OZ-6, OX-14,93,OZ-6);
+  pushLine(techArr, OX-10,88,OZ-6, OX-6,93,OZ-6);
+  addCircle(techArr, OX-10,84,OZ-6, 2, 8);
+  // TOWER B — angular
+  addBox(techArr, OX+8,0,OZ-4, 10,60,8, 5, 12);
+  // Diagonal facade
+  pushLine(techArr, OX+3,0,OZ-8, OX+13,60,OZ-8);
+  pushLine(techArr, OX+3,0,OZ,   OX+13,60,OZ);
+  // Crown
+  addBox(techArr, OX+10,60,OZ-4, 6,8,4, 2, 4);
+  // TOWER C — slim & tall
+  addBox(techArr, OX-22,0,OZ+6, 8,55,7, 4, 11);
+  // Step-back profile
+  addBox(techArr, OX-22,40,OZ+6, 5,15,4, 2, 5);
+  // TOWER D — wide podium + tower
+  addBox(techArr, OX+4,0,OZ+16, 22,12,16, 6, 3); // podium
+  addBox(techArr, OX+6,12,OZ+18, 12,42,10, 4, 8); // tower
+  // COMM TOWER (standalone)
+  addCylinder(techArr, OX-30,0,OZ+20, 1.5,35, 6, 6);
+  // Dish
+  addCircle(techArr, OX-30,35,OZ+20, 5, 12, 'y');
+  pushLine(techArr, OX-30,35,OZ+20, OX-30,40,OZ+20);
+  // Dish spars
+  for (let s=0;s<6;s++){
+    const a=(s/6)*Math.PI*2;
+    pushLine(techArr, OX-30,35,OZ+20, OX-30+Math.cos(a)*5,35,OZ+20+Math.sin(a)*5);
+  }
+  // DATA STREAM FINS (ascending lines — suggests server data)
+  for (let df=0;df<8;df++){
+    const dx=OX-35+df*4, dz=OZ-20;
+    for (let l=0;l<5;l++){
+      const y0=l*10, y1=y0+7;
+      const xo=(Math.random()-0.5)*1.5;
+      pushLine(techArr, dx+xo,y0,dz, dx+xo,y1,dz);
+    }
+  }
+  // SKY BRIDGES between towers
+  pushLine(techArr, OX-17,38,OZ-6, OX+3,38,OZ-4);   // bridge A-B
+  pushLine(techArr, OX-17,40,OZ-6, OX+3,40,OZ-4);
+  pushLine(techArr, OX-17,38,OZ-6, OX-17,40,OZ-6);
+  pushLine(techArr, OX+3,38,OZ-4,  OX+3,40,OZ-4);
+  pushLine(techArr, OX-26,32,OZ+6, OX-17,32,OZ-6);  // bridge C-A
+  // PLAZA grid
+  for (let g=0;g<6;g++){
+    pushLine(techArr, OX-36+g*10,0,OZ+30, OX-36+g*10,0,OZ-30);
+    pushLine(techArr, OX-36,0,OZ-30+g*10, OX+36,0,OZ-30+g*10);
+  }
+  // Solar panel array (low structure)
+  for (let sp=0;sp<6;sp++){
+    const spx=OX-36+sp*6, spy=4, spz=OZ+32;
+    pushLine(techArr, spx,spy,spz, spx+5,spy,spz);
+    pushLine(techArr, spx,spy,spz, spx,spy+0.2,spz+3);
+    pushLine(techArr, spx+5,spy,spz, spx+5,spy+0.2,spz+3);
+    pushLine(techArr, spx,spy+0.2,spz+3, spx+5,spy+0.2,spz+3);
+  }
+}
+const techDistrict = buildDistrict(techArr, 0x88eeff);
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SHARED CITY INFRASTRUCTURE — roads, overpass, city hall
+// ─────────────────────────────────────────────────────────────────────────────
+{
+  const infArr = [];
+  // Main roads
+  pushLine(infArr, -140,0.2,0,  140,0.2,0);  // horizontal axis
+  pushLine(infArr, 0,0.2,-140,  0,0.2,140);  // vertical axis
+  // Road lanes
+  for (let l=-1;l<=1;l+=2){
+    pushLine(infArr, -140,0.3,l*3,  140,0.3,l*3);
+    pushLine(infArr, l*3,0.3,-140,  l*3,0.3,140);
+  }
+  // Elevated overpass (diagonal)
+  for (let i=0;i<10;i++){
+    const t=i/9;
+    const x0=-30+t*90, z0=50-t*90, y=6+Math.sin(t*Math.PI)*8;
+    if(i<9) pushLine(infArr, x0,y,z0, -30+(t+1/9)*90,6+Math.sin((t+1/9)*Math.PI)*8,50-(t+1/9)*90);
+    // Support pillar
+    pushLine(infArr, x0,0,z0, x0,y,z0);
+  }
+  // Central hub structure
+  addCylinder(infArr, 0,0,0, 10,4, 12, 2);
+  addCylinder(infArr, 0,4,0, 6,20, 8, 4);
+  // Hub spire
+  pushLine(infArr, 0,24,0, 0,34,0);
+  addCircle(infArr, 0,28,0, 3, 10, 'y');
+  // Connecting pedestrian bridges
+  for (let b=0;b<4;b++){
+    const ba=(b/4)*Math.PI*2;
+    const x0=Math.cos(ba)*10, z0=Math.sin(ba)*10;
+    const x1=Math.cos(ba)*26, z1=Math.sin(ba)*26;
+    pushLine(infArr, x0,4,z0, x1,4,z1);
+  }
+
+  const infMat = new THREE.LineBasicMaterial({
+    color: 0x0d4028, transparent: true, opacity: 0.4,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  scene.add(new THREE.LineSegments(buildGeo(infArr), infMat));
+}
+
+// ─── ATMOSPHERIC PARTICLES ────────────────────────────────────────────────────
+const ATM_COUNT = 2200;
+const atmGeo    = new THREE.BufferGeometry();
+const atmPos    = new Float32Array(ATM_COUNT * 3);
+const atmPhase  = new Float32Array(ATM_COUNT);
+const atmHue    = new Float32Array(ATM_COUNT);
+for (let i=0;i<ATM_COUNT;i++){
+  atmPos[i*3]   = (Math.random()-0.5)*280;
+  atmPos[i*3+1] = Math.random()*80;
+  atmPos[i*3+2] = (Math.random()-0.5)*280;
+  atmPhase[i]   = Math.random()*Math.PI*2;
+  atmHue[i]     = Math.random();
+}
+atmGeo.setAttribute('position', new THREE.BufferAttribute(atmPos,   3).setUsage(THREE.DynamicDrawUsage));
+atmGeo.setAttribute('aPhase',   new THREE.BufferAttribute(atmPhase, 1));
+atmGeo.setAttribute('aHue',     new THREE.BufferAttribute(atmHue,   1));
+
+const atmMat = new THREE.ShaderMaterial({
+  uniforms: { uTime:{value:0} },
+  vertexShader:`
+    attribute float aPhase;
+    attribute float aHue;
+    uniform float uTime;
+    varying float vAlpha;
+    varying float vHue;
+    void main(){
+      vHue = aHue;
+      float sway = sin(uTime*0.12+aPhase)*1.2;
+      float drift= cos(uTime*0.09+aPhase*1.4)*0.8;
+      vec3 p = position + vec3(sway, drift*0.4, drift);
+      float hfade = 1.0 - smoothstep(0.0,1.0,position.y/80.0);
+      vAlpha = (0.3+0.4*sin(uTime*0.2+aPhase))*hfade;
+      gl_PointSize = 1.5+2.0*hfade;
+      gl_Position = projectionMatrix*modelViewMatrix*vec4(p,1.0);
+    }
+  `,
+  fragmentShader:`
+    varying float vAlpha;
+    varying float vHue;
+    void main(){
+      vec2 uv=gl_PointCoord-0.5;
+      float d=length(uv);
+      if(d>0.5)discard;
+      float a=(1.0-smoothstep(0.1,0.5,d))*vAlpha*0.7;
+      vec3 colA=vec3(0.08,0.70,0.40);
+      vec3 colB=vec3(0.04,0.38,0.70);
+      vec3 col=mix(colA,colB,vHue);
+      gl_FragColor=vec4(col,a);
+    }
+  `,
+  transparent:true, depthWrite:false, blending:THREE.AdditiveBlending,
+});
+scene.add(new THREE.Points(atmGeo, atmMat));
+
+// Atmospheric cloud blobs
+const BLOB_COUNT = 14;
+const blobGeo = new THREE.BufferGeometry();
+const bPos = new Float32Array(BLOB_COUNT*3);
+const bPhase2 = new Float32Array(BLOB_COUNT);
+const bHue2 = new Float32Array(BLOB_COUNT);
+for(let i=0;i<BLOB_COUNT;i++){
+  bPos[i*3]  =(Math.random()-0.5)*240;
+  bPos[i*3+1]= 5+Math.random()*40;
+  bPos[i*3+2]=(Math.random()-0.5)*240;
+  bPhase2[i] =Math.random()*Math.PI*2;
+  bHue2[i]   =Math.random();
+}
+blobGeo.setAttribute('position',new THREE.BufferAttribute(bPos,3));
+blobGeo.setAttribute('aPhase',  new THREE.BufferAttribute(bPhase2,1));
+blobGeo.setAttribute('aHue',    new THREE.BufferAttribute(bHue2,1));
+const blobMat = new THREE.ShaderMaterial({
+  uniforms:{uTime:{value:0}},
+  vertexShader:`
+    attribute float aPhase; attribute float aHue;
+    uniform float uTime; varying float vHue;
+    void main(){
+      vHue=aHue;
+      float b=1.0+0.15*sin(uTime*0.22+aPhase);
+      gl_PointSize=420.0*b;
+      gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);
+    }`,
+  fragmentShader:`
+    varying float vHue;
+    void main(){
+      vec2 uv=gl_PointCoord-0.5; float d=length(uv)*2.0;
+      float a=pow(1.0-smoothstep(0.0,1.0,d),3.2)*0.22;
+      vec3 c=mix(vec3(0.02,0.20,0.18),vec3(0.03,0.28,0.10),vHue);
+      gl_FragColor=vec4(c,a);
+    }`,
+  transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,
+});
+scene.add(new THREE.Points(blobGeo,blobMat));
+
+// ─── SCENE / CYCLING LOGIC ────────────────────────────────────────────────────
+const DISTRICTS = [
+  {
+    mesh: farmDistrict,
+    color: new THREE.Color(0xd4e840),
+    camPos: new THREE.Vector3(-80, 55, 110),
+    camTarget: new THREE.Vector3(-55, 8, 28),
+    label: 'Agriculture',
+    dimCol: new THREE.Color(0x223308),
+  },
+  {
+    mesh: autoDistrict,
+    color: new THREE.Color(0x20aaff),
+    camPos: new THREE.Vector3(90, 52, 110),
+    camTarget: new THREE.Vector3(62, 8, 28),
+    label: 'Auto Industry',
+    dimCol: new THREE.Color(0x041822),
+  },
+  {
+    mesh: stadDistrict,
+    color: new THREE.Color(0x30ff88),
+    camPos: new THREE.Vector3(-60, 60, 30),
+    camTarget: new THREE.Vector3(-28, 6, -38),
+    label: 'Sports & Recreation',
+    dimCol: new THREE.Color(0x041408),
+  },
+  {
+    mesh: techDistrict,
+    color: new THREE.Color(0x88eeff),
+    camPos: new THREE.Vector3(100, 65, 30),
+    camTarget: new THREE.Vector3(52, 20, -36),
+    label: 'High-Tech District',
+    dimCol: new THREE.Color(0x051518),
+  },
+];
+
+const PHASE_DURATION = 11.0; // seconds each
+let activeIdx  = 0;
+let phaseTimer = 0;
+
+const labelEl   = document.getElementById('industry-name');
+const fillEl    = document.getElementById('progress-fill');
+
+function setActiveDistrict(idx) {
+  activeIdx = idx;
+  labelEl.classList.remove('visible');
+  setTimeout(()=>{ labelEl.textContent = DISTRICTS[idx].label; labelEl.classList.add('visible'); }, 400);
+  document.querySelectorAll('.ddot').forEach((d,i)=>{
+    d.classList.toggle('active', i===idx);
+  });
+  // Update progress bar color
+  const hex = '#'+DISTRICTS[idx].color.getHexString();
+  fillEl.style.background = `${hex}99`;
+}
+setActiveDistrict(0);
+
+// ─── Mouse ───────────────────────────────────────────────────────────────────
+const mouse={x:0,y:0};
+window.addEventListener('mousemove',e=>{
+  mouse.x=(e.clientX/window.innerWidth-0.5)*2;
+  mouse.y=(e.clientY/window.innerHeight-0.5)*2;
+});
+
+// ─── Camera state ─────────────────────────────────────────────────────────────
+const camPos    = camera.position.clone();
+const camLookAt = new THREE.Vector3(0,0,-10);
+const tmpLook   = new THREE.Vector3();
+
+// ─── Animate ─────────────────────────────────────────────────────────────────
+let t=0, lastTime=performance.now();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const now = performance.now();
+  const dt  = Math.min((now-lastTime)/1000, 0.05);
+  lastTime  = now;
+  t        += dt;
+  phaseTimer+= dt;
+
+  atmMat.uniforms.uTime.value  = t;
+  blobMat.uniforms.uTime.value = t;
+
+  // Phase cycling
+  if (phaseTimer >= PHASE_DURATION) {
+    phaseTimer = 0;
+    setActiveDistrict((activeIdx+1) % DISTRICTS.length);
+  }
+  const phaseNorm = phaseTimer / PHASE_DURATION;
+  fillEl.style.left = `${(phaseNorm*100)-100}%`;
+
+  // Update district colors — active glows, others dim
+  DISTRICTS.forEach((d, i) => {
+    const isActive = i === activeIdx;
+    const targetOpacity = isActive ? 0.85 : 0.09;
+    const mat = d.mesh.material;
+    mat.opacity += (targetOpacity - mat.opacity) * 0.04;
+
+    // Pulse active wireframe
+    if (isActive) {
+      const pulse = 0.75 + 0.25 * Math.sin(t * 1.8);
+      mat.opacity = targetOpacity * pulse;
+      // Color brighten toward white on pulse
+      const c = d.color.clone().lerp(new THREE.Color(1,1,1), pulse*0.15);
+      mat.color.set(c);
+    } else {
+      mat.color.lerp(d.dimCol, 0.06);
+    }
+  });
+
+  // Camera lerp to active district
+  const tgt = DISTRICTS[activeIdx];
+  const parallaxOff = new THREE.Vector3(mouse.x*4, -mouse.y*3, 0);
+  const desiredCam  = tgt.camPos.clone().add(parallaxOff);
+  camera.position.lerp(desiredCam, 0.025);
+  tmpLook.copy(tgt.camTarget);
+  camLookAt.lerp(tmpLook, 0.025);
+  camera.lookAt(camLookAt);
+
+  // Atmospheric particles drift
+  const ap = atmGeo.attributes.position;
+  for (let i=0;i<ATM_COUNT;i++){
+    const py = ap.getY(i) + 0.008;
+    ap.setY(i, py > 85 ? Math.random()*5 : py);
+  }
+  ap.needsUpdate = true;
+
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize',()=>{
+  camera.aspect=window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth,window.innerHeight);
+});
+</script>
+</body>
+</html>
