@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import ModelHero from "@/components/model/ModelHero";
 import RightTeamSection from "@/components/model/RightTeamSection";
 import CapabilitiesGrid from "@/components/model/CapabilitiesGrid";
@@ -7,6 +8,12 @@ import IcpSection from "@/components/model/IcpSection";
 import ContinuitySection from "@/components/model/ContinuitySection";
 import TechnologySection from "@/components/model/TechnologySection";
 import FitSection from "@/components/model/FitSection";
+
+export const metadata: Metadata = {
+  title: "Our Model",
+  description:
+    "Senior, bespoke teams who already know how to work together. The Sageworx model delivers continuity and momentum without the overhead of a traditional agency.",
+};
 
 export default function ModelPage() {
   return (

@@ -8,9 +8,21 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: "Sageworx | Go Further. Faster.",
+  metadataBase: new URL("https://sageworx.com"),
+  title: {
+    default: "Sageworx | Go Further. Faster.",
+    template: "%s | Sageworx",
+  },
   description:
     "We bring together seasoned marketing and creative experts—bespoke teams who understand your work, thrive on the challenge and deliver when it counts.",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "Sageworx",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

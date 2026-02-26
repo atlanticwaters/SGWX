@@ -1,8 +1,16 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
-import AnimationCanvas from "@/components/animations/AnimationCanvas";
-import WaveBackground from "@/components/animations/WaveBackground";
+
+const AnimationCanvas = dynamic(
+  () => import("@/components/animations/AnimationCanvas"),
+  { ssr: false }
+);
+const WaveBackground = dynamic(
+  () => import("@/components/animations/WaveBackground"),
+  { ssr: false }
+);
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
