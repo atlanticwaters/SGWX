@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import Container from "@/components/ui/Container";
 import AnimatedSection from "@/components/ui/AnimatedSection";
@@ -26,6 +27,35 @@ const DeepFieldCanvas = dynamic(
   () => import("@/components/animations/DeepFieldCanvas"),
   { ssr: false }
 );
+
+// ─── Viewport-aware wrapper ──────────────────────────────────────────────────
+// Only mounts the Three.js canvas when the container is in the viewport.
+// This prevents WebGL context pressure from multiple simultaneous heavy scenes.
+function LazyThreePreview({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: "200px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className="absolute inset-0">
+      {inView && children}
+    </div>
+  );
+}
 
 // ─── Three.js animation entries ──────────────────────────────────────────────
 
@@ -198,20 +228,23 @@ export default function AnimationsShowcase() {
               <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
                 {/* Preview container — 500x500 */}
                 <div
-                  className="relative shrink-0 overflow-hidden rounded-2xl border border-sgwx-border"
+                  className="relative isolate shrink-0 overflow-hidden rounded-2xl border border-sgwx-border bg-sgwx-bg"
                   style={{ width: 500, height: 500 }}
                 >
-                  <AnimationCanvas
-                    cameraPosition={anim.canvasProps.cameraPosition}
-                    cameraFov={anim.canvasProps.cameraFov}
-                    cameraFar={anim.canvasProps.cameraFar}
-                    fogColor={anim.canvasProps.fogColor}
-                    fogDensity={anim.canvasProps.fogDensity}
-                  >
-                    {anim.component}
-                  </AnimationCanvas>
+                  <LazyThreePreview>
+                    <AnimationCanvas
+                      className="!z-0"
+                      cameraPosition={anim.canvasProps.cameraPosition}
+                      cameraFov={anim.canvasProps.cameraFov}
+                      cameraFar={anim.canvasProps.cameraFar}
+                      fogColor={anim.canvasProps.fogColor}
+                      fogDensity={anim.canvasProps.fogDensity}
+                    >
+                      {anim.component}
+                    </AnimationCanvas>
+                  </LazyThreePreview>
                   {/* Label overlay */}
-                  <div className="pointer-events-none absolute bottom-0 left-0 right-0 bg-gradient-to-t from-sgwx-bg/80 to-transparent px-5 pb-4 pt-10">
+                  <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-sgwx-bg/80 to-transparent px-5 pb-4 pt-10">
                     <span className="font-mono text-xs tracking-wider text-sgwx-green">
                       {anim.file}
                     </span>
