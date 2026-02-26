@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  /* Core palette derived from animation files */
+  --color-sgwx-bg: #030d0a;
+  --color-sgwx-bg-alt: #021a14;
+  --color-sgwx-surface: #0a1f18;
+  --color-sgwx-surface-hover: #0d2b22;
+  --color-sgwx-border: #143d2e;
+  --color-sgwx-border-subtle: #0a2a1e;
+
+  /* Greens */
+  --color-sgwx-green: #17a86b;
+  --color-sgwx-green-bright: #30ff88;
+  --color-sgwx-green-muted: #0d6b4a;
+  --color-sgwx-green-pale: #e6ffbb;
+
+  /* Teals / Blues */
+  --color-sgwx-teal: #0a4f5e;
+  --color-sgwx-blue: #042a3d;
+  --color-sgwx-cyan: #88eeff;
+
+  /* Yellows / Accents */
+  --color-sgwx-yellow: #d4c94a;
+  --color-sgwx-yellow-pale: #f0e97a;
+  --color-sgwx-gold: #d4e840;
+
+  /* Text */
+  --color-sgwx-text: #e8f5ee;
+  --color-sgwx-text-muted: #8aab9a;
+  --color-sgwx-text-dim: #4a6b5a;
+
+  /* Typography */
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* Spacing */
+  --spacing-section: 6rem;
+  --spacing-section-sm: 4rem;
+}
