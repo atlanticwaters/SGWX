@@ -5,6 +5,8 @@ import ClientsSection from "@/components/home/ClientsSection";
 import ExpertsSection from "@/components/home/ExpertsSection";
 import ProcessSection from "@/components/home/ProcessSection";
 import ImpactSection from "@/components/home/ImpactSection";
+import SpotlightsSection from "@/components/home/SpotlightsSection";
+import FinalCtaSection from "@/components/home/FinalCtaSection";
 
 export default function Home() {
   return (
@@ -16,6 +18,8 @@ export default function Home() {
       <ExpertsSection />
       <ProcessSection />
       <ImpactSection />
+      <SpotlightsSection />
+      <FinalCtaSection />
     </>
   );
 }
