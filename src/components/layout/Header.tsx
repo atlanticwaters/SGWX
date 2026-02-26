@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -27,9 +28,13 @@ export default function Header() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3">
-          <span className="text-xl font-bold tracking-tight text-sgwx-text">
-            Sageworx
-          </span>
+          <Image
+            src="/sgwx-white.svg"
+            alt="Sageworx"
+            width={120}
+            height={40}
+            priority
+          />
           <span className="flex items-center gap-1.5 rounded-full border border-sgwx-green/30 bg-sgwx-green/10 px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-widest text-sgwx-green">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-sgwx-green-bright" />
             Online

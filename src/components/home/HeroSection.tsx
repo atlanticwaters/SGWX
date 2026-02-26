@@ -8,8 +8,8 @@ const AnimationCanvas = dynamic(
   () => import("@/components/animations/AnimationCanvas"),
   { ssr: false }
 );
-const NetworkBackground = dynamic(
-  () => import("@/components/animations/NetworkBackground"),
+const WaveBackground = dynamic(
+  () => import("@/components/animations/WaveBackground"),
   { ssr: false }
 );
 
@@ -26,14 +26,20 @@ const transition = (delay: number) => ({
 
 export default function HeroSection() {
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
+    <section className="relative flex min-h-screen items-center justify-end overflow-hidden">
       {/* Background animation */}
-      <AnimationCanvas>
-        <NetworkBackground />
+      <AnimationCanvas
+        cameraPosition={[-10, 28, 90]}
+        cameraFov={55}
+        cameraFar={600}
+        fogColor={0x021a14}
+        fogDensity={0.01}
+      >
+        <WaveBackground />
       </AnimationCanvas>
 
       {/* Content */}
-      <div className="relative z-10 mx-auto max-w-4xl px-6 text-center" style={{ marginTop: "-5vh" }}>
+      <div className="relative z-10 max-w-3xl px-6 pr-8 text-right md:pr-16 lg:pr-24" style={{ marginTop: "-5vh" }}>
         <motion.h1
           className="text-5xl font-bold tracking-tight text-sgwx-text md:text-6xl lg:text-8xl"
           {...fadeUp}
@@ -43,7 +49,7 @@ export default function HeroSection() {
         </motion.h1>
 
         <motion.p
-          className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-sgwx-text-muted md:text-xl"
+          className="ml-auto mt-6 max-w-2xl text-lg leading-relaxed text-sgwx-text-muted md:text-xl"
           {...fadeUp}
           transition={transition(0.12)}
         >
@@ -53,7 +59,7 @@ export default function HeroSection() {
         </motion.p>
 
         <motion.p
-          className="mx-auto mt-4 max-w-xl text-base text-sgwx-text-dim"
+          className="ml-auto mt-4 max-w-xl text-base text-sgwx-text-dim"
           {...fadeUp}
           transition={transition(0.24)}
         >
@@ -61,7 +67,7 @@ export default function HeroSection() {
         </motion.p>
 
         <motion.div
-          className="mt-10 flex flex-wrap items-center justify-center gap-4"
+          className="mt-10 flex flex-wrap items-center justify-end gap-4"
           {...fadeUp}
           transition={transition(0.36)}
         >

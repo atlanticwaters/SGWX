@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const footerLinks = [
@@ -12,9 +13,17 @@ export default function Footer() {
   return (
     <footer className="border-t border-sgwx-border-subtle bg-sgwx-bg">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 py-12 md:flex-row">
-        <p className="text-sm text-sgwx-text-dim">
-          &copy; {new Date().getFullYear()} Sageworx, LLC.
-        </p>
+        <div className="flex items-center gap-4">
+          <Image
+            src="/sgwx-white.svg"
+            alt="Sageworx"
+            width={100}
+            height={33}
+          />
+          <p className="text-sm text-sgwx-text-dim">
+            &copy; {new Date().getFullYear()} Sageworx, LLC.
+          </p>
+        </div>
         <nav className="flex gap-6">
           {footerLinks.map((link) => (
             <Link
