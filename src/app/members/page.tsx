@@ -6,6 +6,7 @@ import FeaturedMembersSection from "@/components/members/FeaturedMembersSection"
 import CollectiveStats from "@/components/members/CollectiveStats";
 import MemberGallery from "@/components/members/MemberGallery";
 import JoinSection from "@/components/members/JoinSection";
+import { getFeaturedMembers, getAllMembers } from "@/lib/sanity/queries";
 
 export const metadata: Metadata = {
   title: "Our Members",
@@ -13,15 +14,20 @@ export const metadata: Metadata = {
     "Meet 100+ seasoned experts, diverse thinkers, and award-winning senior leaders. A curated network with a shared passion for making the work work better.",
 };
 
-export default function MembersPage() {
+export default async function MembersPage() {
+  const [featuredMembers, allMembers] = await Promise.all([
+    getFeaturedMembers(),
+    getAllMembers(),
+  ]);
+
   return (
     <>
       <MembersHero />
       <OriginSection />
       <GrowthSection />
-      <FeaturedMembersSection />
+      <FeaturedMembersSection members={featuredMembers} />
       <CollectiveStats />
-      <MemberGallery />
+      <MemberGallery members={allMembers} />
       <JoinSection />
     </>
   );

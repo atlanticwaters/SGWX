@@ -8,23 +8,21 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 interface GalleryMember {
   name: string;
   title: string;
-  initials: string;
 }
 
-const galleryMembers: GalleryMember[] = [
-  { name: "Marc Roberts", title: "Co-Founder | Creative Director", initials: "MR" },
-  { name: "Pat Murphy", title: "Co-Founder | Executive Producer", initials: "PM" },
-  { name: "Sara Ann MacFarlane", title: "Behavioral Scientist", initials: "SM" },
-  { name: "Ann Marie Almariei", title: "Creative Director", initials: "AA" },
-  { name: "James Petrossi", title: "Brand Strategist", initials: "JP" },
-  { name: "Andrew Waters", title: "Art Director | AI Engineer", initials: "AW" },
-  { name: "Elena Vargas", title: "UX Strategist", initials: "EV" },
-  { name: "David Chen", title: "Technology Lead", initials: "DC" },
-  { name: "Priya Sharma", title: "Content Strategist", initials: "PS" },
-  { name: "Thomas Wright", title: "Production Director", initials: "TW" },
-  { name: "Maya Johnson", title: "Social Media Strategist", initials: "MJ" },
-  { name: "Carlos Rivera", title: "Motion Designer", initials: "CR" },
-];
+interface MemberGalleryProps {
+  members: GalleryMember[];
+}
+
+function getInitials(name: string): string {
+  return name
+    .split(" ")
+    .filter((w) => w.length > 0)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 3);
+}
 
 function AvatarCard({ member, index }: { member: GalleryMember; index: number }) {
   const [hovered, setHovered] = useState(false);
@@ -44,7 +42,7 @@ function AvatarCard({ member, index }: { member: GalleryMember; index: number })
         {/* Initials */}
         <div className="flex h-full items-center justify-center">
           <span className="text-3xl font-bold text-sgwx-text-dim transition-opacity duration-300 group-hover:opacity-30 md:text-4xl">
-            {member.initials}
+            {getInitials(member.name)}
           </span>
         </div>
 
@@ -64,7 +62,7 @@ function AvatarCard({ member, index }: { member: GalleryMember; index: number })
   );
 }
 
-export default function MemberGallery() {
+export default function MemberGallery({ members }: MemberGalleryProps) {
   return (
     <section className="bg-sgwx-bg-alt py-16 md:py-24">
       <Container>
@@ -77,7 +75,7 @@ export default function MemberGallery() {
         </AnimatedSection>
 
         <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 lg:gap-6">
-          {galleryMembers.map((member, i) => (
+          {members.map((member, i) => (
             <AvatarCard key={member.name} member={member} index={i} />
           ))}
         </div>

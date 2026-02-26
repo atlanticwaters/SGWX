@@ -4,31 +4,18 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import Button from "@/components/ui/Button";
 import BlogCard from "@/components/shared/BlogCard";
 
-const posts = [
-  {
-    tag: "Featured Work",
-    title: "ZENPEP\u00AE Racing Game",
-    description:
-      "How we turned clinical education into an engaging competitive game.",
-    href: "/spotlights/zenpep-racing-game",
-  },
-  {
-    tag: "Insights",
-    title: "The End of the AOR Model",
-    description:
-      "Why brands are moving away from agency of record relationships.",
-    href: "/spotlights/end-of-aor-model",
-  },
-  {
-    tag: "Process",
-    title: "Building Teams That Scale",
-    description:
-      "Our approach to assembling the right talent for every challenge.",
-    href: "/spotlights/building-teams-that-scale",
-  },
-];
+interface Post {
+  title: string;
+  slug: string;
+  tag: string;
+  excerpt: string;
+}
 
-export default function SpotlightsSection() {
+interface SpotlightsSectionProps {
+  posts: Post[];
+}
+
+export default function SpotlightsSection({ posts }: SpotlightsSectionProps) {
   return (
     <section className="bg-sgwx-bg-alt py-16 md:py-24">
       <Container>
@@ -42,8 +29,13 @@ export default function SpotlightsSection() {
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {posts.map((post, i) => (
-            <AnimatedSection key={post.href} delay={0.1 + i * 0.08}>
-              <BlogCard {...post} />
+            <AnimatedSection key={post.slug} delay={0.1 + i * 0.08}>
+              <BlogCard
+                tag={post.tag}
+                title={post.title}
+                description={post.excerpt}
+                href={`/spotlights/${post.slug}`}
+              />
             </AnimatedSection>
           ))}
         </div>

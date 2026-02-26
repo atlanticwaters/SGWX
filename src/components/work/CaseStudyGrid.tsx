@@ -2,33 +2,19 @@ import Container from "@/components/ui/Container";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import CaseStudyCard from "@/components/shared/CaseStudyCard";
 
-const caseStudies = [
-  {
-    category: "Pharma / HCP Engagement",
-    title: "ZENPEP\u00AE Racing Game by Nestl\u00E9 Health Science",
-    description:
-      "Transforming complex clinical education into an interactive, competitive game experience for sales teams.",
-    slug: "zenpep",
-    tags: [
-      "Game Design",
-      "Pharma Education",
-      "Interactive Learning",
-      "Trade Show Engagements",
-    ],
-  },
-  {
-    category: "Sports Media / Brand & Product Identity",
-    title: "New NFL Sunday Ticket\u00AE Logo for Businesses",
-    description:
-      "Reimagining the NFL Sunday Ticket\u00AE brand for the commercial streaming market.",
-    slug: "nfl-sunday-ticket",
-    tags: ["Brand Architecture", "Logo Design", "Product Identity Systems"],
-  },
-];
+interface CaseStudy {
+  title: string;
+  slug: string;
+  category: string;
+  shortDescription: string;
+  tags: string[];
+}
 
-export { caseStudies };
+interface CaseStudyGridProps {
+  caseStudies: CaseStudy[];
+}
 
-export default function CaseStudyGrid() {
+export default function CaseStudyGrid({ caseStudies }: CaseStudyGridProps) {
   return (
     <section className="bg-sgwx-bg-alt py-16 md:py-24">
       <Container>
@@ -38,7 +24,7 @@ export default function CaseStudyGrid() {
               <CaseStudyCard
                 category={study.category}
                 title={study.title}
-                description={study.description}
+                description={study.shortDescription}
                 href={`/work/${study.slug}`}
               />
             </AnimatedSection>

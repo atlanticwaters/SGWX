@@ -9,14 +9,20 @@ import ImpactSection from "@/components/home/ImpactSection";
 import SpotlightsSection from "@/components/home/SpotlightsSection";
 import FinalCtaSection from "@/components/home/FinalCtaSection";
 import SectionDivider from "@/components/ui/SectionDivider";
+import { getAllCaseStudies, getAllBlogPosts } from "@/lib/sanity/queries";
 
 export const metadata: Metadata = {
   title: "Sageworx | Go Further. Faster.",
   description:
-    "We bring together seasoned marketing and creative experts—bespoke teams who understand your work, thrive on the challenge and deliver when it counts. No agency bloat. No freelancer roulette.",
+    "We bring together seasoned marketing and creative experts\u2014bespoke teams who understand your work, thrive on the challenge and deliver when it counts. No agency bloat. No freelancer roulette.",
 };
 
-export default function Home() {
+export default async function Home() {
+  const [caseStudies, blogPosts] = await Promise.all([
+    getAllCaseStudies(),
+    getAllBlogPosts(),
+  ]);
+
   return (
     <>
       <HeroSection />
@@ -27,9 +33,9 @@ export default function Home() {
       <ExpertsSection />
       <SectionDivider />
       <ProcessSection />
-      <ImpactSection />
+      <ImpactSection caseStudies={caseStudies} />
       <SectionDivider />
-      <SpotlightsSection />
+      <SpotlightsSection posts={blogPosts} />
       <FinalCtaSection />
     </>
   );

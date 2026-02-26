@@ -5,35 +5,19 @@ import Container from "@/components/ui/Container";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import BlogCard from "@/components/shared/BlogCard";
 
-const spotlights = [
-  {
-    tag: "Featured Work",
-    title: "ZENPEP\u00AE Racing Game",
-    description:
-      "How we turned clinical education into an engaging competitive game.",
-    slug: "zenpep-racing-game",
-  },
-  {
-    tag: "Insights",
-    title: "The End of the AOR Model",
-    description:
-      "Why brands are moving away from agency of record relationships.",
-    slug: "end-of-aor-model",
-  },
-  {
-    tag: "Process",
-    title: "Building Teams That Scale",
-    description:
-      "Our approach to assembling the right talent for every challenge.",
-    slug: "building-teams-that-scale",
-  },
-];
+interface Spotlight {
+  title: string;
+  slug: string;
+  tag: string;
+  excerpt: string;
+}
 
-const filterTags = ["All", "Featured Work", "Insights", "Process"];
+interface SpotlightsGridProps {
+  spotlights: Spotlight[];
+}
 
-export { spotlights };
-
-export default function SpotlightsGrid() {
+export default function SpotlightsGrid({ spotlights }: SpotlightsGridProps) {
+  const allTags = ["All", ...Array.from(new Set(spotlights.map((s) => s.tag)))];
   const [activeTag, setActiveTag] = useState("All");
 
   const filtered =
@@ -46,7 +30,7 @@ export default function SpotlightsGrid() {
       <Container>
         {/* Tag filter */}
         <div className="mb-10 flex flex-wrap gap-3">
-          {filterTags.map((tag) => (
+          {allTags.map((tag) => (
             <button
               key={tag}
               onClick={() => setActiveTag(tag)}
@@ -69,7 +53,7 @@ export default function SpotlightsGrid() {
               <BlogCard
                 tag={post.tag}
                 title={post.title}
-                description={post.description}
+                description={post.excerpt}
                 href={`/spotlights/${post.slug}`}
               />
             </AnimatedSection>

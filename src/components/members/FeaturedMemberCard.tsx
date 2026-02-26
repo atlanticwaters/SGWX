@@ -7,9 +7,7 @@ interface FeaturedMember {
   mantra: string;
   bio: string;
   favoriteTools: string;
-  linkText: string;
-  linkHref: string;
-  initials: string;
+  link?: { label: string; url: string };
 }
 
 interface FeaturedMemberCardProps {
@@ -17,6 +15,16 @@ interface FeaturedMemberCardProps {
 }
 
 export type { FeaturedMember };
+
+function getInitials(name: string): string {
+  return name
+    .split(" ")
+    .filter((w) => w.length > 0)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 3);
+}
 
 export default function FeaturedMemberCard({ member }: FeaturedMemberCardProps) {
   return (
@@ -26,7 +34,7 @@ export default function FeaturedMemberCard({ member }: FeaturedMemberCardProps) 
         <div className="absolute inset-0 bg-gradient-to-t from-sgwx-bg/80 via-transparent to-transparent" />
         <div className="flex h-full items-center justify-center">
           <span className="text-5xl font-bold text-sgwx-text-dim">
-            {member.initials}
+            {getInitials(member.name)}
           </span>
         </div>
       </div>
@@ -60,13 +68,15 @@ export default function FeaturedMemberCard({ member }: FeaturedMemberCardProps) 
       </div>
 
       {/* Link */}
-      <Link
-        href={member.linkHref}
-        className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-sgwx-green transition-colors hover:text-sgwx-green-bright"
-      >
-        {member.linkText}
-        <span aria-hidden="true">&rarr;</span>
-      </Link>
+      {member.link?.url && (
+        <Link
+          href={member.link.url}
+          className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-sgwx-green transition-colors hover:text-sgwx-green-bright"
+        >
+          {member.link.label || "Learn More"}
+          <span aria-hidden="true">&rarr;</span>
+        </Link>
+      )}
     </Card>
   );
 }
