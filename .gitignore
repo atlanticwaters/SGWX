@@ -40,3 +40,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# playwright
+.playwright-mcp/
+
+# dev kit source files
+SGWX Process Page Dev Kit/
