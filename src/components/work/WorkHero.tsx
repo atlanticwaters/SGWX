@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import AnimationCanvas from "@/components/animations/AnimationCanvas";
+import CityBackground from "@/components/animations/CityBackground";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -16,6 +18,9 @@ const transition = (delay: number) => ({
 export default function WorkHero() {
   return (
     <section className="relative flex min-h-[60vh] items-center justify-center overflow-hidden bg-sgwx-bg">
+      <AnimationCanvas>
+        <CityBackground />
+      </AnimationCanvas>
       <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
         <motion.h1
           className="text-5xl font-bold tracking-tight text-sgwx-text md:text-6xl lg:text-7xl"

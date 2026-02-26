@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import AnimationCanvas from "@/components/animations/AnimationCanvas";
+import WaveBackground from "@/components/animations/WaveBackground";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -16,6 +18,9 @@ const transition = (delay: number) => ({
 export default function ProcessHero() {
   return (
     <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden bg-sgwx-bg">
+      <AnimationCanvas>
+        <WaveBackground />
+      </AnimationCanvas>
       <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
         <motion.p
           className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green"
