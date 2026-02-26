@@ -81,6 +81,7 @@ export default function CollectiveStats() {
           <SectionHeading
             eyebrow="By the Numbers"
             heading="A Network of Multi-disciplined Powerhouses."
+            size="display"
           />
         </AnimatedSection>
 

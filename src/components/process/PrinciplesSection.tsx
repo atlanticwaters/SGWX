@@ -13,6 +13,7 @@ export default function PrinciplesSection() {
             eyebrow="Principles"
             heading="Designed to Move You Forward. Faster."
             subheading="Our process and systems are designed for work without the re-work. Strategy, creative, and production aligned early. Fewer handoffs. Decisions and learnings are documented to reduce rework and repeat spend."
+            size="display"
             centered
           />
         </AnimatedSection>

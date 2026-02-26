@@ -35,6 +35,7 @@ export default function SpotlightsSection() {
         <AnimatedSection>
           <SectionHeading
             heading="Every project is an opportunity to push boundaries, challenge conventions, and make a mark."
+            size="display"
             centered
           />
         </AnimatedSection>

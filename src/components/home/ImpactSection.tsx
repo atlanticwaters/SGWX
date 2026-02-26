@@ -26,7 +26,7 @@ export default function ImpactSection() {
     <section className="py-16 md:py-24">
       <Container>
         <AnimatedSection>
-          <SectionHeading heading="Making An Impact" centered />
+          <SectionHeading heading="Making An Impact" size="medium" centered />
         </AnimatedSection>
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">

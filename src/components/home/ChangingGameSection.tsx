@@ -112,10 +112,10 @@ function WaveIcon() {
 
 export default function ChangingGameSection() {
   return (
-    <section className="bg-sgwx-bg-alt py-16 md:py-24">
+    <section className="bg-sgwx-bg-alt py-20 md:py-32">
       <Container>
         <AnimatedSection>
-          <SectionHeading heading="The Rules Are Changing. Tilt Them In Your Favor." />
+          <SectionHeading heading="The Rules Are Changing. Tilt Them In Your Favor." size="display" />
         </AnimatedSection>
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">

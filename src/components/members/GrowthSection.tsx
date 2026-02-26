@@ -10,6 +10,7 @@ export default function GrowthSection() {
           <SectionHeading
             eyebrow="How We Grow"
             heading="Growth Fueled by Independent Masters of Their Craft."
+            size="medium"
           />
         </AnimatedSection>
 

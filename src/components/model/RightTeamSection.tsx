@@ -10,6 +10,7 @@ export default function RightTeamSection() {
           <SectionHeading
             eyebrow="The Right Team"
             heading="The Right Team Makes All the Difference."
+            size="display"
           />
         </AnimatedSection>
 

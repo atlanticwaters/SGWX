@@ -10,6 +10,7 @@ export default function OriginSection() {
           <SectionHeading
             eyebrow="Our Origin"
             heading="From Two Friends to a Global Network."
+            size="display"
           />
         </AnimatedSection>
 

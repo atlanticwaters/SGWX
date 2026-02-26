@@ -8,6 +8,7 @@ import ProcessSection from "@/components/home/ProcessSection";
 import ImpactSection from "@/components/home/ImpactSection";
 import SpotlightsSection from "@/components/home/SpotlightsSection";
 import FinalCtaSection from "@/components/home/FinalCtaSection";
+import SectionDivider from "@/components/ui/SectionDivider";
 
 export const metadata: Metadata = {
   title: "Sageworx | Go Further. Faster.",
@@ -21,10 +22,13 @@ export default function Home() {
       <HeroSection />
       <ChangingGameSection />
       <ComparisonTable />
+      <SectionDivider />
       <ClientsSection />
       <ExpertsSection />
+      <SectionDivider />
       <ProcessSection />
       <ImpactSection />
+      <SectionDivider />
       <SpotlightsSection />
       <FinalCtaSection />
     </>

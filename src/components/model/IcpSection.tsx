@@ -51,6 +51,7 @@ export default function IcpSection() {
             eyebrow="Built for You"
             heading="One Model. Built for You."
             subheading="The Sageworx model stays consistent. How we show up changes based upon you and your needs."
+            size="display"
             centered
           />
         </AnimatedSection>

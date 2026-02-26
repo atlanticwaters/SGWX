@@ -29,6 +29,7 @@ export default function ClientsSection() {
         <AnimatedSection>
           <SectionHeading
             heading="Curated Partners For Your Business"
+            size="medium"
             centered
           />
         </AnimatedSection>

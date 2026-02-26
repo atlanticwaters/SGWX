@@ -38,7 +38,7 @@ function DotGrid() {
 
 export default function ExpertsSection() {
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-20 md:py-32">
       <Container>
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1fr_1.2fr]">
           {/* Left: Text content */}
@@ -46,6 +46,7 @@ export default function ExpertsSection() {
             <SectionHeading
               heading="Hand-Picked Experts"
               subheading="Put our robust network to work."
+              size="display"
             />
             <p className="mt-6 text-base leading-relaxed text-sgwx-text-muted">
               We assemble expert teams for the challenge at hand. Specialists in
