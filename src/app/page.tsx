@@ -3,6 +3,7 @@ import ChangingGameSection from "@/components/home/ChangingGameSection";
 import ComparisonTable from "@/components/home/ComparisonTable";
 import ClientsSection from "@/components/home/ClientsSection";
 import ExpertsSection from "@/components/home/ExpertsSection";
+import ProcessSection from "@/components/home/ProcessSection";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <ComparisonTable />
       <ClientsSection />
       <ExpertsSection />
+      <ProcessSection />
     </>
   );
 }
