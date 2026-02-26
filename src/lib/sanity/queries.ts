@@ -54,7 +54,8 @@ export interface MemberItem {
 
 // ─── Fetchers ────────────────────────────────────────────────────────────────
 
-export async function getAllCaseStudies() {
+export async function getAllCaseStudies(): Promise<CaseStudyListItem[]> {
+  if (!client) return [];
   return client.fetch<CaseStudyListItem[]>(
     `*[_type == "caseStudy"] | order(order asc) {
       _id, title, "slug": slug.current, client, category, tags, shortDescription, order
@@ -62,7 +63,8 @@ export async function getAllCaseStudies() {
   );
 }
 
-export async function getCaseStudyBySlug(slug: string) {
+export async function getCaseStudyBySlug(slug: string): Promise<CaseStudyDetail | null> {
+  if (!client) return null;
   return client.fetch<CaseStudyDetail | null>(
     `*[_type == "caseStudy" && slug.current == $slug][0] {
       _id, title, "slug": slug.current, client, category, tags, shortDescription,
@@ -72,13 +74,15 @@ export async function getCaseStudyBySlug(slug: string) {
   );
 }
 
-export async function getCaseStudySlugs() {
+export async function getCaseStudySlugs(): Promise<string[]> {
+  if (!client) return [];
   return client.fetch<string[]>(
     `*[_type == "caseStudy" && defined(slug.current)].slug.current`
   );
 }
 
-export async function getAllBlogPosts() {
+export async function getAllBlogPosts(): Promise<BlogPostListItem[]> {
+  if (!client) return [];
   return client.fetch<BlogPostListItem[]>(
     `*[_type == "blogPost"] | order(publishedAt desc) {
       _id, title, "slug": slug.current, tag, excerpt, publishedAt
@@ -86,7 +90,8 @@ export async function getAllBlogPosts() {
   );
 }
 
-export async function getBlogPostBySlug(slug: string) {
+export async function getBlogPostBySlug(slug: string): Promise<BlogPostDetail | null> {
+  if (!client) return null;
   return client.fetch<BlogPostDetail | null>(
     `*[_type == "blogPost" && slug.current == $slug][0] {
       _id, title, "slug": slug.current, tag, excerpt, body, publishedAt
@@ -95,13 +100,15 @@ export async function getBlogPostBySlug(slug: string) {
   );
 }
 
-export async function getBlogPostSlugs() {
+export async function getBlogPostSlugs(): Promise<string[]> {
+  if (!client) return [];
   return client.fetch<string[]>(
     `*[_type == "blogPost" && defined(slug.current)].slug.current`
   );
 }
 
-export async function getFeaturedMembers() {
+export async function getFeaturedMembers(): Promise<MemberItem[]> {
+  if (!client) return [];
   return client.fetch<MemberItem[]>(
     `*[_type == "member" && isFeatured == true] | order(order asc) {
       _id, name, "slug": slug.current, title, mantra, characterMetaphor,
@@ -110,7 +117,8 @@ export async function getFeaturedMembers() {
   );
 }
 
-export async function getAllMembers() {
+export async function getAllMembers(): Promise<MemberItem[]> {
+  if (!client) return [];
   return client.fetch<MemberItem[]>(
     `*[_type == "member"] | order(order asc) {
       _id, name, "slug": slug.current, title, mantra, isFeatured, order
