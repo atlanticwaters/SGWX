@@ -6,21 +6,31 @@ import { Suspense } from "react";
 interface AnimationCanvasProps {
   children: React.ReactNode;
   className?: string;
+  cameraPosition?: [number, number, number];
+  cameraFov?: number;
+  cameraFar?: number;
+  fogColor?: number;
+  fogDensity?: number;
 }
 
 export default function AnimationCanvas({
   children,
   className = "",
+  cameraPosition = [0, 0, 90],
+  cameraFov = 58,
+  cameraFar = 400,
+  fogColor = 0x020e09,
+  fogDensity = 0.012,
 }: AnimationCanvasProps) {
   return (
     <div className={`absolute inset-0 -z-10 ${className}`}>
       <Canvas
-        camera={{ position: [0, 0, 90], fov: 58 }}
+        camera={{ position: cameraPosition, fov: cameraFov, near: 0.1, far: cameraFar }}
         gl={{ antialias: true, alpha: true }}
         dpr={[1, 2]}
       >
         <Suspense fallback={null}>
-          <fogExp2 attach="fog" args={[0x020e09, 0.012]} />
+          <fogExp2 attach="fog" args={[fogColor, fogDensity]} />
           {children}
         </Suspense>
       </Canvas>

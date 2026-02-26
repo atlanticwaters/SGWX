@@ -26,7 +26,13 @@ const transition = (delay: number) => ({
 export default function ProcessHero() {
   return (
     <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden bg-sgwx-bg">
-      <AnimationCanvas>
+      <AnimationCanvas
+        cameraPosition={[-10, 28, 90]}
+        cameraFov={55}
+        cameraFar={600}
+        fogColor={0x021a14}
+        fogDensity={0.01}
+      >
         <WaveBackground />
       </AnimationCanvas>
       <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">

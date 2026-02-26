@@ -26,7 +26,13 @@ const transition = (delay: number) => ({
 export default function WorkHero() {
   return (
     <section className="relative flex min-h-[60vh] items-center justify-center overflow-hidden bg-sgwx-bg">
-      <AnimationCanvas>
+      <AnimationCanvas
+        cameraPosition={[0, 145, 210]}
+        cameraFov={52}
+        cameraFar={900}
+        fogColor={0x010e0a}
+        fogDensity={0.0075}
+      >
         <CityBackground />
       </AnimationCanvas>
       <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
