@@ -4,6 +4,7 @@ import ComparisonTable from "@/components/home/ComparisonTable";
 import ClientsSection from "@/components/home/ClientsSection";
 import ExpertsSection from "@/components/home/ExpertsSection";
 import ProcessSection from "@/components/home/ProcessSection";
+import ImpactSection from "@/components/home/ImpactSection";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <ClientsSection />
       <ExpertsSection />
       <ProcessSection />
+      <ImpactSection />
     </>
   );
 }
