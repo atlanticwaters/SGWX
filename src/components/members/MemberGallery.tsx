@@ -76,7 +76,7 @@ export default function MemberGallery() {
           />
         </AnimatedSection>
 
-        <div className="mt-12 grid grid-cols-3 gap-4 md:grid-cols-4 lg:grid-cols-6 lg:gap-6">
+        <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 lg:gap-6">
           {galleryMembers.map((member, i) => (
             <AvatarCard key={member.name} member={member} index={i} />
           ))}

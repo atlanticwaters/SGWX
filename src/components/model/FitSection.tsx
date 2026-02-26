@@ -106,7 +106,7 @@ export default function FitSection() {
               that last, we&apos;ll work extremely well together.
             </p>
 
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <div className="mt-10 flex flex-col flex-wrap items-center justify-center gap-4 sm:flex-row">
               <Button href="/contact">Ready to Take Action?</Button>
               <Button href="/work" variant="secondary">
                 Check Out Our Work

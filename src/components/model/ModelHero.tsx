@@ -47,7 +47,7 @@ export default function ModelHero() {
         </motion.p>
 
         <motion.div
-          className="mt-10 flex items-center justify-center gap-4"
+          className="mt-10 flex flex-wrap items-center justify-center gap-4"
           {...fadeUp}
           transition={transition(0.34)}
         >

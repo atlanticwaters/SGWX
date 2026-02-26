@@ -35,7 +35,7 @@ export default function HeroSection() {
       {/* Content */}
       <div className="relative z-10 mx-auto max-w-4xl px-6 text-center" style={{ marginTop: "-5vh" }}>
         <motion.h1
-          className="text-6xl font-bold tracking-tight text-sgwx-text md:text-7xl lg:text-8xl"
+          className="text-5xl font-bold tracking-tight text-sgwx-text md:text-6xl lg:text-8xl"
           {...fadeUp}
           transition={transition(0)}
         >
@@ -61,7 +61,7 @@ export default function HeroSection() {
         </motion.p>
 
         <motion.div
-          className="mt-10 flex items-center justify-center gap-4"
+          className="mt-10 flex flex-wrap items-center justify-center gap-4"
           {...fadeUp}
           transition={transition(0.36)}
         >
@@ -78,7 +78,7 @@ export default function HeroSection() {
         {...fadeUp}
         transition={transition(0.48)}
       >
-        <div className="flex items-center gap-6 font-mono text-[10px] tracking-widest uppercase" aria-hidden="true">
+        <div className="hidden items-center gap-6 font-mono text-[10px] tracking-widest uppercase sm:flex" aria-hidden="true">
           <span className="flex items-center gap-2 text-sgwx-text-muted">
             STATUS:
             <span className="flex items-center gap-1.5 text-sgwx-green">

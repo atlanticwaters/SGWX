@@ -65,7 +65,7 @@ export default function ExpertsSection() {
 
           {/* Right: Dot grid visualization */}
           <AnimatedSection delay={0.2}>
-            <div className="flex items-center justify-center rounded-2xl border border-sgwx-border bg-sgwx-surface/50 p-12">
+            <div className="flex items-center justify-center rounded-2xl border border-sgwx-border bg-sgwx-surface/50 p-6 md:p-12">
               <DotGrid />
             </div>
           </AnimatedSection>
