@@ -42,7 +42,7 @@ export default function ProcessHero() {
           transition={transition(0)}
           aria-hidden="true"
         >
-          Our Process
+          The Growth Sequence
         </motion.p>
 
         <motion.h1
@@ -50,7 +50,7 @@ export default function ProcessHero() {
           {...fadeUp}
           transition={transition(0.1)}
         >
-          The Operating System Behind the Work.
+          Smart Content + Experiences
         </motion.h1>
 
         <motion.p
@@ -58,29 +58,8 @@ export default function ProcessHero() {
           {...fadeUp}
           transition={transition(0.22)}
         >
-          A clear, six-step process designed to move senior teams from strategic
-          clarity to creative execution, without the usual drag.
-        </motion.p>
-
-        <motion.p
-          className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-sgwx-text-muted"
-          {...fadeUp}
-          transition={transition(0.3)}
-        >
-          This isn&apos;t a rigid methodology or consulting theater. It&apos;s a
-          practical system built for speed and creativity, born from decades of
-          experience inside top agencies, brands, and fast-moving
-          startups&mdash;designed to reduce friction, accelerate decisions, and
-          protect momentum.
-        </motion.p>
-
-        <motion.p
-          className="mx-auto mt-6 max-w-3xl text-base leading-relaxed text-sgwx-text-dim italic"
-          {...fadeUp}
-          transition={transition(0.38)}
-        >
-          Every project has a senior lead who is accountable for
-          outcomes&mdash;not just for coordinating meetings.
+          The ultimate growth partner &mdash; built for every stage of your
+          brand&apos;s evolution.
         </motion.p>
       </div>
     </section>
