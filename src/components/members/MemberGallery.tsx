@@ -30,7 +30,7 @@ function AvatarCard({ member, index }: { member: GalleryMember; index: number })
   return (
     <AnimatedSection delay={0.1 + index * 0.08}>
       <div
-        className="group relative aspect-square cursor-pointer overflow-hidden rounded-xl bg-sgwx-surface transition-all duration-300 hover:border-sgwx-green/30 hover:shadow-[0_0_30px_rgba(23,168,107,0.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-sgwx-green"
+        className="group relative aspect-square cursor-pointer overflow-hidden rounded-xl bg-sgwx-surface transition-all duration-300 hover:border-sgwx-green/30 hover:shadow-[0_0_30px_rgba(110,168,127,0.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-sgwx-green"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         onFocus={() => setHovered(true)}

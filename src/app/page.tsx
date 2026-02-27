@@ -9,7 +9,7 @@ import ImpactSection from "@/components/home/ImpactSection";
 import SpotlightsSection from "@/components/home/SpotlightsSection";
 import FinalCtaSection from "@/components/home/FinalCtaSection";
 import SectionDivider from "@/components/ui/SectionDivider";
-import { getAllCaseStudies, getAllBlogPosts } from "@/lib/sanity/queries";
+import { getAllCaseStudies, getAllBlogPosts, getSectionBackgrounds } from "@/lib/sanity/queries";
 
 export const metadata: Metadata = {
   title: "Sageworx | Go Further. Faster.",
@@ -18,25 +18,29 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const [caseStudies, blogPosts] = await Promise.all([
+  const [caseStudies, blogPosts, backgrounds] = await Promise.all([
     getAllCaseStudies(),
     getAllBlogPosts(),
+    getSectionBackgrounds(),
   ]);
+
+  // Build a slug -> imageUrl lookup for easy assignment
+  const bg = Object.fromEntries(backgrounds.map((b) => [b.slug, b.imageUrl]));
 
   return (
     <>
       <HeroSection />
-      <ChangingGameSection />
+      <ChangingGameSection backgroundUrl={bg["dark-foliage"]} />
       <ComparisonTable />
       <SectionDivider />
-      <ClientsSection />
-      <ExpertsSection />
+      <ClientsSection backgroundUrl={bg["geometric-architecture"]} />
+      <ExpertsSection backgroundUrl={bg["spiral-geometry"]} />
       <SectionDivider />
-      <ProcessSection />
+      <ProcessSection backgroundUrl={bg["fluid-waves"]} />
       <ImpactSection caseStudies={caseStudies} />
       <SectionDivider />
-      <SpotlightsSection posts={blogPosts} />
-      <FinalCtaSection />
+      <SpotlightsSection posts={blogPosts} backgroundUrl={bg["dark-mountain"]} />
+      <FinalCtaSection backgroundUrl={bg["abstract-curves"]} />
     </>
   );
 }

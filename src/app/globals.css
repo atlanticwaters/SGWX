@@ -1,50 +1,50 @@
 @import "tailwindcss";
 
 @theme {
-  /* Core palette derived from animation files */
-  --color-sgwx-bg: #030d0a;
-  --color-sgwx-bg-alt: #021a14;
-  --color-sgwx-surface: #0a1f18;
-  --color-sgwx-surface-hover: #0d2b22;
-  --color-sgwx-border: #143d2e;
-  --color-sgwx-border-subtle: #0a2a1e;
+  /* Core palette — derived from Carbon (#393F3E) */
+  --color-sgwx-bg: #0c0f0e;
+  --color-sgwx-bg-alt: #141918;
+  --color-sgwx-surface: #1e2422;
+  --color-sgwx-surface-hover: #252b29;
+  --color-sgwx-border: #2e3634;
+  --color-sgwx-border-subtle: #1c2120;
 
-  /* Greens */
-  --color-sgwx-green: #17a86b;
-  --color-sgwx-green-bright: #30ff88;
-  --color-sgwx-green-muted: #0d6b4a;
-  --color-sgwx-green-pale: #e6ffbb;
+  /* Sage (#6EA87F) */
+  --color-sgwx-green: #6EA87F;
+  --color-sgwx-green-bright: #9FDBB0;
+  --color-sgwx-green-muted: #2D5438;
+  --color-sgwx-green-pale: #D4EEDA;
 
-  /* Teals / Blues */
-  --color-sgwx-teal: #0a4f5e;
-  --color-sgwx-blue: #042a3d;
-  --color-sgwx-cyan: #88eeff;
+  /* Steel Blue (#799BA9) */
+  --color-sgwx-teal: #1E3540;
+  --color-sgwx-blue: #0E2030;
+  --color-sgwx-cyan: #799BA9;
 
-  /* Yellows / Accents */
+  /* Yellows / Accents (animation-internal only) */
   --color-sgwx-yellow: #d4c94a;
   --color-sgwx-yellow-pale: #f0e97a;
   --color-sgwx-gold: #d4e840;
 
-  /* Text */
-  --color-sgwx-text: #e8f5ee;
-  --color-sgwx-text-muted: #8aab9a;
-  --color-sgwx-text-dim: #4a6b5a;
+  /* Text — White Paper (#F9F9F9) derived */
+  --color-sgwx-text: #F0F4F2;
+  --color-sgwx-text-muted: #8EAAA0;
+  --color-sgwx-text-dim: #4A5754;
 
   /* Overlays & Glows */
-  --color-sgwx-overlay: rgba(3, 13, 10, 0.72);
-  --color-sgwx-scrim: rgba(3, 13, 10, 0.55);
-  --color-sgwx-green-glow: rgba(23, 168, 107, 0.18);
-  --color-sgwx-green-glow-strong: rgba(48, 255, 136, 0.28);
+  --color-sgwx-overlay: rgba(12, 15, 14, 0.72);
+  --color-sgwx-scrim: rgba(12, 15, 14, 0.55);
+  --color-sgwx-green-glow: rgba(110, 168, 127, 0.18);
+  --color-sgwx-green-glow-strong: rgba(159, 219, 176, 0.28);
 
   /* Status / HUD */
-  --color-sgwx-status-online: #30ff88;
-  --color-sgwx-status-active: #88eeff;
-  --color-sgwx-status-dim: #0d6b4a;
+  --color-sgwx-status-online: #9FDBB0;
+  --color-sgwx-status-active: #799BA9;
+  --color-sgwx-status-dim: #2D5438;
 
   /* Table / Comparison */
-  --color-sgwx-highlight-col: #0a2318;
-  --color-sgwx-check: #30ff88;
-  --color-sgwx-cross: #4a6b5a;
+  --color-sgwx-highlight-col: #172120;
+  --color-sgwx-check: #9FDBB0;
+  --color-sgwx-cross: #4A5754;
 
   /* Typography */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
@@ -64,21 +64,21 @@
   }
 
   ::selection {
-    background-color: rgba(23, 168, 107, 0.3);
-    color: #e8f5ee;
+    background-color: rgba(110, 168, 127, 0.3);
+    color: #F0F4F2;
   }
 
   ::-webkit-scrollbar {
     width: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #030d0a;
+    background: #0c0f0e;
   }
   ::-webkit-scrollbar-thumb {
-    background: #143d2e;
+    background: #2e3634;
     border-radius: 3px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #17a86b;
+    background: #6EA87F;
   }
 }

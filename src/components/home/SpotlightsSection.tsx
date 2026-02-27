@@ -3,6 +3,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import Button from "@/components/ui/Button";
 import BlogCard from "@/components/shared/BlogCard";
+import SectionBackground from "@/components/ui/SectionBackground";
 
 interface Post {
   title: string;
@@ -13,11 +14,13 @@ interface Post {
 
 interface SpotlightsSectionProps {
   posts: Post[];
+  backgroundUrl?: string;
 }
 
-export default function SpotlightsSection({ posts }: SpotlightsSectionProps) {
+export default function SpotlightsSection({ posts, backgroundUrl }: SpotlightsSectionProps) {
   return (
-    <section className="bg-sgwx-bg-alt py-16 md:py-24">
+    <section className="relative bg-sgwx-bg-alt py-16 md:py-24">
+      {backgroundUrl && <SectionBackground src={backgroundUrl} />}
       <Container>
         <AnimatedSection>
           <SectionHeading

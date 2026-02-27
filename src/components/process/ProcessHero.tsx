@@ -30,7 +30,7 @@ export default function ProcessHero() {
         cameraPosition={[-10, 28, 90]}
         cameraFov={55}
         cameraFar={600}
-        fogColor={0x021a14}
+        fogColor={0x141918}
         fogDensity={0.01}
       >
         <WaveBackground />

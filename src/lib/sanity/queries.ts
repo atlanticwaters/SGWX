@@ -1,5 +1,8 @@
 import { client } from "./client";
 
+import type { SanityImageSource } from "@sanity/image-url";
+import { urlFor } from "./image";
+
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 export interface SanityBlock {
@@ -52,7 +55,51 @@ export interface MemberItem {
   order: number;
 }
 
+export interface SectionBackgroundItem {
+  _id: string;
+  name: string;
+  slug: string;
+  imageUrl: string;
+  credit?: string;
+}
+
 // ─── Fetchers ────────────────────────────────────────────────────────────────
+
+export async function getSectionBackgrounds() {
+  const raw = await client.fetch<
+    { _id: string; name: string; slug: string; image: SanityImageSource; credit?: string }[]
+  >(
+    `*[_type == "sectionBackground"] {
+      _id, name, "slug": slug.current, image, credit
+    }`
+  );
+  return raw.map((bg) => ({
+    _id: bg._id,
+    name: bg.name,
+    slug: bg.slug,
+    imageUrl: urlFor(bg.image).width(1920).quality(75).auto("format").url(),
+    credit: bg.credit,
+  }));
+}
+
+export async function getSectionBackgroundBySlug(slug: string) {
+  const raw = await client.fetch<
+    { _id: string; name: string; slug: string; image: SanityImageSource; credit?: string } | null
+  >(
+    `*[_type == "sectionBackground" && slug.current == $slug][0] {
+      _id, name, "slug": slug.current, image, credit
+    }`,
+    { slug }
+  );
+  if (!raw) return null;
+  return {
+    _id: raw._id,
+    name: raw.name,
+    slug: raw.slug,
+    imageUrl: urlFor(raw.image).width(1920).quality(75).auto("format").url(),
+    credit: raw.credit,
+  } as SectionBackgroundItem;
+}
 
 export async function getAllCaseStudies() {
   return client.fetch<CaseStudyListItem[]>(

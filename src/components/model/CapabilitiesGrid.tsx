@@ -97,7 +97,7 @@ export default function CapabilitiesGrid() {
                 }}
                 className={`rounded-full border px-5 py-2 font-mono text-[10px] tracking-widest uppercase transition-all duration-300 ${
                   activeTab === i
-                    ? "border-sgwx-green bg-sgwx-green/10 text-sgwx-green shadow-[0_0_20px_rgba(23,168,107,0.18)]"
+                    ? "border-sgwx-green bg-sgwx-green/10 text-sgwx-green shadow-[0_0_20px_rgba(110,168,127,0.18)]"
                     : "border-sgwx-border bg-sgwx-surface text-sgwx-text-muted hover:border-sgwx-green/30 hover:text-sgwx-text"
                 }`}
               >
@@ -131,7 +131,7 @@ export default function CapabilitiesGrid() {
                       ease: [0.16, 1, 0.3, 1],
                       delay: 0.04 + i * 0.06,
                     }}
-                    className="flex items-start gap-3 rounded-xl border border-sgwx-border bg-sgwx-surface p-4 transition-all duration-300 hover:border-sgwx-green/30 hover:bg-sgwx-surface-hover hover:shadow-[0_0_30px_rgba(23,168,107,0.08)]"
+                    className="flex items-start gap-3 rounded-xl border border-sgwx-border bg-sgwx-surface p-4 transition-all duration-300 hover:border-sgwx-green/30 hover:bg-sgwx-surface-hover hover:shadow-[0_0_30px_rgba(110,168,127,0.08)]"
                   >
                     <span
                       className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-sgwx-green/10 text-sgwx-green"

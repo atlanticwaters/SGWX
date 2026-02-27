@@ -2,6 +2,7 @@ import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Card from "@/components/ui/Card";
 import AnimatedSection from "@/components/ui/AnimatedSection";
+import SectionBackground from "@/components/ui/SectionBackground";
 
 const steps = [
   { num: "01", title: "Immersion & Brief", desc: "We define the problem, align on goals, and set success markers.", output: "Mission Brief" },
@@ -12,9 +13,10 @@ const steps = [
   { num: "06", title: "Evolve & Scale", desc: "Leadership stays consistent. Specialists come in as needed. You get continuity without long-term overhead.", output: "Sustained Momentum" },
 ];
 
-export default function ProcessSection() {
+export default function ProcessSection({ backgroundUrl }: { backgroundUrl?: string }) {
   return (
-    <section className="bg-sgwx-bg-alt py-16 md:py-24">
+    <section className="relative bg-sgwx-bg-alt py-16 md:py-24">
+      {backgroundUrl && <SectionBackground src={backgroundUrl} />}
       <Container>
         <AnimatedSection>
           <SectionHeading

@@ -19,7 +19,7 @@ export default function AnimationCanvas({
   cameraPosition = [0, 0, 90],
   cameraFov = 58,
   cameraFar = 400,
-  fogColor = 0x020e09,
+  fogColor = 0x0c0f0e,
   fogDensity = 0.012,
 }: AnimationCanvasProps) {
   return (
@@ -39,7 +39,7 @@ export default function AnimationCanvas({
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(2,8,6,0.55) 65%, rgba(1,5,3,0.92) 100%)",
+            "radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(12,15,14,0.55) 65%, rgba(12,15,14,0.92) 100%)",
         }}
       />
       {/* Grain overlay */}

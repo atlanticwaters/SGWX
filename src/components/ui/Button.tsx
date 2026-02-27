@@ -12,9 +12,9 @@ interface ButtonProps {
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-sgwx-green text-sgwx-bg font-semibold hover:bg-sgwx-green-bright hover:shadow-[0_0_24px_rgba(48,255,136,0.28)] transition-all",
+    "bg-sgwx-green text-sgwx-bg font-semibold hover:bg-sgwx-green-bright hover:shadow-[0_0_24px_rgba(159,219,176,0.28)] transition-all",
   secondary:
-    "border border-sgwx-green text-sgwx-green hover:bg-sgwx-green/10 hover:shadow-[0_0_20px_rgba(23,168,107,0.18)] transition-all",
+    "border border-sgwx-green text-sgwx-green hover:bg-sgwx-green/10 hover:shadow-[0_0_20px_rgba(110,168,127,0.18)] transition-all",
   ghost:
     "text-sgwx-text-muted hover:text-sgwx-text transition-colors",
 };

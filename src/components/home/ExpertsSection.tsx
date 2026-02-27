@@ -5,6 +5,7 @@ import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import Card from "@/components/ui/Card";
+import SectionBackground from "@/components/ui/SectionBackground";
 
 function DotGrid() {
   // Create a decorative grid of pulsing green dots
@@ -36,9 +37,10 @@ function DotGrid() {
   );
 }
 
-export default function ExpertsSection() {
+export default function ExpertsSection({ backgroundUrl }: { backgroundUrl?: string }) {
   return (
-    <section className="py-20 md:py-32">
+    <section className="relative py-20 md:py-32">
+      {backgroundUrl && <SectionBackground src={backgroundUrl} />}
       <Container>
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1fr_1.2fr]">
           {/* Left: Text content */}

@@ -3,6 +3,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import AnimatedSection from "@/components/ui/AnimatedSection";
+import SectionBackground from "@/components/ui/SectionBackground";
 
 const clients = [
   {
@@ -22,9 +23,10 @@ const clients = [
   },
 ];
 
-export default function ClientsSection() {
+export default function ClientsSection({ backgroundUrl }: { backgroundUrl?: string }) {
   return (
-    <section className="bg-sgwx-bg-alt py-16 md:py-24">
+    <section className="relative bg-sgwx-bg-alt py-16 md:py-24">
+      {backgroundUrl && <SectionBackground src={backgroundUrl} />}
       <Container>
         <AnimatedSection>
           <SectionHeading

@@ -8,7 +8,7 @@ export default function Card({ children, className = "", hover = true }: CardPro
   return (
     <div
       className={`rounded-2xl border border-sgwx-border bg-sgwx-surface p-6 ${
-        hover ? "transition-all duration-300 hover:border-sgwx-green/30 hover:bg-sgwx-surface-hover hover:shadow-[0_0_30px_rgba(23,168,107,0.08)]" : ""
+        hover ? "transition-all duration-300 hover:border-sgwx-green/30 hover:bg-sgwx-surface-hover hover:shadow-[0_0_30px_rgba(110,168,127,0.08)]" : ""
       } ${className}`}
     >
       {children}

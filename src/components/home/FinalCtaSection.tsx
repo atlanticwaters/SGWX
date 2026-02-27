@@ -1,10 +1,12 @@
 import Container from "@/components/ui/Container";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import Button from "@/components/ui/Button";
+import SectionBackground from "@/components/ui/SectionBackground";
 
-export default function FinalCtaSection() {
+export default function FinalCtaSection({ backgroundUrl }: { backgroundUrl?: string }) {
   return (
-    <section className="py-24 md:py-32">
+    <section className="relative py-24 md:py-32">
+      {backgroundUrl && <SectionBackground src={backgroundUrl} />}
       <Container>
         <AnimatedSection>
           <div className="mx-auto max-w-3xl text-center">

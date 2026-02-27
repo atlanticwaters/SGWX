@@ -30,7 +30,7 @@ export default function WorkHero() {
         cameraPosition={[0, 145, 210]}
         cameraFov={52}
         cameraFar={900}
-        fogColor={0x010e0a}
+        fogColor={0x0c0f0e}
         fogDensity={0.0075}
       >
         <CityBackground />
