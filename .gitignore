@@ -46,3 +46,6 @@ next-env.d.ts
 
 # dev kit source files
 SGWX Process Page Dev Kit/
+
+# Sanity schema deploy output
+dist/
