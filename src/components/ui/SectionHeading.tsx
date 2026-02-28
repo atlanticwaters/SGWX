@@ -1,11 +1,10 @@
-type Size = "display" | "large" | "medium" | "small";
+type Size = "display" | "large" | "medium";
 type Align = "left" | "right";
 
 const headingSizes: Record<Size, string> = {
   display: "text-4xl font-thin tracking-tight text-sgwx-text md:text-6xl lg:text-7xl",
   large: "text-3xl font-normal tracking-tight text-sgwx-text md:text-4xl lg:text-5xl",
-  medium: "text-2xl font-normal tracking-tight text-sgwx-text md:text-3xl",
-  small: "text-xl font-normal tracking-tight text-sgwx-text md:text-2xl",
+  medium: "text-3xl font-normal tracking-tight text-sgwx-text md:text-3xl lg:text-4xl",
 };
 
 interface SectionHeadingProps {

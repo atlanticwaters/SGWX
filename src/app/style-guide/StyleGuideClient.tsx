@@ -9,6 +9,8 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import Container from "@/components/ui/Container";
 import SectionDivider from "@/components/ui/SectionDivider";
+import SectionBackground from "@/components/ui/SectionBackground";
+import type { OverlayColor } from "@/components/ui/SectionBackground";
 
 /* ─── Data ─────────────────────────────────────────────────────────────────── */
 
@@ -183,6 +185,7 @@ export default function StyleGuideClient() {
               ["headings", "Section Headings"],
               ["dividers", "Dividers"],
               ["glows", "Glows & Overlays"],
+              ["overlays", "Overlay Colors"],
               ["animations", "Animations"],
               ["process", "Process Accents"],
             ].map(([id, label]) => (
@@ -245,6 +248,30 @@ export default function StyleGuideClient() {
               <span className="text-xs text-sgwx-text-muted">Strong</span>
             </div>
           </div>
+        </div>
+      </GuideSection>
+
+      <SectionDivider />
+
+      {/* ═══ Overlay Colors ═══ */}
+      <GuideSection id="overlays" title="Overlay Colors">
+        <p className="mb-6 text-sm text-sgwx-text-muted">
+          CMS-controlled color tints applied over section background images via the SectionBackground component.
+          Each variant shifts the color grade while preserving the darkened, desaturated base treatment.
+        </p>
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+          {(["sage", "steel", "teal", "amber", "carbon"] as OverlayColor[]).map((color) => (
+            <div key={color} className="relative h-48 overflow-hidden rounded-xl border border-sgwx-border">
+              <SectionBackground
+                src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=60"
+                overlayColor={color}
+              />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-sgwx-bg/80 to-transparent p-3">
+                <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">{color}</p>
+                <p className="mt-0.5 text-xs text-sgwx-text-muted">overlayColor=&quot;{color}&quot;</p>
+              </div>
+            </div>
+          ))}
         </div>
       </GuideSection>
 
@@ -421,15 +448,6 @@ export default function StyleGuideClient() {
               heading="Medium Heading Style"
               subheading="Semibold weight, used for sub-section headings."
               size="medium"
-            />
-          </div>
-          <div>
-            <p className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Small Size</p>
-            <SectionHeading
-              eyebrow="Eyebrow Label"
-              heading="Small Heading Style"
-              subheading="Semibold weight, used for card-level and tertiary headings."
-              size="small"
             />
           </div>
           <div>

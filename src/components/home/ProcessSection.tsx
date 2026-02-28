@@ -12,10 +12,10 @@ const stages = [
   { num: "04", title: "Transform", desc: "Internal alignment + organizational evolution. When the mission shifts to culture, we engineer the change.", accent: "text-sgwx-cyan" },
 ];
 
-export default function ProcessSection({ backgroundUrl }: { backgroundUrl?: string }) {
+export default function ProcessSection({ backgroundUrl, overlayColor }: { backgroundUrl?: string; overlayColor?: string }) {
   return (
     <section className="relative bg-sgwx-bg-alt py-16 md:py-24">
-      {backgroundUrl && <SectionBackground src={backgroundUrl} />}
+      {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as "sage" | "steel" | "teal" | "amber" | "carbon"} />}
       <Container>
         <AnimatedSection>
           <SectionHeading

@@ -111,10 +111,10 @@ function WaveIcon() {
   );
 }
 
-export default function ChangingGameSection({ backgroundUrl }: { backgroundUrl?: string }) {
+export default function ChangingGameSection({ backgroundUrl, overlayColor }: { backgroundUrl?: string; overlayColor?: string }) {
   return (
     <section className="relative bg-sgwx-bg-alt py-20 md:py-32">
-      {backgroundUrl && <SectionBackground src={backgroundUrl} />}
+      {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as "sage" | "steel" | "teal" | "amber" | "carbon"} />}
       <Container>
         <AnimatedSection>
           <SectionHeading heading="The Rules Are Changing. Tilt Them In Your Favor." size="display" />

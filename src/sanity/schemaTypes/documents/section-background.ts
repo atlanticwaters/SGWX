@@ -43,5 +43,22 @@ export const sectionBackground = defineType({
       type: 'url',
       title: 'Source URL',
     }),
+    defineField({
+      name: 'overlayColor',
+      type: 'string',
+      title: 'Overlay Color',
+      description: 'Color tint applied over the background image',
+      options: {
+        list: [
+          { title: 'Sage Green (Default)', value: 'sage' },
+          { title: 'Steel Blue', value: 'steel' },
+          { title: 'Deep Teal', value: 'teal' },
+          { title: 'Warm Amber', value: 'amber' },
+          { title: 'Carbon (Neutral)', value: 'carbon' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'sage',
+    }),
   ],
 })

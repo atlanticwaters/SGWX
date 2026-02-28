@@ -23,6 +23,7 @@ const backgrounds = [
     // Dark abstract curves and flowing lines
     url: "https://images.unsplash.com/photo-1634017839464-5c339ebe3579?w=1920&q=80",
     credit: "Unsplash / Milad Fakurian",
+    overlayColor: "sage",
   },
   {
     _id: "bg-dark-mountain",
@@ -31,6 +32,7 @@ const backgrounds = [
     // Moody dark mountain peaks
     url: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80",
     credit: "Unsplash / Benjamin Voros",
+    overlayColor: "carbon",
   },
   {
     _id: "bg-spiral-geometry",
@@ -39,6 +41,7 @@ const backgrounds = [
     // Nautilus shell / golden spiral
     url: "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=1920&q=80",
     credit: "Unsplash / Zoltan Tasi",
+    overlayColor: "teal",
   },
   {
     _id: "bg-dark-foliage",
@@ -47,6 +50,7 @@ const backgrounds = [
     // Overhead dark green canopy
     url: "https://images.unsplash.com/photo-1418065460487-3e41a6c84dc5?w=1920&q=80",
     credit: "Unsplash / Jay Mantri",
+    overlayColor: "sage",
   },
   {
     _id: "bg-geometric-architecture",
@@ -55,6 +59,7 @@ const backgrounds = [
     // Modern building with geometric patterns
     url: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1920&q=80",
     credit: "Unsplash / Lance Anderson",
+    overlayColor: "steel",
   },
   {
     _id: "bg-fluid-waves",
@@ -63,6 +68,7 @@ const backgrounds = [
     // Abstract fluid / wave texture
     url: "https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=1920&q=80",
     credit: "Unsplash / Pawel Czerwinski",
+    overlayColor: "sage",
   },
   {
     _id: "bg-water-ripples",
@@ -71,6 +77,7 @@ const backgrounds = [
     // Concentric water ripple pattern
     url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1920&q=80",
     credit: "Unsplash / Levi XU",
+    overlayColor: "teal",
   },
   {
     _id: "bg-layered-terrain",
@@ -79,6 +86,62 @@ const backgrounds = [
     // Abstract layered paper / terrain waves
     url: "https://images.unsplash.com/photo-1604076913837-52ab5f0d6429?w=1920&q=80",
     credit: "Unsplash / Shubham Dhage",
+    overlayColor: "steel",
+  },
+  // ─── New backgrounds ───
+  {
+    _id: "bg-ocean-depth",
+    name: "Ocean Depth",
+    slug: "ocean-depth",
+    // Deep underwater blue/dark tones
+    url: "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=1920&q=80",
+    credit: "Unsplash / Cristian Palmer",
+    overlayColor: "steel",
+  },
+  {
+    _id: "bg-fog-coastline",
+    name: "Fog Coastline",
+    slug: "fog-coastline",
+    // Moody fog over coastal cliffs
+    url: "https://images.unsplash.com/photo-1485470733090-0aae1788d668?w=1920&q=80",
+    credit: "Unsplash / Tim Swaan",
+    overlayColor: "carbon",
+  },
+  {
+    _id: "bg-macro-circuit",
+    name: "Macro Circuit",
+    slug: "macro-circuit",
+    // Close-up circuit board / tech texture
+    url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1920&q=80",
+    credit: "Unsplash / Alexandre Debiave",
+    overlayColor: "teal",
+  },
+  {
+    _id: "bg-volcanic-texture",
+    name: "Volcanic Texture",
+    slug: "volcanic-texture",
+    // Dark volcanic rock surface
+    url: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80",
+    credit: "Unsplash / Samuel Ferrara",
+    overlayColor: "carbon",
+  },
+  {
+    _id: "bg-mycelium-roots",
+    name: "Mycelium Roots",
+    slug: "mycelium-roots",
+    // Organic root/mycelium network texture
+    url: "https://images.unsplash.com/photo-1530092285049-1c42085fd395?w=1920&q=80",
+    credit: "Unsplash / Zdenek Machacek",
+    overlayColor: "sage",
+  },
+  {
+    _id: "bg-light-trails",
+    name: "Light Trails",
+    slug: "light-trails",
+    // Long exposure light trails / abstract energy
+    url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80",
+    credit: "Unsplash / NASA",
+    overlayColor: "steel",
   },
 ];
 
@@ -109,9 +172,10 @@ async function seed() {
         image: imageRef,
         credit: bg.credit,
         sourceUrl: bg.url.split("?")[0],
+        overlayColor: bg.overlayColor,
       };
       await client.createOrReplace(doc);
-      console.log(`  -> Created: ${bg.slug}\n`);
+      console.log(`  -> Created: ${bg.slug} (overlay: ${bg.overlayColor})\n`);
     } catch (err) {
       console.error(`  -> FAILED: ${err.message}\n`);
     }

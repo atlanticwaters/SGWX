@@ -15,12 +15,13 @@ interface Post {
 interface SpotlightsSectionProps {
   posts: Post[];
   backgroundUrl?: string;
+  overlayColor?: string;
 }
 
-export default function SpotlightsSection({ posts, backgroundUrl }: SpotlightsSectionProps) {
+export default function SpotlightsSection({ posts, backgroundUrl, overlayColor }: SpotlightsSectionProps) {
   return (
     <section className="relative bg-sgwx-bg-alt py-16 md:py-24">
-      {backgroundUrl && <SectionBackground src={backgroundUrl} />}
+      {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as "sage" | "steel" | "teal" | "amber" | "carbon"} />}
       <Container>
         <AnimatedSection>
           <SectionHeading

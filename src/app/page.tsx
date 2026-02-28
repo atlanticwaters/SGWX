@@ -24,23 +24,25 @@ export default async function Home() {
     getSectionBackgrounds(),
   ]);
 
-  // Build a slug -> imageUrl lookup for easy assignment
-  const bg = Object.fromEntries(backgrounds.map((b) => [b.slug, b.imageUrl]));
+  // Build a slug -> { imageUrl, overlayColor } lookup for easy assignment
+  const bg = Object.fromEntries(
+    backgrounds.map((b) => [b.slug, { imageUrl: b.imageUrl, overlayColor: b.overlayColor }])
+  );
 
   return (
     <>
       <HeroSection />
-      <ChangingGameSection backgroundUrl={bg["dark-foliage"]} />
+      <ChangingGameSection backgroundUrl={bg["dark-foliage"]?.imageUrl} overlayColor={bg["dark-foliage"]?.overlayColor} />
       <ComparisonTable />
       <SectionDivider />
-      <ClientsSection backgroundUrl={bg["geometric-architecture"]} />
-      <ExpertsSection backgroundUrl={bg["spiral-geometry"]} />
+      <ClientsSection backgroundUrl={bg["geometric-architecture"]?.imageUrl} overlayColor={bg["geometric-architecture"]?.overlayColor} />
+      <ExpertsSection backgroundUrl={bg["spiral-geometry"]?.imageUrl} overlayColor={bg["spiral-geometry"]?.overlayColor} />
       <SectionDivider />
-      <ProcessSection backgroundUrl={bg["fluid-waves"]} />
+      <ProcessSection backgroundUrl={bg["fluid-waves"]?.imageUrl} overlayColor={bg["fluid-waves"]?.overlayColor} />
       <ImpactSection caseStudies={caseStudies} />
       <SectionDivider />
-      <SpotlightsSection posts={blogPosts} backgroundUrl={bg["dark-mountain"]} />
-      <FinalCtaSection backgroundUrl={bg["abstract-curves"]} />
+      <SpotlightsSection posts={blogPosts} backgroundUrl={bg["dark-mountain"]?.imageUrl} overlayColor={bg["dark-mountain"]?.overlayColor} />
+      <FinalCtaSection backgroundUrl={bg["abstract-curves"]?.imageUrl} overlayColor={bg["abstract-curves"]?.overlayColor} />
     </>
   );
 }

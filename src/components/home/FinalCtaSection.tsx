@@ -3,10 +3,10 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import Button from "@/components/ui/Button";
 import SectionBackground from "@/components/ui/SectionBackground";
 
-export default function FinalCtaSection({ backgroundUrl }: { backgroundUrl?: string }) {
+export default function FinalCtaSection({ backgroundUrl, overlayColor }: { backgroundUrl?: string; overlayColor?: string }) {
   return (
     <section className="relative py-24 md:py-32">
-      {backgroundUrl && <SectionBackground src={backgroundUrl} />}
+      {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as "sage" | "steel" | "teal" | "amber" | "carbon"} />}
       <Container>
         <AnimatedSection>
           <div className="ml-auto max-w-3xl text-right">

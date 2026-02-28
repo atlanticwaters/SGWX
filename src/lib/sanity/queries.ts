@@ -71,6 +71,7 @@ export interface SectionBackgroundItem {
   slug: string;
   imageUrl: string;
   credit?: string;
+  overlayColor?: string;
 }
 
 // ─── Fetchers ────────────────────────────────────────────────────────────────
@@ -78,10 +79,10 @@ export interface SectionBackgroundItem {
 export async function getSectionBackgrounds(): Promise<SectionBackgroundItem[]> {
   if (!client) return [];
   const raw = await client.fetch<
-    { _id: string; name: string; slug: string; image: SanityImageSource; credit?: string }[]
+    { _id: string; name: string; slug: string; image: SanityImageSource; credit?: string; overlayColor?: string }[]
   >(
     `*[_type == "sectionBackground"] {
-      _id, name, "slug": slug.current, image, credit
+      _id, name, "slug": slug.current, image, credit, overlayColor
     }`
   );
   return raw.map((bg) => ({
@@ -90,16 +91,17 @@ export async function getSectionBackgrounds(): Promise<SectionBackgroundItem[]> 
     slug: bg.slug,
     imageUrl: urlFor(bg.image).width(1920).quality(75).auto("format").url(),
     credit: bg.credit,
+    overlayColor: bg.overlayColor,
   }));
 }
 
 export async function getSectionBackgroundBySlug(slug: string): Promise<SectionBackgroundItem | null> {
   if (!client) return null;
   const raw = await client.fetch<
-    { _id: string; name: string; slug: string; image: SanityImageSource; credit?: string } | null
+    { _id: string; name: string; slug: string; image: SanityImageSource; credit?: string; overlayColor?: string } | null
   >(
     `*[_type == "sectionBackground" && slug.current == $slug][0] {
-      _id, name, "slug": slug.current, image, credit
+      _id, name, "slug": slug.current, image, credit, overlayColor
     }`,
     { slug }
   );
@@ -110,6 +112,7 @@ export async function getSectionBackgroundBySlug(slug: string): Promise<SectionB
     slug: raw.slug,
     imageUrl: urlFor(raw.image).width(1920).quality(75).auto("format").url(),
     credit: raw.credit,
+    overlayColor: raw.overlayColor,
   };
 }
 

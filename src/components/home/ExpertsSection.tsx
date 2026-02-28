@@ -37,10 +37,10 @@ function DotGrid() {
   );
 }
 
-export default function ExpertsSection({ backgroundUrl }: { backgroundUrl?: string }) {
+export default function ExpertsSection({ backgroundUrl, overlayColor }: { backgroundUrl?: string; overlayColor?: string }) {
   return (
     <section className="relative py-20 md:py-32">
-      {backgroundUrl && <SectionBackground src={backgroundUrl} />}
+      {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as "sage" | "steel" | "teal" | "amber" | "carbon"} />}
       <Container>
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1fr_1.2fr]">
           {/* Left: Text content */}

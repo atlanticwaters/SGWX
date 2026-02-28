@@ -39,6 +39,23 @@ export default defineType({
       title: "Source URL",
       description: "Link to original image on Unsplash or similar",
     }),
+    defineField({
+      name: "overlayColor",
+      type: "string",
+      title: "Overlay Color",
+      description: "Color tint applied over the background image",
+      options: {
+        list: [
+          { title: "Sage Green (Default)", value: "sage" },
+          { title: "Steel Blue", value: "steel" },
+          { title: "Deep Teal", value: "teal" },
+          { title: "Warm Amber", value: "amber" },
+          { title: "Carbon (Neutral)", value: "carbon" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "sage",
+    }),
   ],
   preview: {
     select: { title: "name", media: "image" },
