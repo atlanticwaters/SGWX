@@ -88,14 +88,17 @@ const glows = [
 ];
 
 const typeSamples = [
-  { label: "Display (7xl)", className: "text-4xl font-light tracking-tight text-sgwx-text md:text-6xl lg:text-7xl", text: "Go Further. Faster." },
-  { label: "Heading Large (5xl)", className: "text-3xl font-bold tracking-tight text-sgwx-text md:text-4xl lg:text-5xl", text: "Stop Resetting. Start Building." },
-  { label: "Heading Medium (3xl)", className: "text-2xl font-semibold tracking-tight text-sgwx-text md:text-3xl", text: "Built for Real-World Constraints" },
-  { label: "Heading Small (2xl)", className: "text-xl font-semibold tracking-tight text-sgwx-text md:text-2xl", text: "Structured to Flex" },
-  { label: "Body Large", className: "text-lg leading-relaxed text-sgwx-text-muted md:text-xl", text: "A clear, flexible process built for speed and follow-through. Senior teams aligned from day one." },
-  { label: "Body Default", className: "text-sm leading-relaxed text-sgwx-text-muted", text: "Deep expertise where it matters most, with meaningful fluency across adjacent disciplines. Our teams think beyond single roles." },
-  { label: "Eyebrow / Label", className: "font-mono text-[10px] tracking-widest uppercase text-sgwx-green", text: "The Growth Sequence" },
-  { label: "Mono Small", className: "font-mono text-xs uppercase tracking-widest text-sgwx-text-dim", text: "Output: Sustained Momentum" },
+  { label: "Display (7xl)", className: "text-4xl font-thin tracking-tight text-white md:text-6xl lg:text-7xl", text: "Go Further. Faster." },
+  { label: "Display (6xl)", className: "text-3xl font-thin tracking-tight text-white md:text-5xl lg:text-6xl", text: "Strategic Precision" },
+  { label: "Heading (5xl)", className: "text-3xl font-medium tracking-tight text-white md:text-4xl lg:text-5xl", text: "Stop Resetting. Start Building." },
+  { label: "Heading (4xl)", className: "text-2xl font-medium tracking-tight text-white md:text-3xl lg:text-4xl", text: "Momentum Compounds" },
+  { label: "Heading (3xl)", className: "text-xl font-medium tracking-tight text-white md:text-2xl lg:text-3xl", text: "Built for Real-World Constraints" },
+  { label: "Heading (2xl)", className: "text-lg font-medium tracking-tight text-white md:text-xl lg:text-2xl", text: "Structured to Flex" },
+  { label: "Heading (1xl)", className: "text-base font-medium tracking-tight text-white md:text-lg lg:text-xl", text: "Category Fluency Matters" },
+  { label: "Body Large", className: "text-lg leading-relaxed text-white md:text-xl", text: "A clear, flexible process built for speed and follow-through. Senior teams aligned from day one." },
+  { label: "Body Default", className: "text-sm leading-relaxed text-white", text: "Deep expertise where it matters most, with meaningful fluency across adjacent disciplines. Our teams think beyond single roles." },
+  { label: "Eyebrow / Label", className: "font-mono text-[10px] tracking-widest uppercase text-sgwx-yellow-pale", text: "The Growth Sequence" },
+  { label: "Mono Small", className: "font-mono text-xs uppercase tracking-widest text-[#a8c4d1]", text: "Output: Sustained Momentum" },
 ];
 
 const weightSamples = [

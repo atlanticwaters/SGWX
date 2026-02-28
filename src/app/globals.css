@@ -82,3 +82,21 @@
     background: #6EA87F;
   }
 }
+
+@keyframes pulse-glow-primary {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(159, 219, 176, 0.28);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(159, 219, 176, 0.55);
+  }
+}
+
+@keyframes pulse-glow-secondary {
+  0%, 100% {
+    box-shadow: 0 0 16px rgba(110, 168, 127, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 32px rgba(110, 168, 127, 0.35);
+  }
+}
