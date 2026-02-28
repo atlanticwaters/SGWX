@@ -20,9 +20,9 @@ const backgrounds = [
     _id: "bg-abstract-curves",
     name: "Abstract Curves",
     slug: "abstract-curves",
-    // Dark abstract curves and flowing lines
-    url: "https://images.unsplash.com/photo-1634017839464-5c339ebe3579?w=1920&q=80",
-    credit: "Unsplash / Milad Fakurian",
+    // Dark abstract background with curves
+    url: "https://images.unsplash.com/photo-1707730376818-a7a02fe896d5?w=1920&q=80",
+    credit: "Unsplash",
     overlayColor: "sage",
   },
   {
@@ -83,9 +83,9 @@ const backgrounds = [
     _id: "bg-layered-terrain",
     name: "Layered Terrain",
     slug: "layered-terrain",
-    // Abstract layered paper / terrain waves
-    url: "https://images.unsplash.com/photo-1604076913837-52ab5f0d6429?w=1920&q=80",
-    credit: "Unsplash / Shubham Dhage",
+    // Abstract curved lines in dark tone
+    url: "https://images.unsplash.com/photo-1751738567801-7d13e5b51b1d?w=1920&q=80",
+    credit: "Unsplash",
     overlayColor: "steel",
   },
   // ─── New backgrounds ───
@@ -102,9 +102,9 @@ const backgrounds = [
     _id: "bg-fog-coastline",
     name: "Fog Coastline",
     slug: "fog-coastline",
-    // Moody fog over coastal cliffs
-    url: "https://images.unsplash.com/photo-1485470733090-0aae1788d668?w=1920&q=80",
-    credit: "Unsplash / Tim Swaan",
+    // Dark flowing fabric / dramatic abstract
+    url: "https://images.unsplash.com/photo-1752213355644-64b6900e7841?w=1920&q=80",
+    credit: "Unsplash",
     overlayColor: "carbon",
   },
   {
