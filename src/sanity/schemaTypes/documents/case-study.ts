@@ -47,6 +47,19 @@ export const caseStudy = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'industry',
+      type: 'string',
+      title: 'Industry Vertical',
+      description: 'Used to match this case study with landing page verticals',
+      options: {
+        list: [
+          'Healthcare', 'Automotive', 'Sports', 'Technology',
+          'Finance', 'Retail', 'CPG', 'Entertainment',
+          'Education', 'Real Estate',
+        ],
+      },
+    }),
+    defineField({
       name: 'year',
       type: 'string',
       title: 'Year',

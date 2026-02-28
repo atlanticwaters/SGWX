@@ -9,29 +9,6 @@ export type ActionResult<T = void> =
   | { success: true; data: T }
   | { success: false; error: string };
 
-// ─── Diagnostics (temporary) ─────────────────────────────────────────────────
-
-export async function diagnoseSanityConnection(): Promise<ActionResult<{
-  projectId: string;
-  dataset: string;
-  tokenPrefix: string;
-  tokenLength: number;
-}>> {
-  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "(not set)";
-  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "(not set)";
-  const token = process.env.SANITY_API_WRITE_TOKEN || "";
-
-  return {
-    success: true,
-    data: {
-      projectId,
-      dataset,
-      tokenPrefix: token ? token.slice(0, 8) + "..." : "(not set)",
-      tokenLength: token.length,
-    },
-  };
-}
-
 // ─── Card Style Actions ──────────────────────────────────────────────────────
 
 interface CardStyleData {

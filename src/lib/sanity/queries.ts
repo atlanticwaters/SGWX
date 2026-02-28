@@ -354,7 +354,7 @@ export async function getCaseStudiesByVerticals(verticals: string[]): Promise<Ca
   const raw = await client.fetch<
     (Omit<CaseStudyListItem, "thumbnailUrl"> & { thumbnail?: SanityImageSource })[]
   >(
-    `*[_type == "caseStudy" && category in $verticals] | order(order asc) {
+    `*[_type == "caseStudy" && industry in $verticals] | order(order asc) {
       _id, title, "slug": slug.current, client, category, year, tags, shortDescription, thumbnail, order
     }`,
     { verticals }
@@ -378,7 +378,7 @@ export async function getCaseStudiesByVerticals(verticals: string[]): Promise<Ca
 export async function getBlogPostsByVerticals(verticals: string[]): Promise<BlogPostListItem[]> {
   if (!client || verticals.length === 0) return [];
   return client.fetch<BlogPostListItem[]>(
-    `*[_type == "blogPost" && tag in $verticals] | order(publishedAt desc)[0...6] {
+    `*[_type == "blogPost" && industry in $verticals] | order(publishedAt desc)[0...6] {
       _id, title, "slug": slug.current, tag, excerpt, publishedAt
     }`,
     { verticals }
@@ -396,7 +396,7 @@ export interface TestimonialItem {
 export async function getTestimonialsByVerticals(verticals: string[]): Promise<TestimonialItem[]> {
   if (!client || verticals.length === 0) return [];
   return client.fetch<TestimonialItem[]>(
-    `*[_type == "testimonial" && company in $verticals] {
+    `*[_type == "testimonial" && industry in $verticals] {
       _id, quote, authorName, role, company
     }`,
     { verticals }

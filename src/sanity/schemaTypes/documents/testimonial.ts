@@ -52,6 +52,19 @@ export const testimonial = defineType({
       title: 'Company',
     }),
     defineField({
+      name: 'industry',
+      type: 'string',
+      title: 'Industry Vertical',
+      description: 'Used to match this testimonial with landing page verticals',
+      options: {
+        list: [
+          'Healthcare', 'Automotive', 'Sports', 'Technology',
+          'Finance', 'Retail', 'CPG', 'Entertainment',
+          'Education', 'Real Estate',
+        ],
+      },
+    }),
+    defineField({
       name: 'photo',
       type: 'image',
       title: 'Photo',

@@ -56,6 +56,19 @@ export const blogPost = defineType({
       title: 'Tag',
     }),
     defineField({
+      name: 'industry',
+      type: 'string',
+      title: 'Industry Vertical',
+      description: 'Used to match this post with landing page verticals',
+      options: {
+        list: [
+          'Healthcare', 'Automotive', 'Sports', 'Technology',
+          'Finance', 'Retail', 'CPG', 'Entertainment',
+          'Education', 'Real Estate',
+        ],
+      },
+    }),
+    defineField({
       name: 'excerpt',
       type: 'text',
       title: 'Excerpt',
