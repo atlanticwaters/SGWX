@@ -9,6 +9,7 @@ import {
   updateLandingPage,
   toggleLandingPageStatus,
   deleteLandingPage,
+  diagnoseSanityConnection,
 } from "@/app/actions/sanity";
 import type { LandingPageListItem } from "@/lib/sanity/queries";
 
@@ -202,7 +203,22 @@ export default function LandingPagesClient({ initialPages }: LandingPagesClientP
         {error && (
           <div className="mb-6 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
             <div className="flex items-start justify-between gap-3">
-              <p>{error}</p>
+              <div>
+                <p>{error}</p>
+                <button
+                  onClick={async () => {
+                    const result = await diagnoseSanityConnection();
+                    if (result.success) {
+                      setError(
+                        `Config: projectId=${result.data.projectId}, dataset=${result.data.dataset}, token=${result.data.tokenPrefix} (${result.data.tokenLength} chars)`
+                      );
+                    }
+                  }}
+                  className="mt-2 text-xs text-red-400 underline hover:text-red-200"
+                >
+                  Show connection details
+                </button>
+              </div>
               <button
                 onClick={() => setError(null)}
                 className="shrink-0 text-red-400 hover:text-red-200"
