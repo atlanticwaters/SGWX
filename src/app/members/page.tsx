@@ -6,7 +6,7 @@ import FeaturedMembersSection from "@/components/members/FeaturedMembersSection"
 import CollectiveStats from "@/components/members/CollectiveStats";
 import MemberGallery from "@/components/members/MemberGallery";
 import JoinSection from "@/components/members/JoinSection";
-import { getFeaturedMembers, getAllMembers } from "@/lib/sanity/queries";
+import { getFeaturedMembers, getAllMembers, getSectionBackgroundBySlug } from "@/lib/sanity/queries";
 
 export const metadata: Metadata = {
   title: "Our Members",
@@ -15,14 +15,15 @@ export const metadata: Metadata = {
 };
 
 export default async function MembersPage() {
-  const [featuredMembers, allMembers] = await Promise.all([
+  const [featuredMembers, allMembers, heroBg] = await Promise.all([
     getFeaturedMembers(),
     getAllMembers(),
+    getSectionBackgroundBySlug("dark-mountain"),
   ]);
 
   return (
     <>
-      <MembersHero />
+      <MembersHero backgroundUrl={heroBg?.imageUrl} overlayColor={heroBg?.overlayColor} />
       <OriginSection />
       <GrowthSection />
       <FeaturedMembersSection members={featuredMembers} />

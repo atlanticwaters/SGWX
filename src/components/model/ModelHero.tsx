@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import Button from "@/components/ui/Button";
+import SectionBackground from "@/components/ui/SectionBackground";
+import type { OverlayColor } from "@/components/ui/SectionBackground";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -14,10 +16,18 @@ const transition = (delay: number) => ({
   delay,
 });
 
-export default function ModelHero() {
+interface ModelHeroProps {
+  backgroundUrl?: string;
+  overlayColor?: string;
+}
+
+export default function ModelHero({ backgroundUrl, overlayColor }: ModelHeroProps) {
   return (
-    <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden bg-sgwx-bg">
-      <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
+    <section className="relative flex min-h-[80vh] items-center overflow-hidden bg-sgwx-bg">
+      {backgroundUrl && (
+        <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />
+      )}
+      <div className="relative z-10 max-w-3xl px-6 pl-8 md:pl-16 lg:pl-24" style={{ marginTop: "-5vh" }}>
         <motion.p
           className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green"
           {...fadeUp}
@@ -36,7 +46,7 @@ export default function ModelHero() {
         </motion.h1>
 
         <motion.p
-          className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-sgwx-text-muted md:text-xl"
+          className="mt-6 max-w-2xl text-lg leading-relaxed text-sgwx-text-muted md:text-xl"
           {...fadeUp}
           transition={transition(0.22)}
         >
@@ -47,7 +57,7 @@ export default function ModelHero() {
         </motion.p>
 
         <motion.div
-          className="mt-10 flex flex-wrap items-center justify-center gap-4"
+          className="mt-10 flex flex-wrap items-center gap-4"
           {...fadeUp}
           transition={transition(0.34)}
         >

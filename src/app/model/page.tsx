@@ -8,6 +8,7 @@ import IcpSection from "@/components/model/IcpSection";
 import ContinuitySection from "@/components/model/ContinuitySection";
 import TechnologySection from "@/components/model/TechnologySection";
 import FitSection from "@/components/model/FitSection";
+import { getSectionBackgroundBySlug } from "@/lib/sanity/queries";
 
 export const metadata: Metadata = {
   title: "Our Model",
@@ -15,10 +16,12 @@ export const metadata: Metadata = {
     "Senior, bespoke teams who already know how to work together. The Sageworx model delivers continuity and momentum without the overhead of a traditional agency.",
 };
 
-export default function ModelPage() {
+export default async function ModelPage() {
+  const heroBg = await getSectionBackgroundBySlug("spiral-geometry");
+
   return (
     <>
-      <ModelHero />
+      <ModelHero backgroundUrl={heroBg?.imageUrl} overlayColor={heroBg?.overlayColor} />
       <RightTeamSection />
       <CapabilitiesGrid />
       <MicroteamSection />

@@ -19,14 +19,14 @@ export default function ProcessClosing() {
   return (
     <section
       id="process-closing"
-      className="relative flex min-h-[80vh] flex-col items-center justify-center bg-sgwx-bg-alt px-8 py-24 text-center"
+      className="relative flex min-h-[80vh] flex-col justify-center bg-sgwx-bg-alt px-8 py-24 md:px-16 lg:px-24"
     >
       {/* Top divider */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sgwx-border to-transparent" />
 
       {/* Stage words */}
       <motion.div
-        className="mb-16 flex flex-wrap justify-center gap-10"
+        className="mb-16 flex flex-wrap gap-10"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, margin: "-20%" }}

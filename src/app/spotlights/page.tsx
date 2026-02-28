@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import SpotlightsHero from "@/components/spotlights/SpotlightsHero";
 import SpotlightsGrid from "@/components/spotlights/SpotlightsGrid";
-import { getAllBlogPosts } from "@/lib/sanity/queries";
+import { getAllBlogPosts, getSectionBackgroundBySlug } from "@/lib/sanity/queries";
 
 export const metadata: Metadata = {
   title: "Spotlights",
@@ -10,11 +10,14 @@ export const metadata: Metadata = {
 };
 
 export default async function SpotlightsPage() {
-  const blogPosts = await getAllBlogPosts();
+  const [blogPosts, heroBg] = await Promise.all([
+    getAllBlogPosts(),
+    getSectionBackgroundBySlug("layered-terrain"),
+  ]);
 
   return (
     <>
-      <SpotlightsHero />
+      <SpotlightsHero backgroundUrl={heroBg?.imageUrl} overlayColor={heroBg?.overlayColor} />
       <SpotlightsGrid spotlights={blogPosts} />
     </>
   );

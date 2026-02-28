@@ -2,6 +2,8 @@
 
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
+import SectionBackground from "@/components/ui/SectionBackground";
+import type { OverlayColor } from "@/components/ui/SectionBackground";
 
 const AnimationCanvas = dynamic(
   () => import("@/components/animations/AnimationCanvas"),
@@ -23,9 +25,15 @@ const transition = (delay: number) => ({
   delay,
 });
 
-export default function WorkHero({ count = 0 }: { count?: number }) {
+interface WorkHeroProps {
+  count?: number;
+  backgroundUrl?: string;
+  overlayColor?: string;
+}
+
+export default function WorkHero({ count = 0, backgroundUrl, overlayColor }: WorkHeroProps) {
   return (
-    <section className="relative flex min-h-[50vh] items-center justify-center overflow-hidden bg-sgwx-bg">
+    <section className="relative flex min-h-[50vh] items-center justify-end overflow-hidden bg-sgwx-bg">
       <AnimationCanvas
         cameraPosition={[0, 145, 210]}
         cameraFov={52}
@@ -35,7 +43,10 @@ export default function WorkHero({ count = 0 }: { count?: number }) {
       >
         <CityBackground />
       </AnimationCanvas>
-      <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
+      {backgroundUrl && (
+        <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />
+      )}
+      <div className="relative z-10 max-w-3xl px-6 pr-8 text-right md:pr-16 lg:pr-24">
         <motion.h1
           className="text-5xl font-thin tracking-tight text-sgwx-text md:text-6xl lg:text-7xl"
           {...fadeUp}
@@ -45,7 +56,7 @@ export default function WorkHero({ count = 0 }: { count?: number }) {
         </motion.h1>
 
         <motion.p
-          className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-sgwx-text-muted md:text-xl"
+          className="ml-auto mt-6 max-w-2xl text-lg leading-relaxed text-sgwx-text-muted md:text-xl"
           {...fadeUp}
           transition={transition(0.12)}
         >
@@ -55,7 +66,7 @@ export default function WorkHero({ count = 0 }: { count?: number }) {
 
         {/* HUD status line */}
         <motion.div
-          className="mt-8 flex items-center justify-center gap-8 font-mono text-[10px] tracking-widest uppercase"
+          className="mt-8 flex items-center justify-end gap-8 font-mono text-[10px] tracking-widest uppercase"
           {...fadeUp}
           transition={transition(0.24)}
         >

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import WorkHero from "@/components/work/WorkHero";
 import CaseStudyGrid from "@/components/work/CaseStudyGrid";
-import { getAllCaseStudies } from "@/lib/sanity/queries";
+import { getAllCaseStudies, getSectionBackgroundBySlug } from "@/lib/sanity/queries";
 
 export const metadata: Metadata = {
   title: "Our Work",
@@ -10,11 +10,14 @@ export const metadata: Metadata = {
 };
 
 export default async function WorkPage() {
-  const caseStudies = await getAllCaseStudies();
+  const [caseStudies, heroBg] = await Promise.all([
+    getAllCaseStudies(),
+    getSectionBackgroundBySlug("geometric-architecture"),
+  ]);
 
   return (
     <>
-      <WorkHero count={caseStudies.length} />
+      <WorkHero count={caseStudies.length} backgroundUrl={heroBg?.imageUrl} overlayColor={heroBg?.overlayColor} />
       <CaseStudyGrid caseStudies={caseStudies} />
     </>
   );

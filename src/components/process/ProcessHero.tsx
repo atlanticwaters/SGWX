@@ -2,6 +2,8 @@
 
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
+import SectionBackground from "@/components/ui/SectionBackground";
+import type { OverlayColor } from "@/components/ui/SectionBackground";
 
 const AnimationCanvas = dynamic(
   () => import("@/components/animations/AnimationCanvas"),
@@ -23,9 +25,14 @@ const transition = (delay: number) => ({
   delay,
 });
 
-export default function ProcessHero() {
+interface ProcessHeroProps {
+  backgroundUrl?: string;
+  overlayColor?: string;
+}
+
+export default function ProcessHero({ backgroundUrl, overlayColor }: ProcessHeroProps) {
   return (
-    <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden bg-sgwx-bg">
+    <section className="relative flex min-h-[80vh] items-center justify-end overflow-hidden bg-sgwx-bg">
       <AnimationCanvas
         cameraPosition={[-10, 28, 90]}
         cameraFov={55}
@@ -35,7 +42,10 @@ export default function ProcessHero() {
       >
         <WaveBackground />
       </AnimationCanvas>
-      <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
+      {backgroundUrl && (
+        <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />
+      )}
+      <div className="relative z-10 max-w-3xl px-6 pr-8 text-right md:pr-16 lg:pr-24" style={{ marginTop: "-5vh" }}>
         <motion.p
           className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green"
           {...fadeUp}
@@ -54,7 +64,7 @@ export default function ProcessHero() {
         </motion.h1>
 
         <motion.p
-          className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-sgwx-text-muted md:text-xl"
+          className="ml-auto mt-6 max-w-2xl text-lg leading-relaxed text-sgwx-text-muted md:text-xl"
           {...fadeUp}
           transition={transition(0.22)}
         >

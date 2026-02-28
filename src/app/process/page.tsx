@@ -5,6 +5,7 @@ import type { StageData } from "@/components/process/StageSection";
 import ProcessClosing from "@/components/process/ProcessClosing";
 import ProgressBar from "@/components/process/ProgressBar";
 import StageNav from "@/components/process/StageNav";
+import { getSectionBackgroundBySlug } from "@/lib/sanity/queries";
 
 export const metadata: Metadata = {
   title: "Our Process",
@@ -108,12 +109,14 @@ const stages: StageData[] = [
   },
 ];
 
-export default function ProcessPage() {
+export default async function ProcessPage() {
+  const heroBg = await getSectionBackgroundBySlug("fluid-waves");
+
   return (
     <>
       <ProgressBar />
       <StageNav />
-      <ProcessHero />
+      <ProcessHero backgroundUrl={heroBg?.imageUrl} overlayColor={heroBg?.overlayColor} />
       {stages.map((stage) => (
         <StageSection key={stage.id} {...stage} />
       ))}
