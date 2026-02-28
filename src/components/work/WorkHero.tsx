@@ -1,7 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import dynamic from "next/dynamic";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import SectionBackground from "@/components/ui/SectionBackground";
 import type { OverlayColor } from "@/components/ui/SectionBackground";
 
@@ -32,8 +33,16 @@ interface WorkHeroProps {
 }
 
 export default function WorkHero({ count = 0, backgroundUrl, overlayColor }: WorkHeroProps) {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+
   return (
-    <section className="relative flex min-h-[50vh] items-center justify-end overflow-hidden bg-sgwx-bg">
+    <section ref={ref} className="relative flex min-h-[50vh] items-center justify-end overflow-hidden bg-sgwx-bg">
       <AnimationCanvas
         cameraPosition={[0, 145, 210]}
         cameraFov={52}
@@ -46,7 +55,10 @@ export default function WorkHero({ count = 0, backgroundUrl, overlayColor }: Wor
       {backgroundUrl && (
         <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />
       )}
-      <div className="relative z-10 max-w-3xl px-6 pr-8 text-right md:pr-16 lg:pr-24">
+      <motion.div
+        className="relative z-10 max-w-3xl px-6 pr-8 text-right md:pr-16 lg:pr-24"
+        style={{ y: contentY, opacity: contentOpacity }}
+      >
         <motion.h1
           className="text-5xl font-thin tracking-tight text-sgwx-text md:text-6xl lg:text-7xl"
           {...fadeUp}
@@ -83,7 +95,7 @@ export default function WorkHero({ count = 0, backgroundUrl, overlayColor }: Wor
             <span className="text-sgwx-cyan">Active</span>
           </span>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }

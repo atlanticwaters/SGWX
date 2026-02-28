@@ -1,4 +1,8 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 type OverlayColor = "sage" | "steel" | "teal" | "amber" | "carbon";
 
@@ -25,31 +29,40 @@ interface SectionBackgroundProps {
 }
 
 /**
- * Renders a full-bleed background image with a programmatic color grade
- * that matches the SGWX brand palette.
- *
- * The image fades in from the overlay color and scales down slightly,
- * creating a cinematic reveal effect on load.
+ * Renders a full-bleed background image with parallax scrolling,
+ * a programmatic color grade, and a cinematic reveal animation.
  */
 export default function SectionBackground({ src, alt = "", overlayColor = "sage" }: SectionBackgroundProps) {
   const color = OVERLAY_GRADIENTS[overlayColor] ? overlayColor : "sage";
+  const ref = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+
+  // Background moves at ~30% of scroll speed — feels distant
+  const bgY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
-      {/* Base image — animate in from scaled/transparent to final state */}
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        sizes="100vw"
-        className="object-cover animate-[bgReveal_1.8s_cubic-bezier(0.16,1,0.3,1)_forwards]"
-        style={{
-          filter: "brightness(0.35) contrast(1.1) saturate(0.3)",
-          opacity: 0,
-          transform: "scale(1.06)",
-        }}
-        quality={75}
-      />
+    <div ref={ref} className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+      {/* Base image — parallax + reveal animation */}
+      <motion.div
+        className="absolute inset-[-10%] animate-[bgReveal_1.8s_cubic-bezier(0.16,1,0.3,1)_both]"
+        style={{ y: bgY }}
+      >
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes="100vw"
+          className="object-cover"
+          style={{
+            filter: "brightness(0.35) contrast(1.1) saturate(0.3)",
+          }}
+          quality={75}
+        />
+      </motion.div>
       {/* Brand color overlay */}
       <div
         className="absolute inset-0"
@@ -65,7 +78,7 @@ export default function SectionBackground({ src, alt = "", overlayColor = "sage"
           background: GLOW_GRADIENTS[color],
         }}
       />
-      {/* Edge vignette — softer so image texture shows through */}
+      {/* Edge vignette */}
       <div
         className="absolute inset-0"
         style={{

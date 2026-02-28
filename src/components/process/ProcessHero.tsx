@@ -1,7 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import dynamic from "next/dynamic";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import SectionBackground from "@/components/ui/SectionBackground";
 import type { OverlayColor } from "@/components/ui/SectionBackground";
 
@@ -31,8 +32,16 @@ interface ProcessHeroProps {
 }
 
 export default function ProcessHero({ backgroundUrl, overlayColor }: ProcessHeroProps) {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+
   return (
-    <section className="relative flex min-h-[80vh] items-center justify-end overflow-hidden bg-sgwx-bg">
+    <section ref={ref} className="relative flex min-h-[80vh] items-center justify-end overflow-hidden bg-sgwx-bg">
       <AnimationCanvas
         cameraPosition={[-10, 28, 90]}
         cameraFov={55}
@@ -45,7 +54,10 @@ export default function ProcessHero({ backgroundUrl, overlayColor }: ProcessHero
       {backgroundUrl && (
         <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />
       )}
-      <div className="relative z-10 max-w-3xl px-6 pr-8 text-right md:pr-16 lg:pr-24" style={{ marginTop: "-5vh" }}>
+      <motion.div
+        className="relative z-10 max-w-3xl px-6 pr-8 text-right md:pr-16 lg:pr-24"
+        style={{ y: contentY, opacity: contentOpacity, marginTop: "-5vh" }}
+      >
         <motion.p
           className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green"
           {...fadeUp}
@@ -71,7 +83,7 @@ export default function ProcessHero({ backgroundUrl, overlayColor }: ProcessHero
           The ultimate growth partner &mdash; built for every stage of your
           brand&apos;s evolution.
         </motion.p>
-      </div>
+      </motion.div>
     </section>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import SectionBackground from "@/components/ui/SectionBackground";
 import type { OverlayColor } from "@/components/ui/SectionBackground";
 
@@ -21,12 +22,23 @@ interface SpotlightsHeroProps {
 }
 
 export default function SpotlightsHero({ backgroundUrl, overlayColor }: SpotlightsHeroProps) {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+
   return (
-    <section className="relative flex min-h-[60vh] items-center overflow-hidden bg-sgwx-bg">
+    <section ref={ref} className="relative flex min-h-[60vh] items-center overflow-hidden bg-sgwx-bg">
       {backgroundUrl && (
         <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />
       )}
-      <div className="relative z-10 max-w-3xl px-6 pl-8 md:pl-16 lg:pl-24">
+      <motion.div
+        className="relative z-10 max-w-3xl px-6 pl-8 md:pl-16 lg:pl-24"
+        style={{ y: contentY, opacity: contentOpacity }}
+      >
         <motion.h1
           className="text-5xl font-thin tracking-tight text-sgwx-text md:text-6xl lg:text-7xl"
           {...fadeUp}
@@ -43,7 +55,7 @@ export default function SpotlightsHero({ backgroundUrl, overlayColor }: Spotligh
           Insights, featured work, and perspectives from the Sageworx
           collective.
         </motion.p>
-      </div>
+      </motion.div>
     </section>
   );
 }
