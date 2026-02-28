@@ -1,6 +1,6 @@
 "use server";
 
-import { writeClient } from "@/lib/sanity/write-client";
+import { getWriteClient } from "@/lib/sanity/write-client";
 import { revalidatePath } from "next/cache";
 
 // ─── Card Style Actions ──────────────────────────────────────────────────────
@@ -18,6 +18,7 @@ interface CardStyleData {
 }
 
 export async function upsertCardStyle(data: CardStyleData, existingId?: string) {
+  const client = getWriteClient();
   const doc = {
     _type: "cardStyle" as const,
     name: data.name,
@@ -32,16 +33,17 @@ export async function upsertCardStyle(data: CardStyleData, existingId?: string) 
   };
 
   if (existingId) {
-    await writeClient.patch(existingId).set(doc).commit();
+    await client.patch(existingId).set(doc).commit();
   } else {
-    await writeClient.create(doc);
+    await client.create(doc);
   }
 
   revalidatePath("/card-designer");
 }
 
 export async function deleteCardStyle(id: string) {
-  await writeClient.delete(id);
+  const client = getWriteClient();
+  await client.delete(id);
   revalidatePath("/card-designer");
 }
 
@@ -61,6 +63,7 @@ interface LandingPageData {
 }
 
 export async function createLandingPage(data: LandingPageData) {
+  const client = getWriteClient();
   const doc = {
     _type: "landingPage" as const,
     title: data.title,
@@ -77,13 +80,14 @@ export async function createLandingPage(data: LandingPageData) {
     content: [],
   };
 
-  const result = await writeClient.create(doc);
+  const result = await client.create(doc);
   revalidatePath("/landing-pages");
   revalidatePath(`/${data.slug}`);
   return result._id;
 }
 
 export async function updateLandingPage(id: string, data: Partial<LandingPageData>) {
+  const client = getWriteClient();
   const patch: Record<string, unknown> = {};
   if (data.title !== undefined) patch.title = data.title;
   if (data.slug !== undefined) patch.slug = { _type: "slug", current: data.slug };
@@ -96,18 +100,20 @@ export async function updateLandingPage(id: string, data: Partial<LandingPageDat
   if (data.ctaHref !== undefined) patch.ctaHref = data.ctaHref;
   if (data.campaign !== undefined) patch.campaign = data.campaign;
 
-  await writeClient.patch(id).set(patch).commit();
+  await client.patch(id).set(patch).commit();
   revalidatePath("/landing-pages");
   if (data.slug) revalidatePath(`/${data.slug}`);
 }
 
 export async function toggleLandingPageStatus(id: string, currentStatus: string) {
+  const client = getWriteClient();
   const newStatus = currentStatus === "active" ? "draft" : "active";
-  await writeClient.patch(id).set({ status: newStatus }).commit();
+  await client.patch(id).set({ status: newStatus }).commit();
   revalidatePath("/landing-pages");
 }
 
 export async function deleteLandingPage(id: string) {
-  await writeClient.delete(id);
+  const client = getWriteClient();
+  await client.delete(id);
   revalidatePath("/landing-pages");
 }
