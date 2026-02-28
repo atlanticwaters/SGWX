@@ -14,6 +14,7 @@ const MANUALLY_ORGANIZED = [
   'testimonial',
   'category',
   'sectionBackground',
+  'cardStyle',
 ]
 
 export const structure: StructureResolver = (S) =>
@@ -77,6 +78,7 @@ export const structure: StructureResolver = (S) =>
       // ── Taxonomy & Media ────────────────────────────────
       S.documentTypeListItem('category').title('Categories'),
       S.documentTypeListItem('sectionBackground').title('Section Backgrounds'),
+      S.documentTypeListItem('cardStyle').title('Card Styles'),
 
       // ── Remaining (auto-generated, filtered) ────────────
       ...S.documentTypeListItems().filter(
