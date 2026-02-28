@@ -165,7 +165,7 @@ function GlitchTransition() {
         }}
       />
 
-      {/* Random pixel blocks */}
+      {/* Random pixel blocks — burst then fade */}
       {glitchData.pixels.map((px, i) => (
         <motion.div
           key={`px-${i}`}
@@ -179,19 +179,20 @@ function GlitchTransition() {
           }}
           initial={{ opacity: 0, scaleX: 0 }}
           animate={{
-            opacity: [0, 0.9, 0.9, 0],
-            scaleX: [0, 1, 1, 0],
+            opacity: [0, 0.9, 0.9, 0.6, 0],
+            scaleX: [0, 1, 1, 0.5, 0],
           }}
           transition={{
-            duration: px.duration,
+            duration: px.duration + 0.3,
             delay: px.delay,
             repeat: 2,
-            repeatDelay: px.duration * 0.5,
+            repeatDelay: px.duration * 0.3,
+            times: [0, 0.15, 0.5, 0.8, 1],
           }}
         />
       ))}
 
-      {/* Horizontal glitch slices — strips that jerk sideways */}
+      {/* Horizontal glitch slices — jerk then settle and fade */}
       {glitchData.scanlines.map((sl, i) => (
         <motion.div
           key={`sl-${i}`}
@@ -202,22 +203,22 @@ function GlitchTransition() {
             backgroundColor: BRAND.bg,
             borderTop: `1px solid ${BRAND.neon}`,
             borderBottom: `1px solid ${BRAND.green}`,
-            opacity: 0.7,
           }}
           initial={{ x: 0, opacity: 0 }}
           animate={{
-            x: [0, sl.offset, -sl.offset * 0.6, sl.offset * 0.3, 0],
-            opacity: [0, 0.8, 0.8, 0.6, 0],
+            x: [0, sl.offset, -sl.offset * 0.6, sl.offset * 0.3, 0, 0],
+            opacity: [0, 0.8, 0.8, 0.6, 0.4, 0],
           }}
           transition={{
-            duration: 0.4,
+            duration: 0.7,
             delay: sl.delay,
+            times: [0, 0.15, 0.35, 0.55, 0.8, 1],
             ease: "easeInOut",
           }}
         />
       ))}
 
-      {/* Glitch text fragments */}
+      {/* Glitch text fragments — flicker then dissolve */}
       {glitchData.textBits.map((t, i) => (
         <motion.span
           key={`txt-${i}`}
@@ -230,14 +231,15 @@ function GlitchTransition() {
           }}
           initial={{ opacity: 0, x: -10 }}
           animate={{
-            opacity: [0, 1, 1, 0],
-            x: [-10, 0, 4, -6],
+            opacity: [0, 1, 0.8, 1, 0.5, 0],
+            x: [-10, 0, 4, -2, 0, 6],
           }}
           transition={{
-            duration: 0.2,
+            duration: 0.5,
             delay: t.delay,
+            times: [0, 0.15, 0.35, 0.55, 0.8, 1],
             repeat: 1,
-            repeatDelay: 0.1,
+            repeatDelay: 0.05,
           }}
         >
           {t.text}
@@ -250,8 +252,8 @@ function GlitchTransition() {
         <motion.div
           className="absolute inset-0"
           initial={{ x: 0, opacity: 0 }}
-          animate={{ x: [0, -3, 4, -2, 0], opacity: [0, 0.6, 0.4, 0.6, 0] }}
-          transition={{ duration: 0.5, delay: 0.2, ease: "easeInOut" }}
+          animate={{ x: [0, -3, 4, -2, 0, 0], opacity: [0, 0.6, 0.4, 0.6, 0.2, 0] }}
+          transition={{ duration: 0.8, delay: 0.2, times: [0, 0.15, 0.35, 0.55, 0.8, 1], ease: "easeInOut" }}
         >
           <svg viewBox="0 0 500 164.19" className="w-48 md:w-64">
             {logoPaths.map((d, i) => (
@@ -262,8 +264,8 @@ function GlitchTransition() {
         <motion.div
           className="absolute inset-0"
           initial={{ x: 0, opacity: 0 }}
-          animate={{ x: [0, 3, -4, 2, 0], opacity: [0, 0.5, 0.3, 0.5, 0] }}
-          transition={{ duration: 0.5, delay: 0.2, ease: "easeInOut" }}
+          animate={{ x: [0, 3, -4, 2, 0, 0], opacity: [0, 0.5, 0.3, 0.5, 0.15, 0] }}
+          transition={{ duration: 0.8, delay: 0.2, times: [0, 0.15, 0.35, 0.55, 0.8, 1], ease: "easeInOut" }}
         >
           <svg viewBox="0 0 500 164.19" className="w-48 md:w-64">
             {logoPaths.map((d, i) => (
@@ -272,13 +274,13 @@ function GlitchTransition() {
           </svg>
         </motion.div>
 
-        {/* Main logo — sliced and reassembled */}
+        {/* Main logo — glitches in, holds, then fades out */}
         <motion.svg
           viewBox="0 0 500 164.19"
           className="w-48 md:w-64 relative"
           initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 1, 0.7, 1] }}
-          transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
+          animate={{ opacity: [0, 1, 0.7, 1, 1, 0] }}
+          transition={{ duration: 0.9, delay: 0.15, times: [0, 0.12, 0.25, 0.4, 0.7, 1], ease: "easeOut" }}
         >
           {logoPaths.map((d, i) => (
             <motion.path
@@ -287,12 +289,13 @@ function GlitchTransition() {
               fill={BRAND.paper}
               initial={{ opacity: 0, x: (i % 2 === 0 ? -1 : 1) * 20 }}
               animate={{
-                opacity: [0, 1, 0.6, 1],
-                x: [(i % 2 === 0 ? -1 : 1) * 20, 0, (i % 2 === 0 ? 1 : -1) * 4, 0],
+                opacity: [0, 1, 0.6, 1, 1, 0],
+                x: [(i % 2 === 0 ? -1 : 1) * 20, 0, (i % 2 === 0 ? 1 : -1) * 4, 0, 0, (i % 2 === 0 ? -1 : 1) * 8],
               }}
               transition={{
-                duration: 0.35,
+                duration: 0.85,
                 delay: 0.15 + i * 0.04,
+                times: [0, 0.15, 0.3, 0.45, 0.7, 1],
                 ease: [0.22, 1, 0.36, 1],
               }}
             />
@@ -300,12 +303,12 @@ function GlitchTransition() {
         </motion.svg>
       </div>
 
-      {/* Full-screen flash */}
+      {/* Full-screen flash — opening burst and closing flicker */}
       <motion.div
         className="absolute inset-0 pointer-events-none z-30"
         initial={{ opacity: 0 }}
-        animate={{ opacity: [0, 0.15, 0, 0.08, 0] }}
-        transition={{ duration: 0.5, delay: 0.1, ease: "linear" }}
+        animate={{ opacity: [0, 0.15, 0, 0.08, 0, 0.06, 0] }}
+        transition={{ duration: 0.9, delay: 0.1, times: [0, 0.08, 0.2, 0.35, 0.6, 0.85, 1], ease: "linear" }}
         style={{ backgroundColor: BRAND.neon }}
       />
     </>
@@ -329,37 +332,41 @@ const BAR_COLORS = [
 ];
 
 function BarsTransition() {
-  const barCount = BAR_COLORS.length;
-
   return (
     <>
-      {/* Color bars sliding in from top */}
+      {/* Color bars — scale in, hold, then scale out */}
       <div className="absolute inset-0 flex">
-        {BAR_COLORS.map((color, i) => (
-          <motion.div
-            key={i}
-            className="h-full"
-            style={{
-              flex: 1,
-              backgroundColor: color,
-            }}
-            initial={{ scaleY: 0, transformOrigin: i % 2 === 0 ? "top" : "bottom" }}
-            animate={{ scaleY: 1 }}
-            transition={{
-              duration: 0.25,
-              delay: 0.05 + i * 0.025,
-              ease,
-            }}
-          />
-        ))}
+        {BAR_COLORS.map((color, i) => {
+          const origin = i % 2 === 0 ? "top" : "bottom";
+          const stagger = i * 0.025;
+          return (
+            <motion.div
+              key={i}
+              className="h-full"
+              style={{
+                flex: 1,
+                backgroundColor: color,
+                transformOrigin: origin,
+              }}
+              initial={{ scaleY: 0 }}
+              animate={{ scaleY: [0, 1, 1, 0] }}
+              transition={{
+                duration: 1.0,
+                delay: 0.05 + stagger,
+                times: [0, 0.25, 0.7, 1],
+                ease: [0.22, 1, 0.36, 1],
+              }}
+            />
+          );
+        })}
       </div>
 
       {/* White noise grain overlay */}
       <motion.div
         className="absolute inset-0 pointer-events-none mix-blend-overlay"
         initial={{ opacity: 0 }}
-        animate={{ opacity: [0, 0.15, 0.08, 0.12, 0.05] }}
-        transition={{ duration: 0.6, delay: 0.2, ease: "linear" }}
+        animate={{ opacity: [0, 0.15, 0.12, 0.08, 0] }}
+        transition={{ duration: 1.0, delay: 0.15, times: [0, 0.2, 0.5, 0.75, 1], ease: "linear" }}
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
           backgroundSize: "200px 200px",
@@ -373,24 +380,32 @@ function BarsTransition() {
           background: `linear-gradient(90deg, transparent, ${BRAND.paper}, transparent)`,
           boxShadow: `0 0 20px ${BRAND.neon}, 0 0 60px ${BRAND.green}`,
         }}
-        initial={{ top: "-2px" }}
-        animate={{ top: ["0%", "100%"] }}
-        transition={{ duration: 0.5, delay: 0.15, ease: [0.4, 0, 0.2, 1] }}
+        initial={{ top: "-2px", opacity: 1 }}
+        animate={{ top: ["0%", "100%"], opacity: [1, 1, 0] }}
+        transition={{
+          top: { duration: 0.6, delay: 0.15, ease: [0.4, 0, 0.2, 1] },
+          opacity: { duration: 0.8, delay: 0.15, times: [0, 0.85, 1] },
+        }}
       />
 
-      {/* Center: SGWX rendered in the bar aesthetic */}
+      {/* Center: SGWX — fades in then scales down and out */}
       <motion.div
         className="absolute inset-0 flex items-center justify-center z-10"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: [0, 1, 1, 0.8] }}
-        transition={{ duration: 0.4, delay: 0.25, ease: "easeOut" }}
+        initial={{ opacity: 0, scale: 1 }}
+        animate={{ opacity: [0, 1, 1, 0], scale: [1, 1, 1, 0.85] }}
+        transition={{
+          duration: 1.0,
+          delay: 0.2,
+          times: [0, 0.25, 0.65, 1],
+          ease: [0.22, 1, 0.36, 1],
+        }}
       >
         <motion.svg
           viewBox="0 0 500 164.19"
           className="w-48 md:w-64"
-          initial={{ scaleX: 0.8, opacity: 0 }}
-          animate={{ scaleX: 1, opacity: 1 }}
-          transition={{ duration: 0.3, delay: 0.3, ease }}
+          initial={{ scaleX: 0.8 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.3, delay: 0.25, ease }}
         >
           {logoPaths.map((d, i) => (
             <motion.path
@@ -398,20 +413,24 @@ function BarsTransition() {
               d={d}
               fill={BRAND.bg}
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.15, delay: 0.3 + i * 0.04 }}
+              animate={{ opacity: [0, 1, 1, 0] }}
+              transition={{
+                duration: 0.9,
+                delay: 0.25 + i * 0.04,
+                times: [0, 0.15, 0.7, 1],
+              }}
             />
           ))}
         </motion.svg>
       </motion.div>
 
-      {/* Bottom color bar strip — like a TV test pattern footer */}
+      {/* Bottom color bar strip — fades in then out */}
       <motion.div
         className="absolute bottom-0 left-0 right-0 flex"
         style={{ height: "8vh" }}
         initial={{ opacity: 0 }}
-        animate={{ opacity: [0, 1, 1, 0.6] }}
-        transition={{ duration: 0.5, delay: 0.2 }}
+        animate={{ opacity: [0, 1, 1, 0] }}
+        transition={{ duration: 1.0, delay: 0.15, times: [0, 0.2, 0.65, 1] }}
       >
         {[BRAND.bg, BRAND.paper, BRAND.bg, BRAND.steelDark, BRAND.bg, BRAND.neon, BRAND.bg].map(
           (c, i) => (
@@ -596,10 +615,11 @@ export default function PageTransition() {
     const pick = VARIANTS[Math.floor(Math.random() * VARIANTS.length)];
     setVariant(pick);
     setIsTransitioning(true);
+    const duration = pick === "bars" ? 1300 : pick === "glitch" ? 1100 : 800;
     const timer = setTimeout(() => {
       setIsTransitioning(false);
       setDisplayPath(pathname);
-    }, 800);
+    }, duration);
     return () => clearTimeout(timer);
   }, [pathname]);
 
