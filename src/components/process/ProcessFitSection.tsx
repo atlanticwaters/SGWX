@@ -23,7 +23,6 @@ export default function ProcessFitSection() {
           <SectionHeading
             eyebrow="Fit Check"
             heading="Is This Right for You?"
-            centered
           />
         </AnimatedSection>
 

@@ -1,7 +1,6 @@
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Card from "@/components/ui/Card";
-import Badge from "@/components/ui/Badge";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 
 interface IcpCard {
@@ -52,21 +51,23 @@ export default function IcpSection() {
             heading="One Model. Built for You."
             subheading="The Sageworx model stays consistent. How we show up changes based upon you and your needs."
             size="display"
-            centered
+            align="right"
           />
         </AnimatedSection>
 
         <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
           {cards.map((card, i) => (
             <AnimatedSection key={card.badge} delay={0.1 + i * 0.08}>
-              <Card className="flex h-full flex-col">
-                <Badge>{card.badge}</Badge>
+              <Card className="flex h-full flex-col gap-4">
+                <p className="font-mono text-[10px] font-medium uppercase tracking-widest text-sgwx-green">
+                  {card.badge}
+                </p>
 
-                <h3 className="mt-4 text-xl font-semibold text-sgwx-text">
+                <h3 className="text-xl font-semibold tracking-tight text-sgwx-text md:text-2xl">
                   {card.headline}
                 </h3>
 
-                <p className="mt-3 text-sm leading-relaxed text-sgwx-text-muted">
+                <p className="text-base leading-relaxed text-sgwx-text-muted">
                   {card.body}
                 </p>
 

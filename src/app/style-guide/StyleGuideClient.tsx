@@ -427,12 +427,12 @@ export default function StyleGuideClient() {
             />
           </div>
           <div>
-            <p className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Centered</p>
+            <p className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Right-Aligned</p>
             <SectionHeading
-              eyebrow="Centered Layout"
-              heading="Headings Can Be Centered"
-              subheading="Pass centered={true} to center-align the heading block."
-              centered
+              eyebrow="Right-Aligned Layout"
+              heading="Headings Alternate Left and Right"
+              subheading="Pass align=&quot;right&quot; to right-align the heading block. Use L-R alternation across sections."
+              align="right"
             />
           </div>
         </div>

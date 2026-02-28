@@ -2,7 +2,6 @@ import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Card from "@/components/ui/Card";
 import AnimatedSection from "@/components/ui/AnimatedSection";
-import Badge from "@/components/ui/Badge";
 
 export default function PrinciplesSection() {
   return (
@@ -14,7 +13,6 @@ export default function PrinciplesSection() {
             heading="Designed to Move You Forward. Faster."
             subheading="Our process and systems are designed for work without the re-work. Strategy, creative, and production aligned early. Fewer handoffs. Decisions and learnings are documented to reduce rework and repeat spend."
             size="display"
-            centered
           />
         </AnimatedSection>
 
@@ -22,8 +20,10 @@ export default function PrinciplesSection() {
           {/* M-Shaped Senior Talent */}
           <AnimatedSection delay={0.1}>
             <Card hover={false} className="h-full">
-              <Badge className="mb-4">M-Shaped Talent</Badge>
-              <h3 className="mt-2 text-xl font-semibold text-sgwx-text">
+              <p className="mb-4 font-mono text-[10px] font-medium uppercase tracking-widest text-sgwx-green">
+                M-Shaped Talent
+              </p>
+              <h3 className="text-xl font-semibold tracking-tight text-sgwx-text md:text-2xl">
                 Built Around M-Shaped Senior Talent
               </h3>
               <div className="mt-4 space-y-4">
@@ -50,8 +50,10 @@ export default function PrinciplesSection() {
           {/* Structured to Flex */}
           <AnimatedSection delay={0.18}>
             <Card hover={false} className="h-full">
-              <Badge className="mb-4">Flex Structure</Badge>
-              <h3 className="mt-2 text-xl font-semibold text-sgwx-text">
+              <p className="mb-4 font-mono text-[10px] font-medium uppercase tracking-widest text-sgwx-green">
+                Flex Structure
+              </p>
+              <h3 className="text-xl font-semibold tracking-tight text-sgwx-text md:text-2xl">
                 Structured to Flex
               </h3>
               <div className="mt-4 space-y-4">

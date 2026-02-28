@@ -32,7 +32,7 @@ export default function ComparisonTable() {
           <SectionHeading
             eyebrow="The Model Makes a Difference"
             heading="Why Sageworx?"
-            centered
+            align="right"
           />
         </AnimatedSection>
 

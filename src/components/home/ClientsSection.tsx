@@ -1,7 +1,6 @@
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Card from "@/components/ui/Card";
-import Badge from "@/components/ui/Badge";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import SectionBackground from "@/components/ui/SectionBackground";
 
@@ -30,34 +29,36 @@ export default function ClientsSection({ backgroundUrl }: { backgroundUrl?: stri
       <Container>
         <AnimatedSection>
           <SectionHeading
+            eyebrow="Who We Serve"
             heading="Curated Partners For Your Business"
             size="medium"
-            centered
           />
         </AnimatedSection>
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {clients.map((client, i) => (
             <AnimatedSection key={client.type} delay={0.1 + i * 0.08}>
-              <Card className="flex h-full flex-col">
-                <Badge>{client.type}</Badge>
+              <Card className="flex h-full flex-col gap-5">
+                <h3 className="text-xl font-semibold tracking-tight text-sgwx-text md:text-2xl">
+                  {client.type}
+                </h3>
 
-                <div className="mt-4">
-                  <p className="text-xs font-medium uppercase tracking-widest text-sgwx-text-dim">
+                <div>
+                  <p className="font-mono text-[10px] font-medium uppercase tracking-widest text-sgwx-text-dim">
                     The Pain Point
                   </p>
-                  <p className="mt-2 text-sm leading-relaxed text-sgwx-text-muted">
+                  <p className="mt-2 text-base leading-relaxed text-sgwx-text-muted">
                     {client.pain}
                   </p>
                 </div>
 
-                <div className="my-4 h-px bg-sgwx-border-subtle" />
+                <div className="h-px bg-sgwx-border-subtle" />
 
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-widest text-sgwx-green">
+                  <p className="font-mono text-[10px] font-medium uppercase tracking-widest text-sgwx-green">
                     The Sageworx Solution
                   </p>
-                  <p className="mt-2 text-sm leading-relaxed text-sgwx-text">
+                  <p className="mt-2 text-base font-medium leading-relaxed text-sgwx-text">
                     {client.solution}
                   </p>
                 </div>

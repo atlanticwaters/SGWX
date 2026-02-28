@@ -9,6 +9,7 @@ interface CaseStudy {
   slug: string;
   category: string;
   shortDescription: string;
+  thumbnailUrl?: string;
 }
 
 interface ImpactSectionProps {
@@ -20,7 +21,7 @@ export default function ImpactSection({ caseStudies }: ImpactSectionProps) {
     <section className="py-16 md:py-24">
       <Container>
         <AnimatedSection>
-          <SectionHeading heading="Making An Impact" size="medium" centered />
+          <SectionHeading eyebrow="Case Studies" heading="Making An Impact" size="medium" align="right" />
         </AnimatedSection>
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -31,6 +32,7 @@ export default function ImpactSection({ caseStudies }: ImpactSectionProps) {
                 title={study.title}
                 description={study.shortDescription}
                 href={`/work/${study.slug}`}
+                thumbnailUrl={study.thumbnailUrl}
               />
             </AnimatedSection>
           ))}

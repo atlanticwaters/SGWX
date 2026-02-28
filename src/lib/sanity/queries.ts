@@ -18,12 +18,22 @@ export interface CaseStudyListItem {
   slug: string;
   client: string;
   category: string;
+  year?: string;
   tags: string[];
   shortDescription: string;
+  thumbnailUrl?: string;
   order: number;
 }
 
+export interface GalleryImage {
+  url: string;
+  alt?: string;
+  caption?: string;
+}
+
 export interface CaseStudyDetail extends CaseStudyListItem {
+  heroImageUrl?: string;
+  galleryImages?: GalleryImage[];
   longDescription: SanityBlock[];
   testimonial?: { quote: string; author: string; role: string };
 }
@@ -105,22 +115,82 @@ export async function getSectionBackgroundBySlug(slug: string): Promise<SectionB
 
 export async function getAllCaseStudies(): Promise<CaseStudyListItem[]> {
   if (!client) return [];
-  return client.fetch<CaseStudyListItem[]>(
+  const raw = await client.fetch<
+    (Omit<CaseStudyListItem, "thumbnailUrl"> & { thumbnail?: SanityImageSource })[]
+  >(
     `*[_type == "caseStudy"] | order(order asc) {
-      _id, title, "slug": slug.current, client, category, tags, shortDescription, order
+      _id, title, "slug": slug.current, client, category, year, tags, shortDescription, thumbnail, order
     }`
   );
+  return raw.map((cs) => ({
+    _id: cs._id,
+    title: cs.title,
+    slug: cs.slug,
+    client: cs.client,
+    category: cs.category,
+    year: cs.year,
+    tags: cs.tags,
+    shortDescription: cs.shortDescription,
+    thumbnailUrl: cs.thumbnail
+      ? urlFor(cs.thumbnail).width(800).quality(75).auto("format").url()
+      : undefined,
+    order: cs.order,
+  }));
 }
 
 export async function getCaseStudyBySlug(slug: string): Promise<CaseStudyDetail | null> {
   if (!client) return null;
-  return client.fetch<CaseStudyDetail | null>(
+  const raw = await client.fetch<
+    (Omit<CaseStudyDetail, "thumbnailUrl" | "heroImageUrl" | "galleryImages"> & {
+      thumbnail?: SanityImageSource;
+      heroImage?: SanityImageSource;
+      galleryImages?: { asset: SanityImageSource; alt?: string; caption?: string }[];
+    }) | null
+  >(
     `*[_type == "caseStudy" && slug.current == $slug][0] {
-      _id, title, "slug": slug.current, client, category, tags, shortDescription,
+      _id, title, "slug": slug.current, client, category, year, tags, shortDescription,
+      thumbnail, heroImage,
+      galleryImages[] { asset->, alt, caption },
       longDescription, testimonial, order
     }`,
     { slug }
   );
+  if (!raw) return null;
+  return {
+    _id: raw._id,
+    title: raw.title,
+    slug: raw.slug,
+    client: raw.client,
+    category: raw.category,
+    year: raw.year,
+    tags: raw.tags,
+    shortDescription: raw.shortDescription,
+    thumbnailUrl: raw.thumbnail
+      ? urlFor(raw.thumbnail).width(800).quality(75).auto("format").url()
+      : undefined,
+    heroImageUrl: raw.heroImage
+      ? urlFor(raw.heroImage).width(1920).quality(80).auto("format").url()
+      : undefined,
+    galleryImages: raw.galleryImages?.map((img) => ({
+      url: urlFor(img.asset).width(1400).quality(80).auto("format").url(),
+      alt: img.alt,
+      caption: img.caption,
+    })),
+    longDescription: raw.longDescription,
+    testimonial: raw.testimonial,
+    order: raw.order,
+  };
+}
+
+export async function getAdjacentCaseStudies(
+  currentSlug: string
+): Promise<{ prev: CaseStudyListItem | null; next: CaseStudyListItem | null }> {
+  const all = await getAllCaseStudies();
+  const idx = all.findIndex((cs) => cs.slug === currentSlug);
+  return {
+    prev: idx > 0 ? all[idx - 1] : null,
+    next: idx < all.length - 1 ? all[idx + 1] : null,
+  };
 }
 
 export async function getCaseStudySlugs(): Promise<string[]> {

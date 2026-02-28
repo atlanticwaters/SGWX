@@ -38,6 +38,14 @@ export default function SectionBackground({ src, alt = "" }: SectionBackgroundPr
           mixBlendMode: "color",
         }}
       />
+      {/* Top radial green glow */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 50% at 50% 0%, rgba(110,168,127,0.07) 0%, transparent 70%)",
+        }}
+      />
       {/* Edge vignette */}
       <div
         className="absolute inset-0"

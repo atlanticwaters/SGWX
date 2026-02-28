@@ -26,7 +26,6 @@ export default function FitSection() {
             eyebrow="Fit Check"
             heading="Let\u2019s Be Direct."
             subheading="The Sageworx model works best when there\u2019s a true partnership. We\u2019re a strong fit if you value senior judgment, strategic clarity, and close collaboration."
-            centered
           />
         </AnimatedSection>
 

@@ -23,9 +23,9 @@ const transition = (delay: number) => ({
   delay,
 });
 
-export default function WorkHero() {
+export default function WorkHero({ count = 0 }: { count?: number }) {
   return (
-    <section className="relative flex min-h-[60vh] items-center justify-center overflow-hidden bg-sgwx-bg">
+    <section className="relative flex min-h-[50vh] items-center justify-center overflow-hidden bg-sgwx-bg">
       <AnimationCanvas
         cameraPosition={[0, 145, 210]}
         cameraFov={52}
@@ -52,6 +52,26 @@ export default function WorkHero() {
           Real outcomes for real brands. Explore how Sageworx teams have
           delivered impact across industries.
         </motion.p>
+
+        {/* HUD status line */}
+        <motion.div
+          className="mt-8 flex items-center justify-center gap-8 font-mono text-[10px] tracking-widest uppercase"
+          {...fadeUp}
+          transition={transition(0.24)}
+        >
+          <span className="text-sgwx-text-muted">
+            Projects:{" "}
+            <span className="text-sgwx-green">{count}</span>
+          </span>
+          <span
+            className="h-px w-8 bg-sgwx-border"
+            aria-hidden="true"
+          />
+          <span className="text-sgwx-text-muted">
+            Status:{" "}
+            <span className="text-sgwx-cyan">Active</span>
+          </span>
+        </motion.div>
       </div>
     </section>
   );

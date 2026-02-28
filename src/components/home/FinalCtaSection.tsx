@@ -9,11 +9,11 @@ export default function FinalCtaSection({ backgroundUrl }: { backgroundUrl?: str
       {backgroundUrl && <SectionBackground src={backgroundUrl} />}
       <Container>
         <AnimatedSection>
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="ml-auto max-w-3xl text-right">
             <h2 className="text-3xl font-bold tracking-tight text-sgwx-text md:text-4xl lg:text-5xl">
               Ready to move forward faster?
             </h2>
-            <div className="mt-10 flex items-center justify-center gap-4">
+            <div className="mt-10 flex items-center justify-end gap-4">
               <Button href="/contact">Activate Your Team</Button>
               <Button href="/members" variant="secondary">
                 Meet Our Members

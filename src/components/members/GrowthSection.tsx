@@ -11,6 +11,7 @@ export default function GrowthSection() {
             eyebrow="How We Grow"
             heading="Growth Fueled by Independent Masters of Their Craft."
             size="medium"
+            align="right"
           />
         </AnimatedSection>
 

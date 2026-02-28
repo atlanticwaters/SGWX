@@ -18,7 +18,7 @@ export default function GovernanceSection() {
           <SectionHeading
             eyebrow="Governance & Risk"
             heading="Built for Real-World Constraints"
-            centered
+            align="right"
           />
         </AnimatedSection>
 

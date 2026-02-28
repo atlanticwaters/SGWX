@@ -11,7 +11,6 @@ export default function JoinSection() {
           <SectionHeading
             heading="Interested in Joining Sageworx?"
             subheading="Let&rsquo;s Take Off Together."
-            centered
           />
         </AnimatedSection>
 

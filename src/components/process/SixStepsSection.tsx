@@ -109,7 +109,7 @@ export default function SixStepsSection() {
           <SectionHeading
             eyebrow="The Process"
             heading="Six Steps. No Wasted Motion."
-            centered
+            align="right"
           />
         </AnimatedSection>
 

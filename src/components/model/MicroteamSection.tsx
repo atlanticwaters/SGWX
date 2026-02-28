@@ -17,6 +17,7 @@ export default function MicroteamSection() {
             eyebrow="Microteams"
             heading="Small by Design. Senior by Default."
             size="medium"
+            align="right"
           />
         </AnimatedSection>
 

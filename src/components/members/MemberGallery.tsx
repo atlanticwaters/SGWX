@@ -70,7 +70,7 @@ export default function MemberGallery({ members }: MemberGalleryProps) {
           <SectionHeading
             eyebrow="The Collective"
             heading="The Minds Behind Our Mission."
-            centered
+            align="right"
           />
         </AnimatedSection>
 

@@ -10,6 +10,7 @@ export default function TechnologySection() {
           <SectionHeading
             eyebrow="Technology"
             heading="The Right Tools for the Job."
+            align="right"
           />
         </AnimatedSection>
 

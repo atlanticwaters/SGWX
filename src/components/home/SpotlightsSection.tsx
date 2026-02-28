@@ -24,9 +24,9 @@ export default function SpotlightsSection({ posts, backgroundUrl }: SpotlightsSe
       <Container>
         <AnimatedSection>
           <SectionHeading
+            eyebrow="Spotlights"
             heading="Every project is an opportunity to push boundaries, challenge conventions, and make a mark."
             size="display"
-            centered
           />
         </AnimatedSection>
 

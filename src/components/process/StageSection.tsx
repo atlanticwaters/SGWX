@@ -32,7 +32,7 @@ const accentStyles = {
     result: "text-sgwx-green",
     glow: "bg-sgwx-green",
     tagHover: "hover:border-sgwx-green/60 hover:bg-sgwx-green/[0.08]",
-    numeralStroke: "rgba(23, 168, 107, 0.06)",
+    numeralStroke: "rgba(240, 244, 242, 0.12)",
   },
   cyan: {
     label: "text-sgwx-cyan",
@@ -40,7 +40,7 @@ const accentStyles = {
     result: "text-sgwx-cyan",
     glow: "bg-sgwx-cyan",
     tagHover: "hover:border-sgwx-cyan/60 hover:bg-sgwx-cyan/[0.08]",
-    numeralStroke: "rgba(136, 238, 255, 0.06)",
+    numeralStroke: "rgba(240, 244, 242, 0.12)",
   },
 };
 
@@ -62,17 +62,21 @@ export default function StageSection({
   const sectionRef = useRef<HTMLElement>(null);
   const colors = accentStyles[accent];
 
+  // Alternate: odd steps (01, 03) numeral on left, even steps (02, 04) on right
+  const stepNum = parseInt(number, 10);
+  const numeralOnLeft = stepNum % 2 === 1;
+
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
   });
-  const numeralY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const numeralY = useTransform(scrollYProgress, [0, 1], [40, -80]);
 
   return (
     <section
       ref={sectionRef}
       id={id}
-      className="relative flex min-h-screen items-center overflow-hidden py-24"
+      className="relative flex min-h-screen items-center overflow-x-clip py-24"
     >
       {/* Top divider */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sgwx-border to-transparent" />
@@ -84,7 +88,9 @@ export default function StageSection({
 
       {/* Sideways label */}
       <motion.div
-        className="absolute left-12 top-1/2 origin-center -translate-y-1/2 -rotate-90 whitespace-nowrap font-mono text-[10px] font-medium tracking-[0.4em] uppercase text-sgwx-text-dim max-md:hidden"
+        className={`absolute top-1/2 origin-center -translate-y-1/2 -rotate-90 whitespace-nowrap font-mono text-[10px] font-medium tracking-[0.4em] uppercase text-sgwx-text-dim max-md:hidden ${
+          numeralOnLeft ? "right-12" : "left-12"
+        }`}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: false, margin: "-35%" }}
@@ -93,26 +99,59 @@ export default function StageSection({
         stage {number} &mdash; {name}
       </motion.div>
 
-      {/* Large outlined numeral — centering wrapper */}
-      <div className="absolute right-[-2rem] top-1/2 -translate-y-1/2 max-md:right-[-1rem]">
+      {/* Large outlined numeral — alternates left/right */}
+      <div
+        className={`absolute top-1/2 -translate-y-1/2 max-md:hidden ${
+          numeralOnLeft
+            ? "left-[-3rem]"
+            : "right-[-3rem]"
+        }`}
+      >
         <motion.div
-          className="pointer-events-none select-none text-[clamp(15rem,25vw,22rem)] font-black leading-none text-transparent max-md:text-[10rem]"
+          className="pointer-events-none select-none text-[clamp(18rem,28vw,26rem)] font-black leading-none text-transparent"
           style={{
-            WebkitTextStroke: `2px ${colors.numeralStroke}`,
+            WebkitTextStroke: `1.5px ${colors.numeralStroke}`,
             y: numeralY,
           }}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: false, margin: "-35%" }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          initial={{
+            opacity: 0,
+            x: numeralOnLeft ? -120 : 120,
+          }}
+          whileInView={{
+            opacity: 1,
+            x: 0,
+          }}
+          viewport={{ once: false, margin: "-20%" }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         >
           {number}
         </motion.div>
       </div>
 
-      {/* Content */}
+      {/* Mobile numeral — centered behind content */}
+      <div className="absolute inset-0 flex items-center justify-center md:hidden">
+        <motion.div
+          className="pointer-events-none select-none text-[10rem] font-black leading-none text-transparent"
+          style={{
+            WebkitTextStroke: `1.5px ${colors.numeralStroke}`,
+            y: numeralY,
+          }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: false, margin: "-20%" }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {number}
+        </motion.div>
+      </div>
+
+      {/* Content — shifts to opposite side of numeral */}
       <motion.div
-        className="relative z-10 ml-[clamp(6rem,12vw,10rem)] max-w-[720px] max-md:mx-8 max-md:ml-8"
+        className={`relative z-10 max-w-[720px] max-md:mx-8 ${
+          numeralOnLeft
+            ? "ml-auto mr-[clamp(6rem,12vw,10rem)] max-md:mr-8"
+            : "ml-[clamp(6rem,12vw,10rem)] max-md:ml-8"
+        }`}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, margin: "-35%" }}

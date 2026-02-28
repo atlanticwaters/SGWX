@@ -1,4 +1,5 @@
 type Size = "display" | "large" | "medium" | "small";
+type Align = "left" | "right";
 
 const headingSizes: Record<Size, string> = {
   display: "text-4xl font-light tracking-tight text-sgwx-text md:text-6xl lg:text-7xl",
@@ -11,18 +12,23 @@ interface SectionHeadingProps {
   eyebrow?: string;
   heading: string;
   subheading?: string;
-  centered?: boolean;
+  align?: Align;
   size?: Size;
   className?: string;
 }
 
-export default function SectionHeading({ eyebrow, heading, subheading, centered = false, size = "large", className = "" }: SectionHeadingProps) {
+export default function SectionHeading({ eyebrow, heading, subheading, align = "left", size = "large", className = "" }: SectionHeadingProps) {
+  const isRight = align === "right";
+
   return (
-    <div className={`max-w-3xl ${centered ? "mx-auto text-center" : ""} ${className}`}>
+    <div className={`max-w-3xl ${isRight ? "ml-auto text-right" : ""} ${className}`}>
       {eyebrow && (
-        <p className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+        <p className="mb-3 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
           {eyebrow}
         </p>
+      )}
+      {eyebrow && (
+        <div className={`mb-5 h-0.5 w-8 bg-sgwx-green ${isRight ? "ml-auto" : ""}`} />
       )}
       <h2 className={headingSizes[size]}>
         {heading}

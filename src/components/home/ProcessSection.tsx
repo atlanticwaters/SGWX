@@ -19,9 +19,9 @@ export default function ProcessSection({ backgroundUrl }: { backgroundUrl?: stri
       <Container>
         <AnimatedSection>
           <SectionHeading
+            eyebrow="Our Process"
             heading="The Growth Sequence"
             subheading="Smart content + experiences built for every stage of your brand\u2019s evolution."
-            centered
           />
         </AnimatedSection>
 

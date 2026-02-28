@@ -49,6 +49,7 @@ export default function ExpertsSection({ backgroundUrl }: { backgroundUrl?: stri
               heading="Hand-Picked Experts"
               subheading="Put our robust network to work."
               size="display"
+              align="right"
             />
             <p className="mt-6 text-base leading-relaxed text-sgwx-text-muted">
               We assemble expert teams for the challenge at hand. Specialists in

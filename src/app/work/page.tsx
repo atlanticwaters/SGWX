@@ -14,7 +14,7 @@ export default async function WorkPage() {
 
   return (
     <>
-      <WorkHero />
+      <WorkHero count={caseStudies.length} />
       <CaseStudyGrid caseStudies={caseStudies} />
     </>
   );
