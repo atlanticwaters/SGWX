@@ -2,12 +2,14 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import AnimatedSection from "@/components/ui/AnimatedSection";
+import CaseStudyHero from "@/components/work/CaseStudyHero";
+import ParallaxGallery from "@/components/work/ParallaxGallery";
 import {
   getCaseStudyBySlug,
   getCaseStudySlugs,
   getAdjacentCaseStudies,
 } from "@/lib/sanity/queries";
-import type { SanityBlock, GalleryImage } from "@/lib/sanity/queries";
+import type { SanityBlock } from "@/lib/sanity/queries";
 
 export async function generateStaticParams() {
   const slugs = await getCaseStudySlugs();
@@ -22,54 +24,6 @@ function blocksToText(blocks: SanityBlock[]): string[] {
   return blocks.map((block) =>
     block.children.map((c) => c.text).join("")
   );
-}
-
-/**
- * Renders gallery images in a Fabrica-style dense layout:
- * full-width → 2-col pair → full-width → 2-col pair → ...
- */
-function GalleryLayout({ images, title }: { images: GalleryImage[]; title: string }) {
-  const blocks: React.ReactNode[] = [];
-  let i = 0;
-
-  while (i < images.length) {
-    // Full-width image
-    blocks.push(
-      <div key={`fw-${i}`} className="relative w-full overflow-hidden" style={{ aspectRatio: "16/9" }}>
-        <Image
-          src={images[i].url}
-          alt={images[i].alt || title}
-          fill
-          className="object-cover"
-          style={{ filter: "brightness(0.92) contrast(1.05) saturate(0.9)" }}
-        />
-      </div>
-    );
-    i++;
-
-    // 2-column pair
-    if (i < images.length) {
-      const pair = images.slice(i, i + 2);
-      blocks.push(
-        <div key={`pair-${i}`} className="grid grid-cols-1 gap-1 md:grid-cols-2">
-          {pair.map((img, j) => (
-            <div key={j} className="relative overflow-hidden" style={{ aspectRatio: "4/3" }}>
-              <Image
-                src={img.url}
-                alt={img.alt || title}
-                fill
-                className="object-cover"
-                style={{ filter: "brightness(0.92) contrast(1.05) saturate(0.9)" }}
-              />
-            </div>
-          ))}
-        </div>
-      );
-      i += pair.length;
-    }
-  }
-
-  return <div className="flex flex-col gap-1">{blocks}</div>;
 }
 
 export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
@@ -89,32 +43,8 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
 
   return (
     <article className="bg-sgwx-bg">
-      {/* ── Hero image ── */}
-      <section className="relative w-full overflow-hidden aspect-[4/3] md:aspect-[16/9]">
-        {study.heroImageUrl ? (
-          <Image
-            src={study.heroImageUrl}
-            alt={study.title}
-            fill
-            priority
-            className="object-cover"
-            style={{ filter: "brightness(0.75) contrast(1.1) saturate(0.85)" }}
-          />
-        ) : (
-          <div
-            className="absolute inset-0"
-            style={{
-              background: "linear-gradient(135deg, #0a1f18 0%, #021a14 50%, #042a3d 100%)",
-            }}
-          />
-        )}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: "linear-gradient(to top, rgba(12,15,14,0.95) 0%, rgba(12,15,14,0.3) 50%, transparent 100%)",
-          }}
-        />
-      </section>
+      {/* ── Hero image with parallax ── */}
+      <CaseStudyHero imageUrl={study.heroImageUrl} title={study.title} />
 
       {/* ── Title + metadata ── */}
       <section className="mx-auto max-w-[1520px] px-6 md:px-9">
@@ -167,16 +97,14 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         </AnimatedSection>
       </section>
 
-      {/* ── Dense image gallery ── */}
+      {/* ── Parallax image gallery ── */}
       {study.galleryImages && study.galleryImages.length > 0 && (
         <section className="mx-auto max-w-[1520px] px-6 pb-1 md:px-9">
-          <AnimatedSection delay={0.1}>
-            <GalleryLayout images={study.galleryImages} title={study.title} />
-          </AnimatedSection>
+          <ParallaxGallery images={study.galleryImages} title={study.title} />
         </section>
       )}
 
-      {/* ── Testimonial (subtle, inline) ── */}
+      {/* ── Testimonial ── */}
       {study.testimonial && (
         <section className="mx-auto max-w-[1520px] px-6 md:px-9">
           <AnimatedSection delay={0.15}>
