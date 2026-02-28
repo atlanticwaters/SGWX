@@ -28,25 +28,25 @@ interface SectionBackgroundProps {
  * Renders a full-bleed background image with a programmatic color grade
  * that matches the SGWX brand palette.
  *
- * The grade is achieved in three layers:
- * 1. The source image, heavily darkened & desaturated via CSS filter
- * 2. A color overlay using the selected tint with mix-blend-mode
- * 3. A vignette gradient to feather the edges
+ * The image fades in from the overlay color and scales down slightly,
+ * creating a cinematic reveal effect on load.
  */
 export default function SectionBackground({ src, alt = "", overlayColor = "sage" }: SectionBackgroundProps) {
   const color = OVERLAY_GRADIENTS[overlayColor] ? overlayColor : "sage";
 
   return (
     <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
-      {/* Base image — darkened & desaturated */}
+      {/* Base image — animate in from scaled/transparent to final state */}
       <Image
         src={src}
         alt={alt}
         fill
         sizes="100vw"
-        className="object-cover"
+        className="object-cover animate-[bgReveal_1.8s_cubic-bezier(0.16,1,0.3,1)_forwards]"
         style={{
-          filter: "brightness(0.18) contrast(1.15) saturate(0.25)",
+          filter: "brightness(0.35) contrast(1.1) saturate(0.3)",
+          opacity: 0,
+          transform: "scale(1.06)",
         }}
         quality={75}
       />
@@ -65,12 +65,12 @@ export default function SectionBackground({ src, alt = "", overlayColor = "sage"
           background: GLOW_GRADIENTS[color],
         }}
       />
-      {/* Edge vignette */}
+      {/* Edge vignette — softer so image texture shows through */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse at 50% 50%, transparent 20%, rgba(12,15,14,0.5) 70%, rgba(12,15,14,0.85) 100%)",
+            "radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(12,15,14,0.35) 70%, rgba(12,15,14,0.65) 100%)",
         }}
       />
     </div>
