@@ -52,7 +52,7 @@ export default function CaseStudyCard({
 
       {/* Text content */}
       <div className="p-6">
-        <h3 className="text-xl font-semibold tracking-tight text-sgwx-text">
+        <h3 className="text-xl font-normal tracking-tight text-sgwx-text">
           {title}
         </h3>
         <p className="mt-2 text-sm leading-relaxed text-sgwx-text-muted">

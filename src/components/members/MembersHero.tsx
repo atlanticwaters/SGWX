@@ -18,7 +18,7 @@ export default function MembersHero() {
     <section className="relative flex min-h-[80vh] items-center justify-center overflow-hidden bg-sgwx-bg">
       <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
         <motion.h1
-          className="text-5xl font-bold tracking-tight text-sgwx-text md:text-6xl lg:text-7xl"
+          className="text-5xl font-thin tracking-tight text-sgwx-text md:text-6xl lg:text-7xl"
           {...fadeUp}
           transition={transition(0)}
         >

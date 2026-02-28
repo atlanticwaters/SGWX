@@ -56,7 +56,7 @@ export default async function SpotlightDetailPage({
 
         {/* Title */}
         <AnimatedSection delay={0.1}>
-          <h1 className="mt-4 text-4xl font-bold tracking-tight text-sgwx-text md:text-5xl">
+          <h1 className="mt-4 text-4xl font-normal tracking-tight text-sgwx-text md:text-5xl">
             {spotlight.title}
           </h1>
         </AnimatedSection>

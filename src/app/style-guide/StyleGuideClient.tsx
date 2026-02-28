@@ -90,15 +90,18 @@ const glows = [
 const typeSamples = [
   { label: "Display (7xl)", className: "text-4xl font-thin tracking-tight text-white md:text-6xl lg:text-7xl", text: "Go Further. Faster." },
   { label: "Display (6xl)", className: "text-3xl font-thin tracking-tight text-white md:text-5xl lg:text-6xl", text: "Strategic Precision" },
-  { label: "Heading (5xl)", className: "text-3xl font-medium tracking-tight text-white md:text-4xl lg:text-5xl", text: "Stop Resetting. Start Building." },
-  { label: "Heading (4xl)", className: "text-2xl font-medium tracking-tight text-white md:text-3xl lg:text-4xl", text: "Momentum Compounds" },
-  { label: "Heading (3xl)", className: "text-xl font-medium tracking-tight text-white md:text-2xl lg:text-3xl", text: "Built for Real-World Constraints" },
-  { label: "Heading (2xl)", className: "text-lg font-medium tracking-tight text-white md:text-xl lg:text-2xl", text: "Structured to Flex" },
-  { label: "Heading (1xl)", className: "text-base font-medium tracking-tight text-white md:text-lg lg:text-xl", text: "Category Fluency Matters" },
+  { label: "Heading (5xl)", className: "text-3xl font-normal tracking-tight text-white md:text-4xl lg:text-5xl", text: "Stop Resetting. Start Building." },
+  { label: "Heading (4xl)", className: "text-2xl font-normal tracking-tight text-white md:text-3xl lg:text-4xl", text: "Momentum Compounds" },
+  { label: "Heading (3xl)", className: "text-xl font-normal tracking-tight text-white md:text-2xl lg:text-3xl", text: "Built for Real-World Constraints" },
+  { label: "Heading (2xl)", className: "text-lg font-normal tracking-tight text-white md:text-xl lg:text-2xl", text: "Structured to Flex" },
+  { label: "Heading (1xl)", className: "text-base font-normal tracking-tight text-white md:text-lg lg:text-xl", text: "Category Fluency Matters" },
   { label: "Body Large", className: "text-lg leading-relaxed text-white md:text-xl", text: "A clear, flexible process built for speed and follow-through. Senior teams aligned from day one." },
   { label: "Body Default", className: "text-sm leading-relaxed text-white", text: "Deep expertise where it matters most, with meaningful fluency across adjacent disciplines. Our teams think beyond single roles." },
+  { label: "Body Small", className: "text-xs leading-relaxed text-white", text: "Contracted, governed, and insured under a single engagement. AI tools applied in a controlled, task-specific manner." },
   { label: "Eyebrow / Label", className: "font-mono text-[10px] tracking-widest uppercase text-sgwx-yellow-pale", text: "The Growth Sequence" },
   { label: "Mono Small", className: "font-mono text-xs uppercase tracking-widest text-[#a8c4d1]", text: "Output: Sustained Momentum" },
+  { label: "Link", className: "text-sm text-sgwx-green underline underline-offset-2 decoration-sgwx-green/40 hover:text-sgwx-green-bright hover:decoration-sgwx-green-bright transition-colors", text: "View Case Study \u2192" },
+  { label: "Metadata", className: "font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim", text: "Client \u00b7 2025 \u00b7 Brand Strategy" },
 ];
 
 const weightSamples = [
@@ -119,7 +122,7 @@ function GuideSection({ id, title, children }: { id: string; title: string; chil
       <Container>
         <div className="mb-10 border-b border-sgwx-border pb-4">
           <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">{id}</p>
-          <h2 className="mt-2 text-2xl font-bold tracking-tight text-sgwx-text md:text-3xl">{title}</h2>
+          <h2 className="mt-2 text-2xl font-normal tracking-tight text-sgwx-text md:text-3xl">{title}</h2>
         </div>
         {children}
       </Container>
@@ -163,7 +166,7 @@ export default function StyleGuideClient() {
       <div className="border-b border-sgwx-border bg-sgwx-bg-alt py-16 md:py-24">
         <Container>
           <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Design System</p>
-          <h1 className="mt-3 text-4xl font-bold tracking-tight text-sgwx-text md:text-5xl lg:text-6xl">
+          <h1 className="mt-3 text-4xl font-thin tracking-tight text-sgwx-text md:text-5xl lg:text-6xl">
             SGWX Style Guide
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-sgwx-text-muted">
@@ -252,15 +255,15 @@ export default function StyleGuideClient() {
         <div className="mb-12 grid grid-cols-1 gap-8 md:grid-cols-2">
           <div>
             <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-sgwx-text-dim">Sans (Inter)</h3>
-            <p className="text-4xl font-bold text-sgwx-text">ABCDEFGHIJKLM</p>
-            <p className="text-4xl font-bold text-sgwx-text">nopqrstuvwxyz</p>
-            <p className="mt-2 text-4xl font-bold text-sgwx-text">0123456789</p>
+            <p className="text-4xl font-normal text-sgwx-text">ABCDEFGHIJKLM</p>
+            <p className="text-4xl font-normal text-sgwx-text">nopqrstuvwxyz</p>
+            <p className="mt-2 text-4xl font-normal text-sgwx-text">0123456789</p>
           </div>
           <div>
             <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-sgwx-text-dim">Mono (JetBrains Mono)</h3>
-            <p className="font-mono text-4xl font-bold text-sgwx-text">ABCDEFGHIJKLM</p>
-            <p className="font-mono text-4xl font-bold text-sgwx-text">nopqrstuvwxyz</p>
-            <p className="mt-2 font-mono text-4xl font-bold text-sgwx-text">0123456789</p>
+            <p className="font-mono text-4xl font-normal text-sgwx-text">ABCDEFGHIJKLM</p>
+            <p className="font-mono text-4xl font-normal text-sgwx-text">nopqrstuvwxyz</p>
+            <p className="mt-2 font-mono text-4xl font-normal text-sgwx-text">0123456789</p>
           </div>
         </div>
 
@@ -586,7 +589,7 @@ const transition = (delay: number) => ({
         <Container>
           <div className="mb-10 border-b border-sgwx-border pb-4">
             <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">spacing</p>
-            <h2 className="mt-2 text-2xl font-bold tracking-tight text-sgwx-text md:text-3xl">Spacing & Layout</h2>
+            <h2 className="mt-2 text-2xl font-normal tracking-tight text-sgwx-text md:text-3xl">Spacing & Layout</h2>
           </div>
           <div className="space-y-6">
             <div className="rounded-xl border border-sgwx-border bg-sgwx-surface p-6">

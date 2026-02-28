@@ -45,7 +45,7 @@ export default function PageTransition() {
             },
           }}
         >
-          <p className="text-2xl font-bold tracking-tight text-sgwx-text">
+          <p className="text-2xl font-normal tracking-tight text-sgwx-text">
             Sageworx
           </p>
           <div className="mt-3 flex items-center gap-2 font-mono text-[10px] tracking-widest uppercase text-sgwx-text-muted">

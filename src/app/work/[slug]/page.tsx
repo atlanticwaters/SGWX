@@ -121,7 +121,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         <AnimatedSection>
           <div className="py-12 md:py-16">
             {/* Title */}
-            <h1 className="text-4xl font-bold tracking-tight text-sgwx-text md:text-5xl lg:text-6xl">
+            <h1 className="text-4xl font-normal tracking-tight text-sgwx-text md:text-5xl lg:text-6xl">
               {study.title}
             </h1>
 
@@ -228,7 +228,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
                   <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
                     Previous Project
                   </p>
-                  <p className="mt-2 text-2xl font-bold tracking-tight text-sgwx-text md:text-3xl">
+                  <p className="mt-2 text-2xl font-normal tracking-tight text-sgwx-text md:text-3xl">
                     {adjacent.prev.title}
                   </p>
                 </div>
@@ -259,7 +259,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
                   <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
                     Next Project
                   </p>
-                  <p className="mt-2 text-2xl font-bold tracking-tight text-sgwx-text md:text-3xl">
+                  <p className="mt-2 text-2xl font-normal tracking-tight text-sgwx-text md:text-3xl">
                     {adjacent.next.title}
                   </p>
                 </div>

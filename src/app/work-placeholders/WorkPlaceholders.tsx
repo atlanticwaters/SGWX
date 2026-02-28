@@ -86,7 +86,7 @@ export default function WorkPlaceholders() {
         {/* Header */}
         <AnimatedSection>
           <Badge className="mb-4">Internal Reference</Badge>
-          <h1 className="text-4xl font-bold tracking-tight text-sgwx-text md:text-5xl">
+          <h1 className="text-4xl font-normal tracking-tight text-sgwx-text md:text-5xl">
             Work Placeholders
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-sgwx-text-muted">

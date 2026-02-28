@@ -139,7 +139,7 @@ export default function SixStepsSection() {
                       {step.num}
                     </span>
                     <span
-                      className={`flex-1 text-lg font-semibold tracking-tight md:text-xl ${
+                      className={`flex-1 text-lg font-normal tracking-tight md:text-xl ${
                         isActive ? "text-sgwx-text" : "text-sgwx-text-muted"
                       } transition-colors`}
                     >

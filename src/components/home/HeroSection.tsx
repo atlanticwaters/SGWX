@@ -41,7 +41,7 @@ export default function HeroSection() {
       {/* Content */}
       <div className="relative z-10 max-w-3xl px-6 pr-8 text-right md:pr-16 lg:pr-24" style={{ marginTop: "-5vh" }}>
         <motion.h1
-          className="text-5xl font-bold tracking-tight text-sgwx-text md:text-6xl lg:text-8xl"
+          className="text-5xl font-thin tracking-tight text-sgwx-text md:text-6xl lg:text-8xl"
           {...fadeUp}
           transition={transition(0)}
         >

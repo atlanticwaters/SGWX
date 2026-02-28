@@ -63,7 +63,7 @@ export default function IcpSection() {
                   {card.badge}
                 </p>
 
-                <h3 className="text-xl font-semibold tracking-tight text-sgwx-text md:text-2xl">
+                <h3 className="text-xl font-normal tracking-tight text-sgwx-text md:text-2xl">
                   {card.headline}
                 </h3>
 

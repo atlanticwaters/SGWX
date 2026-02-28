@@ -10,7 +10,7 @@ export default function FinalCtaSection({ backgroundUrl }: { backgroundUrl?: str
       <Container>
         <AnimatedSection>
           <div className="ml-auto max-w-3xl text-right">
-            <h2 className="text-3xl font-bold tracking-tight text-sgwx-text md:text-4xl lg:text-5xl">
+            <h2 className="text-3xl font-normal tracking-tight text-sgwx-text md:text-4xl lg:text-5xl">
               Ready to move forward faster?
             </h2>
             <div className="mt-10 flex items-center justify-end gap-4">

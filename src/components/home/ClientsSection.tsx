@@ -39,7 +39,7 @@ export default function ClientsSection({ backgroundUrl }: { backgroundUrl?: stri
           {clients.map((client, i) => (
             <AnimatedSection key={client.type} delay={0.1 + i * 0.08}>
               <Card className="flex h-full flex-col gap-5">
-                <h3 className="text-xl font-semibold tracking-tight text-sgwx-text md:text-2xl">
+                <h3 className="text-xl font-normal tracking-tight text-sgwx-text md:text-2xl">
                   {client.type}
                 </h3>
 

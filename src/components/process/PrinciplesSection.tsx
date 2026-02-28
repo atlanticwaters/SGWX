@@ -23,7 +23,7 @@ export default function PrinciplesSection() {
               <p className="mb-4 font-mono text-[10px] font-medium uppercase tracking-widest text-sgwx-green">
                 M-Shaped Talent
               </p>
-              <h3 className="text-xl font-semibold tracking-tight text-sgwx-text md:text-2xl">
+              <h3 className="text-xl font-normal tracking-tight text-sgwx-text md:text-2xl">
                 Built Around M-Shaped Senior Talent
               </h3>
               <div className="mt-4 space-y-4">
@@ -53,7 +53,7 @@ export default function PrinciplesSection() {
               <p className="mb-4 font-mono text-[10px] font-medium uppercase tracking-widest text-sgwx-green">
                 Flex Structure
               </p>
-              <h3 className="text-xl font-semibold tracking-tight text-sgwx-text md:text-2xl">
+              <h3 className="text-xl font-normal tracking-tight text-sgwx-text md:text-2xl">
                 Structured to Flex
               </h3>
               <div className="mt-4 space-y-4">

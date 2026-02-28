@@ -8,7 +8,7 @@ export default function ProcessCloseSection() {
       <Container>
         <AnimatedSection>
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-sgwx-text md:text-4xl lg:text-5xl">
+            <h2 className="text-3xl font-normal tracking-tight text-sgwx-text md:text-4xl lg:text-5xl">
               From clarity to momentum, without friction.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-sgwx-text-muted md:text-xl">

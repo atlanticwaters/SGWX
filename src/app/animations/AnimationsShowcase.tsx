@@ -200,7 +200,7 @@ export default function AnimationsShowcase() {
         {/* Header */}
         <AnimatedSection>
           <Badge className="mb-4">Internal Reference</Badge>
-          <h1 className="text-4xl font-bold tracking-tight text-sgwx-text md:text-5xl">
+          <h1 className="text-4xl font-normal tracking-tight text-sgwx-text md:text-5xl">
             Animation Library
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-sgwx-text-muted">
@@ -253,7 +253,7 @@ export default function AnimationsShowcase() {
 
                 {/* Info panel */}
                 <div className="flex-1 pt-2">
-                  <h3 className="text-2xl font-bold tracking-tight text-sgwx-text">
+                  <h3 className="text-2xl font-normal tracking-tight text-sgwx-text">
                     {anim.name}
                   </h3>
                   <p className="mt-3 text-base leading-relaxed text-sgwx-text-muted">
@@ -349,7 +349,7 @@ export default function AnimationsShowcase() {
                   <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
                     {df.subtitle}
                   </p>
-                  <h3 className="mt-1 text-2xl font-bold tracking-tight text-sgwx-text">
+                  <h3 className="mt-1 text-2xl font-normal tracking-tight text-sgwx-text">
                     {df.name}
                   </h3>
                   <p className="mt-3 text-base leading-relaxed text-sgwx-text-muted">
