@@ -68,6 +68,9 @@ export default function LandingPagesClient({ initialPages }: LandingPagesClientP
   const [heroHeading, setHeroHeading] = useState("");
   const [heroSubheading, setHeroSubheading] = useState("");
 
+  // Error state
+  const [error, setError] = useState<string | null>(null);
+
   /* ── Wizard helpers ──────────────────────────────────────────────────────── */
 
   function resetWizard() {
@@ -79,6 +82,7 @@ export default function LandingPagesClient({ initialPages }: LandingPagesClientP
     setVerticals([]);
     setHeroHeading("");
     setHeroSubheading("");
+    setError(null);
   }
 
   function toggleVertical(v: string) {
@@ -92,8 +96,9 @@ export default function LandingPagesClient({ initialPages }: LandingPagesClientP
   /* ── CRUD handlers ───────────────────────────────────────────────────────── */
 
   function handleCreate() {
+    setError(null);
     startTransition(async () => {
-      await createLandingPage({
+      const result = await createLandingPage({
         title: clientName,
         slug,
         clientName,
@@ -102,6 +107,10 @@ export default function LandingPagesClient({ initialPages }: LandingPagesClientP
         heroHeading: heroHeading || undefined,
         heroSubheading: heroSubheading || undefined,
       });
+      if (!result.success) {
+        setError(result.error);
+        return;
+      }
       resetWizard();
       router.refresh();
     });
@@ -109,8 +118,9 @@ export default function LandingPagesClient({ initialPages }: LandingPagesClientP
 
   function handleUpdate() {
     if (!editId) return;
+    setError(null);
     startTransition(async () => {
-      await updateLandingPage(editId, {
+      const result = await updateLandingPage(editId, {
         title: clientName,
         slug,
         clientName,
@@ -119,22 +129,36 @@ export default function LandingPagesClient({ initialPages }: LandingPagesClientP
         heroHeading: heroHeading || undefined,
         heroSubheading: heroSubheading || undefined,
       });
+      if (!result.success) {
+        setError(result.error);
+        return;
+      }
       resetWizard();
       router.refresh();
     });
   }
 
   function handleToggle(page: LandingPageListItem) {
+    setError(null);
     startTransition(async () => {
-      await toggleLandingPageStatus(page._id, page.status);
+      const result = await toggleLandingPageStatus(page._id, page.status);
+      if (!result.success) {
+        setError(result.error);
+        return;
+      }
       router.refresh();
     });
   }
 
   function handleDelete(page: LandingPageListItem) {
     if (!confirm(`Delete "${page.title || page.slug}"? This cannot be undone.`)) return;
+    setError(null);
     startTransition(async () => {
-      await deleteLandingPage(page._id);
+      const result = await deleteLandingPage(page._id);
+      if (!result.success) {
+        setError(result.error);
+        return;
+      }
       router.refresh();
     });
   }
@@ -173,6 +197,21 @@ export default function LandingPagesClient({ initialPages }: LandingPagesClientP
             + New
           </button>
         </div>
+
+        {/* ── Error Banner ────────────────────────────────────────────────── */}
+        {error && (
+          <div className="mb-6 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+            <div className="flex items-start justify-between gap-3">
+              <p>{error}</p>
+              <button
+                onClick={() => setError(null)}
+                className="shrink-0 text-red-400 hover:text-red-200"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* ── Pages Table ─────────────────────────────────────────────────── */}
         <div className="w-full overflow-x-auto">

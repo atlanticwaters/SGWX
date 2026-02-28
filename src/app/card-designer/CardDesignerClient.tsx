@@ -124,6 +124,9 @@ export default function CardDesignerClient({ initialStyles }: CardDesignerClient
   // Currently selected style id (null = new)
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
+  // Error state
+  const [error, setError] = useState<string | null>(null);
+
   // Editor state
   const [name, setName] = useState("");
   const [current, setCurrent] = useState({ ...DEFAULT_STYLE });
@@ -152,6 +155,7 @@ export default function CardDesignerClient({ initialStyles }: CardDesignerClient
 
   function handleSave() {
     if (!name.trim()) return;
+    setError(null);
 
     const slug = slugify(name);
     const data = {
@@ -161,7 +165,11 @@ export default function CardDesignerClient({ initialStyles }: CardDesignerClient
     };
 
     startTransition(async () => {
-      await upsertCardStyle(data, selectedId ?? undefined);
+      const result = await upsertCardStyle(data, selectedId ?? undefined);
+      if (!result.success) {
+        setError(result.error);
+        return;
+      }
 
       // Optimistic update for saved styles list
       if (selectedId) {
@@ -185,9 +193,14 @@ export default function CardDesignerClient({ initialStyles }: CardDesignerClient
   function handleDelete() {
     if (!selectedId) return;
     if (!confirm("Delete this card style?")) return;
+    setError(null);
 
     startTransition(async () => {
-      await deleteCardStyle(selectedId);
+      const result = await deleteCardStyle(selectedId);
+      if (!result.success) {
+        setError(result.error);
+        return;
+      }
       setStyles((prev) => prev.filter((s) => s._id !== selectedId));
       resetToNew();
       router.refresh();
@@ -216,6 +229,21 @@ export default function CardDesignerClient({ initialStyles }: CardDesignerClient
           Adjust card styles visually, preview in real time, and persist to
           Sanity.
         </p>
+
+        {/* Error Banner */}
+        {error && (
+          <div className="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+            <div className="flex items-start justify-between gap-3">
+              <p>{error}</p>
+              <button
+                onClick={() => setError(null)}
+                className="shrink-0 text-red-400 hover:text-red-200"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Main grid */}
         <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[280px_1fr]">
