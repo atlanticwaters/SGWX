@@ -42,8 +42,9 @@ function ScaleIcon() {
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      width="34"
-      height="34"
+      width="60"
+      height="60"
+      className="shrink-0"
       aria-hidden="true"
       initial={{ opacity: 0, scale: 0.92 }}
       animate={inView ? { opacity: 1, scale: 1 } : {}}
@@ -126,8 +127,9 @@ function WaveIcon() {
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
-      width="34"
-      height="34"
+      width="60"
+      height="60"
+      className="shrink-0"
       aria-hidden="true"
       initial={{ opacity: 0, scale: 0.92 }}
       animate={inView ? { opacity: 1, scale: 1 } : {}}
@@ -198,31 +200,31 @@ export default function ChangingGameSection({ backgroundUrl, overlayColor }: { b
         </AnimatedSection>
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
-          <AnimatedSection delay={0.1}>
-            <Card>
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-xl border border-sgwx-green/20 bg-sgwx-green/10">
+          <AnimatedSection delay={0.1} className="h-full">
+            <Card className="flex h-full flex-col">
+              <div className="mb-5">
                 <ScaleIcon />
               </div>
-              <h3 className="text-lg font-semibold text-sgwx-text">
+              <h3 className="text-xl font-semibold text-sgwx-text md:text-2xl">
                 Brands have been stuck choosing between two extremes.
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-sgwx-text-muted">
+              <p className="mt-3 text-sm leading-relaxed text-sgwx-text-muted md:text-base">
                 A traditional agency weighed down by static layers. Or a loose
                 collection of freelancers who are never quite on the same page.
               </p>
             </Card>
           </AnimatedSection>
 
-          <AnimatedSection delay={0.18}>
-            <Card>
-              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-xl border border-sgwx-green/20 bg-sgwx-green/10">
+          <AnimatedSection delay={0.18} className="h-full">
+            <Card className="flex h-full flex-col">
+              <div className="mb-5">
                 <WaveIcon />
               </div>
-              <h3 className="text-lg font-semibold text-sgwx-text">
+              <h3 className="text-xl font-semibold text-sgwx-text md:text-2xl">
                 The market moves too fast for the first option. Your needs are
                 too important for the second.
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-sgwx-text-muted">
+              <p className="mt-3 text-sm leading-relaxed text-sgwx-text-muted md:text-base">
                 Technology isn&apos;t the strategy. People are. The best teams
                 understand which tools elevate the work.
               </p>
