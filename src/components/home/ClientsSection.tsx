@@ -53,14 +53,14 @@ function ClientCard({
       {/* Deep Field ambient background — square canvas scaled to cover the wide card */}
       <div
         className="pointer-events-none absolute inset-0 z-0 overflow-hidden transition-opacity duration-700"
-        style={{ opacity: hovered ? 0.35 : 0.18 }}
+        style={{ opacity: hovered ? 0.55 : 0.3 }}
       >
         <div
           className="absolute left-1/2 top-1/2"
           style={{
             width: "800px",
             height: "800px",
-            transform: "translate(-50%, -50%) scaleX(2)",
+            transform: "translate(-50%, -50%) scaleX(2.5)",
             transformOrigin: "center center",
           }}
         >
@@ -68,12 +68,12 @@ function ClientCard({
         </div>
       </div>
 
-      {/* Gradient overlay for readability */}
-      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-sgwx-surface/80 via-sgwx-surface/50 to-transparent" />
+      {/* Gradient overlay for readability — lighter so animation shows through */}
+      <div className="pointer-events-none absolute inset-0 z-[1]" style={{ background: "linear-gradient(to right, rgba(22,28,25,0.7) 0%, rgba(22,28,25,0.4) 40%, rgba(22,28,25,0.15) 100%)" }} />
 
       {/* Content */}
-      <div className="relative z-[2] grid grid-cols-1 p-6 lg:grid-cols-[auto_1fr] lg:gap-8">
-        {/* Left column — heading */}
+      <div className="relative z-[2] grid grid-cols-1 p-6 lg:grid-cols-[280px_1fr] lg:gap-6">
+        {/* Left column — heading (fixed width for consistency) */}
         <div className="flex flex-col justify-center border-b border-sgwx-border-subtle pb-5 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-6">
           <div>
             <div
@@ -84,7 +84,7 @@ function ClientCard({
               }}
             />
             <h3
-              className="text-2xl font-normal tracking-tight transition-colors duration-500 md:text-3xl"
+              className="text-3xl font-thin tracking-tight transition-colors duration-500 md:text-4xl"
               style={{ color: hovered ? "#9FDBB0" : "#e8ece9" }}
             >
               {client.type}
