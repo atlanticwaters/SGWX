@@ -1,12 +1,15 @@
 import Link from "next/link";
+import Image from "next/image";
 import Card from "@/components/ui/Card";
 
 interface FeaturedMember {
   name: string;
+  slug: string;
   title: string;
   mantra: string;
   bio: string;
   favoriteTools: string;
+  photoUrl?: string;
   link?: { label: string; url: string };
 }
 
@@ -29,14 +32,24 @@ function getInitials(name: string): string {
 export default function FeaturedMemberCard({ member }: FeaturedMemberCardProps) {
   return (
     <Card hover className="h-full">
-      {/* Photo placeholder */}
+      {/* Photo */}
       <div className="relative mb-6 aspect-square w-full overflow-hidden rounded-xl bg-sgwx-surface">
+        {member.photoUrl ? (
+          <Image
+            src={member.photoUrl}
+            alt={member.name}
+            fill
+            className="object-cover"
+            style={{ filter: "brightness(0.9) contrast(1.05) saturate(0.85)" }}
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            <span className="text-5xl font-bold text-sgwx-text-dim">
+              {getInitials(member.name)}
+            </span>
+          </div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-sgwx-bg/80 via-transparent to-transparent" />
-        <div className="flex h-full items-center justify-center">
-          <span className="text-5xl font-bold text-sgwx-text-dim">
-            {getInitials(member.name)}
-          </span>
-        </div>
       </div>
 
       {/* Name */}
@@ -67,16 +80,24 @@ export default function FeaturedMemberCard({ member }: FeaturedMemberCardProps) 
         </p>
       </div>
 
-      {/* Link */}
-      {member.link?.url && (
+      {/* Links */}
+      <div className="mt-6 flex flex-wrap items-center gap-4">
         <Link
-          href={member.link.url}
-          className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-sgwx-green transition-colors hover:text-sgwx-green-bright"
+          href={`/members/${member.slug}`}
+          className="inline-flex items-center gap-2 text-sm font-medium text-sgwx-green transition-colors hover:text-sgwx-green-bright"
         >
-          {member.link.label || "Learn More"}
+          View Profile
           <span aria-hidden="true">&rarr;</span>
         </Link>
-      )}
+        {member.link?.url && (
+          <Link
+            href={member.link.url}
+            className="inline-flex items-center gap-2 text-sm text-sgwx-text-muted transition-colors hover:text-sgwx-text"
+          >
+            {member.link.label || "External"}
+          </Link>
+        )}
+      </div>
     </Card>
   );
 }

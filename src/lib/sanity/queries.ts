@@ -60,6 +60,7 @@ export interface MemberItem {
   characterMetaphor: string;
   bio: string;
   favoriteTools: string;
+  photoUrl?: string;
   link?: { label: string; url: string };
   isFeatured: boolean;
   order: number;
@@ -231,20 +232,66 @@ export async function getBlogPostSlugs(): Promise<string[]> {
 
 export async function getFeaturedMembers(): Promise<MemberItem[]> {
   if (!client) return [];
-  return client.fetch<MemberItem[]>(
+  const raw = await client.fetch<
+    (Omit<MemberItem, "photoUrl"> & { photo?: SanityImageSource })[]
+  >(
     `*[_type == "member" && isFeatured == true] | order(order asc) {
       _id, name, "slug": slug.current, title, mantra, characterMetaphor,
-      bio, favoriteTools, "link": link { label, url }, isFeatured, order
+      bio, favoriteTools, photo, "link": link { label, url }, isFeatured, order
     }`
   );
+  return raw.map((m) => ({
+    ...m,
+    photoUrl: m.photo
+      ? urlFor(m.photo).width(600).height(600).quality(80).auto("format").url()
+      : undefined,
+    photo: undefined,
+  })) as MemberItem[];
 }
 
 export async function getAllMembers(): Promise<MemberItem[]> {
   if (!client) return [];
-  return client.fetch<MemberItem[]>(
+  const raw = await client.fetch<
+    (Omit<MemberItem, "photoUrl"> & { photo?: SanityImageSource })[]
+  >(
     `*[_type == "member"] | order(order asc) {
-      _id, name, "slug": slug.current, title, mantra, isFeatured, order
+      _id, name, "slug": slug.current, title, mantra, photo, isFeatured, order
     }`
+  );
+  return raw.map((m) => ({
+    ...m,
+    photoUrl: m.photo
+      ? urlFor(m.photo).width(200).height(200).quality(75).auto("format").url()
+      : undefined,
+    photo: undefined,
+  })) as MemberItem[];
+}
+
+export async function getMemberBySlug(slug: string): Promise<MemberItem | null> {
+  if (!client) return null;
+  const raw = await client.fetch<
+    (Omit<MemberItem, "photoUrl"> & { photo?: SanityImageSource }) | null
+  >(
+    `*[_type == "member" && slug.current == $slug][0] {
+      _id, name, "slug": slug.current, title, mantra, characterMetaphor,
+      bio, favoriteTools, photo, "link": link { label, url }, isFeatured, order
+    }`,
+    { slug }
+  );
+  if (!raw) return null;
+  return {
+    ...raw,
+    photoUrl: raw.photo
+      ? urlFor(raw.photo).width(800).height(800).quality(80).auto("format").url()
+      : undefined,
+    photo: undefined,
+  } as MemberItem;
+}
+
+export async function getMemberSlugs(): Promise<string[]> {
+  if (!client) return [];
+  return client.fetch<string[]>(
+    `*[_type == "member" && isFeatured == true && defined(slug.current)].slug.current`
   );
 }
 

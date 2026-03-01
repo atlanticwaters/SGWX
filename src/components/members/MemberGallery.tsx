@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
@@ -8,6 +9,7 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 interface GalleryMember {
   name: string;
   title: string;
+  photoUrl?: string;
 }
 
 interface MemberGalleryProps {
@@ -39,12 +41,22 @@ function AvatarCard({ member, index }: { member: GalleryMember; index: number })
         role="figure"
         aria-label={`${member.name}, ${member.title}`}
       >
-        {/* Initials */}
-        <div className="flex h-full items-center justify-center">
-          <span className="text-3xl font-bold text-sgwx-text-dim transition-opacity duration-300 group-hover:opacity-30 md:text-4xl">
-            {getInitials(member.name)}
-          </span>
-        </div>
+        {/* Photo or Initials */}
+        {member.photoUrl ? (
+          <Image
+            src={member.photoUrl}
+            alt={member.name}
+            fill
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            style={{ filter: "brightness(0.85) contrast(1.05) saturate(0.8)" }}
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            <span className="text-3xl font-bold text-sgwx-text-dim transition-opacity duration-300 group-hover:opacity-30 md:text-4xl">
+              {getInitials(member.name)}
+            </span>
+          </div>
+        )}
 
         {/* Hover overlay */}
         <div
