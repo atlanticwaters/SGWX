@@ -50,19 +50,21 @@ function ClientCard({
         transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, box-shadow 0.5s",
       }}
     >
-      {/* Deep Field ambient background */}
+      {/* Deep Field ambient background — canvas is square, so we scale to cover */}
       <div
-        className="pointer-events-none absolute inset-0 transition-opacity duration-700"
-        style={{ opacity: hovered ? 0.25 : 0.12 }}
+        className="pointer-events-none absolute inset-0 z-0 overflow-hidden transition-opacity duration-700"
+        style={{ opacity: hovered ? 0.3 : 0.15 }}
       >
-        <DeepFieldCanvas variant={client.deepFieldVariant} size={600} className="h-full w-full" />
+        <div className="absolute inset-0 flex items-center justify-center" style={{ minWidth: "100%", minHeight: "100%" }}>
+          <DeepFieldCanvas variant={client.deepFieldVariant} size={800} />
+        </div>
       </div>
 
       {/* Gradient overlay for readability */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-sgwx-surface/90 via-sgwx-surface/70 to-sgwx-surface/50" />
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-sgwx-surface/85 via-sgwx-surface/60 to-sgwx-surface/40" />
 
       {/* Content */}
-      <div className="relative z-10 grid grid-cols-1 p-6 lg:grid-cols-[1fr_1.5fr]">
+      <div className="relative z-[2] grid grid-cols-1 p-6 lg:grid-cols-[1fr_2fr]">
         {/* Left column — heading */}
         <div className="flex flex-col justify-center border-b border-sgwx-border-subtle pb-5 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-8">
           <div>
