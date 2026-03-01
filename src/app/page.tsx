@@ -9,7 +9,7 @@ import ImpactSection from "@/components/home/ImpactSection";
 import SpotlightsSection from "@/components/home/SpotlightsSection";
 import FinalCtaSection from "@/components/home/FinalCtaSection";
 import SectionDivider from "@/components/ui/SectionDivider";
-import { getAllCaseStudies, getAllBlogPosts, getSectionBackgrounds } from "@/lib/sanity/queries";
+import { getAllCaseStudies, getAllBlogPosts, getSectionBackgrounds, getMembersForStrip } from "@/lib/sanity/queries";
 
 export const metadata: Metadata = {
   title: "Sageworx | Go Further. Faster.",
@@ -18,10 +18,11 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const [caseStudies, blogPosts, backgrounds] = await Promise.all([
+  const [caseStudies, blogPosts, backgrounds, members] = await Promise.all([
     getAllCaseStudies(),
     getAllBlogPosts(),
     getSectionBackgrounds(),
+    getMembersForStrip(),
   ]);
 
   // Build a slug -> { imageUrl, overlayColor } lookup for easy assignment
@@ -36,7 +37,7 @@ export default async function Home() {
       <ComparisonTable />
       <SectionDivider />
       <ClientsSection backgroundUrl={bg["geometric-architecture"]?.imageUrl} overlayColor={bg["geometric-architecture"]?.overlayColor} />
-      <ExpertsSection backgroundUrl={bg["spiral-geometry"]?.imageUrl} overlayColor={bg["spiral-geometry"]?.overlayColor} />
+      <ExpertsSection members={members} backgroundUrl={bg["spiral-geometry"]?.imageUrl} overlayColor={bg["spiral-geometry"]?.overlayColor} />
       <SectionDivider />
       <ProcessSection backgroundUrl={bg["fluid-waves"]?.imageUrl} overlayColor={bg["fluid-waves"]?.overlayColor} />
       <ImpactSection caseStudies={caseStudies} />

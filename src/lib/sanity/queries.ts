@@ -267,6 +267,28 @@ export async function getAllMembers(): Promise<MemberItem[]> {
   })) as MemberItem[];
 }
 
+export async function getMembersForStrip(): Promise<Pick<MemberItem, "_id" | "name" | "slug" | "title" | "mantra" | "photoUrl" | "isFeatured">[]> {
+  if (!client) return [];
+  const raw = await client.fetch<
+    { _id: string; name: string; slug: string; title: string; mantra: string; photo?: SanityImageSource; isFeatured: boolean; order: number }[]
+  >(
+    `*[_type == "member" && defined(photo)] | order(order asc) {
+      _id, name, "slug": slug.current, title, mantra, photo, isFeatured, order
+    }`
+  );
+  return raw.map((m) => ({
+    _id: m._id,
+    name: m.name,
+    slug: m.slug,
+    title: m.title,
+    mantra: m.mantra,
+    isFeatured: m.isFeatured,
+    photoUrl: m.photo
+      ? urlFor(m.photo).width(400).height(533).quality(80).auto("format").url()
+      : undefined,
+  }));
+}
+
 export async function getMemberBySlug(slug: string): Promise<MemberItem | null> {
   if (!client) return null;
   const raw = await client.fetch<
