@@ -36,6 +36,7 @@ const stages: StageData[] = [
       result: "Brand launch across B2B streaming vertical",
     },
     glowPosition: "bottom-right",
+    deepFieldVariant: 1,
   },
   {
     id: "engage",
@@ -59,6 +60,7 @@ const stages: StageData[] = [
       result: "Scalable brand content system for B2B tech",
     },
     glowPosition: "top-left",
+    deepFieldVariant: 3,
   },
   {
     id: "mobilize",
@@ -83,6 +85,7 @@ const stages: StageData[] = [
         "Sold out instantly \u00B7 Trended across social \u00B7 Late-night mentions",
     },
     glowPosition: "right-center",
+    deepFieldVariant: 5,
   },
   {
     id: "transform",
@@ -106,6 +109,7 @@ const stages: StageData[] = [
       result: "91% satisfaction \u00B7 95% connection score (vs 55% pre-summit)",
     },
     glowPosition: "bottom-left",
+    deepFieldVariant: 6,
   },
 ];
 

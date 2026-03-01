@@ -1,7 +1,13 @@
 "use client";
 
 import { useRef } from "react";
+import dynamic from "next/dynamic";
 import { motion, useScroll, useTransform } from "framer-motion";
+
+const DeepFieldCanvas = dynamic(
+  () => import("@/components/animations/DeepFieldCanvas"),
+  { ssr: false }
+);
 
 export interface StageData {
   id: string;
@@ -16,6 +22,7 @@ export interface StageData {
     result: string;
   };
   glowPosition: "bottom-right" | "top-left" | "right-center" | "bottom-left";
+  deepFieldVariant: 1 | 2 | 3 | 4 | 5 | 6;
 }
 
 const glowPositionClasses: Record<StageData["glowPosition"], string> = {
@@ -58,6 +65,7 @@ export default function StageSection({
   services,
   proof,
   glowPosition,
+  deepFieldVariant,
 }: StageData) {
   const sectionRef = useRef<HTMLElement>(null);
   const colors = accentStyles[accent];
@@ -85,6 +93,21 @@ export default function StageSection({
       <div
         className={`pointer-events-none absolute h-[500px] w-[500px] rounded-full opacity-[0.06] blur-[120px] ${colors.glow} ${glowPositionClasses[glowPosition]}`}
       />
+
+      {/* Deep Field ambient canvas */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.18]">
+        <div
+          className="absolute left-1/2 top-1/2"
+          style={{
+            width: "1200px",
+            height: "1200px",
+            transform: "translate(-50%, -50%) scale(1.8)",
+            transformOrigin: "center center",
+          }}
+        >
+          <DeepFieldCanvas variant={deepFieldVariant} size={1200} />
+        </div>
+      </div>
 
       {/* Sideways label */}
       <motion.div
