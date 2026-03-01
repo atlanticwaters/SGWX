@@ -50,23 +50,31 @@ function ClientCard({
         transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, box-shadow 0.5s",
       }}
     >
-      {/* Deep Field ambient background — canvas is square, so we scale to cover */}
+      {/* Deep Field ambient background — square canvas scaled to cover the wide card */}
       <div
         className="pointer-events-none absolute inset-0 z-0 overflow-hidden transition-opacity duration-700"
-        style={{ opacity: hovered ? 0.3 : 0.15 }}
+        style={{ opacity: hovered ? 0.35 : 0.18 }}
       >
-        <div className="absolute inset-0 flex items-center justify-center" style={{ minWidth: "100%", minHeight: "100%" }}>
+        <div
+          className="absolute left-1/2 top-1/2"
+          style={{
+            width: "800px",
+            height: "800px",
+            transform: "translate(-50%, -50%) scaleX(2)",
+            transformOrigin: "center center",
+          }}
+        >
           <DeepFieldCanvas variant={client.deepFieldVariant} size={800} />
         </div>
       </div>
 
       {/* Gradient overlay for readability */}
-      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-sgwx-surface/85 via-sgwx-surface/60 to-sgwx-surface/40" />
+      <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-r from-sgwx-surface/80 via-sgwx-surface/50 to-transparent" />
 
       {/* Content */}
-      <div className="relative z-[2] grid grid-cols-1 p-6 lg:grid-cols-[1fr_2fr]">
+      <div className="relative z-[2] grid grid-cols-1 p-6 lg:grid-cols-[auto_1fr] lg:gap-8">
         {/* Left column — heading */}
-        <div className="flex flex-col justify-center border-b border-sgwx-border-subtle pb-5 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-8">
+        <div className="flex flex-col justify-center border-b border-sgwx-border-subtle pb-5 lg:border-b-0 lg:border-r lg:pb-0 lg:pr-6">
           <div>
             <div
               className="mb-3 h-0.5 w-8 transition-all duration-500"
@@ -85,7 +93,7 @@ function ClientCard({
         </div>
 
         {/* Right column — challenge + solution */}
-        <div className="divide-y divide-sgwx-border-subtle pt-5 lg:pl-8 lg:pt-0">
+        <div className="divide-y divide-sgwx-border-subtle pt-5 lg:pt-0">
           <div className="flex items-start gap-3 pb-4">
             <svg className="mt-1.5 h-4 w-4 shrink-0 text-sgwx-text-dim" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M3 8h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
