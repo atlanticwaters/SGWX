@@ -151,7 +151,7 @@ export async function getCaseStudyBySlug(slug: string): Promise<CaseStudyDetail 
       galleryImages?: { asset: SanityImageSource; alt?: string; caption?: string }[];
     }) | null
   >(
-    `*[_type == "caseStudy" && slug.current == $slug][0] {
+    `*[_type == "caseStudy" && slug.current == $slug] | order(defined(heroImage) desc, defined(galleryImages) desc)[0] {
       _id, title, "slug": slug.current, client, category, year, tags, shortDescription,
       thumbnail, heroImage,
       galleryImages[] { asset->, alt, caption },
