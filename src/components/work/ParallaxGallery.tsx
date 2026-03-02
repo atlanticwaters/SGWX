@@ -27,7 +27,7 @@ function ParallaxImage({
 
   return (
     <div ref={ref} className="relative w-full overflow-hidden" style={{ aspectRatio: aspect }}>
-      <motion.div className="absolute inset-[-15%]" style={{ y }}>
+      <motion.div className="absolute inset-0" style={{ y, scale: 1.3 }}>
         <Image
           src={src}
           alt={alt}
