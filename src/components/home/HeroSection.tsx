@@ -31,25 +31,21 @@ export default function HeroSection() {
     target: ref,
     offset: ["start start", "end start"],
   });
-  const canvasY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
-  const canvasScale = useTransform(scrollYProgress, [0, 1], [1, 1.06]);
   const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
   return (
     <section ref={ref} className="relative flex min-h-screen items-center justify-end overflow-hidden">
-      {/* Background animation — parallax */}
-      <motion.div className="absolute inset-[-10%]" style={{ y: canvasY, scale: canvasScale }}>
-        <AnimationCanvas
-          cameraPosition={[-10, 28, 90]}
-          cameraFov={55}
-          cameraFar={600}
-          fogColor={0x141918}
-          fogDensity={0.01}
-        >
-          <WaveBackground />
-        </AnimationCanvas>
-      </motion.div>
+      {/* Background animation */}
+      <AnimationCanvas
+        cameraPosition={[-10, 28, 90]}
+        cameraFov={55}
+        cameraFar={600}
+        fogColor={0x141918}
+        fogDensity={0.01}
+      >
+        <WaveBackground />
+      </AnimationCanvas>
 
       {/* Content — parallax fade */}
       <motion.div

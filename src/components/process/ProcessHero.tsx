@@ -39,22 +39,17 @@ export default function ProcessHero({ backgroundUrl, overlayColor }: ProcessHero
   });
   const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-  const canvasY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
-  const canvasScale = useTransform(scrollYProgress, [0, 1], [1, 1.06]);
-
   return (
     <section ref={ref} className="relative flex min-h-[80vh] items-center justify-end overflow-hidden bg-sgwx-bg">
-      <motion.div className="absolute inset-[-10%]" style={{ y: canvasY, scale: canvasScale }}>
-        <AnimationCanvas
-          cameraPosition={[-10, 28, 90]}
-          cameraFov={55}
-          cameraFar={600}
-          fogColor={0x141918}
-          fogDensity={0.01}
-        >
-          <WaveBackground />
-        </AnimationCanvas>
-      </motion.div>
+      <AnimationCanvas
+        cameraPosition={[-10, 28, 90]}
+        cameraFov={55}
+        cameraFar={600}
+        fogColor={0x141918}
+        fogDensity={0.01}
+      >
+        <WaveBackground />
+      </AnimationCanvas>
       {backgroundUrl && (
         <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />
       )}
