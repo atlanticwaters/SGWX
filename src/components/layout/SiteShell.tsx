@@ -9,14 +9,10 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isStudio = pathname.startsWith("/studio");
 
-  if (isStudio) {
-    return <>{children}</>;
-  }
-
   return (
     <>
       <Header />
-      <PageTransition />
+      {!isStudio && <PageTransition />}
       <main className="pt-16">{children}</main>
       <Footer />
     </>
