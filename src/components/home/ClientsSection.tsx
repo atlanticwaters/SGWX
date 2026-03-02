@@ -58,13 +58,13 @@ function ClientCard({
         <div
           className="absolute left-1/2 top-1/2"
           style={{
-            width: "800px",
-            height: "800px",
-            transform: "translate(-50%, -50%) scaleX(2.5)",
+            width: "400px",
+            height: "400px",
+            transform: "translate(-50%, -50%) scaleX(5)",
             transformOrigin: "center center",
           }}
         >
-          <DeepFieldCanvas variant={client.deepFieldVariant} size={800} />
+          <DeepFieldCanvas variant={client.deepFieldVariant} size={400} />
         </div>
       </div>
 

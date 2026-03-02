@@ -99,13 +99,13 @@ export default function StageSection({
         <div
           className="absolute left-1/2 top-1/2"
           style={{
-            width: "1200px",
-            height: "1200px",
-            transform: "translate(-50%, -50%) scale(1.8)",
+            width: "500px",
+            height: "500px",
+            transform: "translate(-50%, -50%) scale(4.3)",
             transformOrigin: "center center",
           }}
         >
-          <DeepFieldCanvas variant={deepFieldVariant} size={1200} />
+          <DeepFieldCanvas variant={deepFieldVariant} size={500} />
         </div>
       </div>
 

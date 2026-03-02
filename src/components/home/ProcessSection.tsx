@@ -92,13 +92,13 @@ function StageCard({ stage }: { stage: (typeof stages)[number] }) {
         <div
           className="absolute left-1/2 top-1/2"
           style={{
-            width: "800px",
-            height: "800px",
-            transform: "translate(-50%, -50%) scale(1.5)",
+            width: "400px",
+            height: "400px",
+            transform: "translate(-50%, -50%) scale(3)",
             transformOrigin: "center center",
           }}
         >
-          <DeepFieldCanvas variant={stage.deepFieldVariant} size={800} />
+          <DeepFieldCanvas variant={stage.deepFieldVariant} size={400} />
         </div>
       </div>
 

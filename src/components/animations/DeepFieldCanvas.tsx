@@ -478,22 +478,33 @@ interface DeepFieldCanvasProps {
 
 export default function DeepFieldCanvas({ variant, size = 500, className = "" }: DeepFieldCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef(0);
   const rafRef = useRef<number>(0);
+  const isVisibleRef = useRef(false);
+  const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
 
-  const render = useCallback(
-    (ctx: CanvasRenderingContext2D, W: number, H: number) => {
-      const renderer = RENDERERS[variant];
-      if (renderer) renderer(ctx, W, H, frameRef.current);
-    },
-    [variant],
-  );
+  const renderer = RENDERERS[variant];
 
+  // Start/resume the animation loop — only runs while visible
+  const startLoop = useCallback(() => {
+    function loop() {
+      if (!isVisibleRef.current) return; // exit loop when hidden
+      frameRef.current++;
+      if (ctxRef.current && renderer) {
+        renderer(ctxRef.current, size, size, frameRef.current);
+      }
+      rafRef.current = requestAnimationFrame(loop);
+    }
+    cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(loop);
+  }, [renderer, size]);
+
+  // Set up canvas once
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // Use devicePixelRatio for crisp rendering
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas.width = size * dpr;
     canvas.height = size * dpr;
@@ -503,22 +514,40 @@ export default function DeepFieldCanvas({ variant, size = 500, className = "" }:
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     ctx.scale(dpr, dpr);
+    ctxRef.current = ctx;
+  }, [variant, size]);
 
-    function loop() {
-      frameRef.current++;
-      render(ctx!, size, size);
-      rafRef.current = requestAnimationFrame(loop);
-    }
-    rafRef.current = requestAnimationFrame(loop);
+  // Observe visibility — start/stop loop accordingly
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
 
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [variant, size, render]);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const wasVisible = isVisibleRef.current;
+        isVisibleRef.current = entry.isIntersecting;
+        // Restart loop when becoming visible
+        if (!wasVisible && entry.isIntersecting && ctxRef.current) {
+          startLoop();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(el);
+
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(rafRef.current);
+    };
+  }, [startLoop]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className={className}
-      style={{ width: size, height: size, display: "block" }}
-    />
+    <div ref={wrapperRef} style={{ width: size, height: size }}>
+      <canvas
+        ref={canvasRef}
+        className={className}
+        style={{ width: size, height: size, display: "block" }}
+      />
+    </div>
   );
 }
