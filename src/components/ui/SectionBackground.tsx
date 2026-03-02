@@ -41,15 +41,16 @@ export default function SectionBackground({ src, alt = "", overlayColor = "sage"
     offset: ["start end", "end start"],
   });
 
-  // Background moves at ~30% of scroll speed — feels distant
-  const bgY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+  // Background moves slower than scroll — creates depth
+  const bgY = useTransform(scrollYProgress, [0, 1], ["-3%", "18%"]);
+  const bgScale = useTransform(scrollYProgress, [0, 1], [1, 1.06]);
 
   return (
     <div ref={ref} className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
-      {/* Base image — parallax + reveal animation */}
+      {/* Base image — parallax + scale + reveal animation */}
       <motion.div
-        className="absolute inset-[-10%] animate-[bgReveal_1.8s_cubic-bezier(0.16,1,0.3,1)_both]"
-        style={{ y: bgY }}
+        className="absolute inset-[-15%] animate-[bgReveal_1.8s_cubic-bezier(0.16,1,0.3,1)_both]"
+        style={{ y: bgY, scale: bgScale }}
       >
         <Image
           src={src}

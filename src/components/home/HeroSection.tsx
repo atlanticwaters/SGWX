@@ -1,7 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import dynamic from "next/dynamic";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Button from "@/components/ui/Button";
 
 const AnimationCanvas = dynamic(
@@ -25,21 +26,36 @@ const transition = (delay: number) => ({
 });
 
 export default function HeroSection() {
-  return (
-    <section className="relative flex min-h-screen items-center justify-end overflow-hidden">
-      {/* Background animation */}
-      <AnimationCanvas
-        cameraPosition={[-10, 28, 90]}
-        cameraFov={55}
-        cameraFar={600}
-        fogColor={0x141918}
-        fogDensity={0.01}
-      >
-        <WaveBackground />
-      </AnimationCanvas>
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const canvasY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const canvasScale = useTransform(scrollYProgress, [0, 1], [1, 1.06]);
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
 
-      {/* Content */}
-      <div className="relative z-10 max-w-3xl px-6 pr-8 text-right md:pr-16 lg:pr-24" style={{ marginTop: "-5vh" }}>
+  return (
+    <section ref={ref} className="relative flex min-h-screen items-center justify-end overflow-hidden">
+      {/* Background animation — parallax */}
+      <motion.div className="absolute inset-[-10%]" style={{ y: canvasY, scale: canvasScale }}>
+        <AnimationCanvas
+          cameraPosition={[-10, 28, 90]}
+          cameraFov={55}
+          cameraFar={600}
+          fogColor={0x141918}
+          fogDensity={0.01}
+        >
+          <WaveBackground />
+        </AnimationCanvas>
+      </motion.div>
+
+      {/* Content — parallax fade */}
+      <motion.div
+        className="relative z-10 max-w-3xl px-6 pr-8 text-right md:pr-16 lg:pr-24"
+        style={{ y: contentY, opacity: contentOpacity, marginTop: "-5vh" }}
+      >
         <motion.h1
           className="text-5xl font-thin tracking-tight text-sgwx-text md:text-6xl lg:text-8xl"
           {...fadeUp}
@@ -76,7 +92,7 @@ export default function HeroSection() {
             Let&apos;s Chat
           </Button>
         </motion.div>
-      </div>
+      </motion.div>
 
       {/* HUD Status Bar */}
       <motion.div

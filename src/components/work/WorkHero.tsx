@@ -40,18 +40,22 @@ export default function WorkHero({ count = 0, backgroundUrl, overlayColor }: Wor
   });
   const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
   const contentOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
+  const canvasY = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const canvasScale = useTransform(scrollYProgress, [0, 1], [1, 1.06]);
 
   return (
     <section ref={ref} className="relative flex min-h-[50vh] items-center justify-end overflow-hidden bg-sgwx-bg">
-      <AnimationCanvas
-        cameraPosition={[0, 145, 210]}
-        cameraFov={52}
-        cameraFar={900}
-        fogColor={0x0c0f0e}
-        fogDensity={0.0075}
-      >
-        <CityBackground />
-      </AnimationCanvas>
+      <motion.div className="absolute inset-[-10%]" style={{ y: canvasY, scale: canvasScale }}>
+        <AnimationCanvas
+          cameraPosition={[0, 145, 210]}
+          cameraFov={52}
+          cameraFar={900}
+          fogColor={0x0c0f0e}
+          fogDensity={0.0075}
+        >
+          <CityBackground />
+        </AnimationCanvas>
+      </motion.div>
       {backgroundUrl && (
         <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />
       )}
