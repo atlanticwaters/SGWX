@@ -58,20 +58,14 @@ export default function ParallaxGallery({
   while (i < images.length) {
     // Full-width image
     blocks.push(
-      <motion.div
-        key={`fw-${i}`}
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-      >
+      <div key={`fw-${i}`}>
         <ParallaxImage
           src={images[i].url}
           alt={images[i].alt || title}
           aspect="16/9"
           speed={0.08}
         />
-      </motion.div>
+      </div>
     );
     i++;
 
@@ -81,24 +75,14 @@ export default function ParallaxGallery({
       blocks.push(
         <div key={`pair-${i}`} className="grid grid-cols-1 gap-1 md:grid-cols-2">
           {pair.map((img, j) => (
-            <motion.div
-              key={j}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{
-                duration: 0.7,
-                ease: [0.16, 1, 0.3, 1],
-                delay: j * 0.1,
-              }}
-            >
+            <div key={j}>
               <ParallaxImage
                 src={img.url}
                 alt={img.alt || title}
                 aspect="4/3"
                 speed={0.1}
               />
-            </motion.div>
+            </div>
           ))}
         </div>
       );
