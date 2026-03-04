@@ -49,3 +49,4 @@ SGWX Process Page Dev Kit/
 
 # Sanity schema deploy output
 dist/
+.env*.local
