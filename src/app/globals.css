@@ -111,3 +111,57 @@
     box-shadow: 0 0 32px rgba(110, 168, 127, 0.35);
   }
 }
+
+/* ─── 3D Comparison Cards ─────────────────────────────────────────────── */
+
+.comparison-perspective {
+  perspective: 1200px;
+  perspective-origin: center center;
+}
+
+/* Mobile: vertical stack, subtle tilt */
+.comparison-cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comparison-card {
+  transform-style: preserve-3d;
+}
+
+/* Desktop: horizontal fanned layout with 3D transforms */
+@media (min-width: 768px) {
+  .comparison-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    align-items: center;
+    padding: 2rem 0;
+  }
+
+  .comparison-card {
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: rotateY(var(--card-rotateY)) translateZ(var(--card-translateZ)) translateX(var(--card-translateX));
+  }
+
+  /* Overlap: each card sits slightly over the next */
+  .comparison-card:nth-child(1) {
+    z-index: 3;
+    margin-right: -1.5rem;
+  }
+
+  .comparison-card:nth-child(2) {
+    z-index: 2;
+  }
+
+  .comparison-card:nth-child(3) {
+    z-index: 1;
+    margin-left: -1.5rem;
+  }
+
+  .comparison-card:hover {
+    transform: rotateY(0deg) translateZ(40px) translateX(0px) scale(1.02);
+    z-index: 10;
+  }
+}
