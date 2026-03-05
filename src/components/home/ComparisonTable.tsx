@@ -56,13 +56,14 @@ interface CardData {
  *   0.00 = section top hits viewport bottom (entering)
  *   0.08 = cards begin to appear
  *   0.20 = cards face the viewer, still stacked
- *   0.38 = fully fanned out in 3D positions
- *   0.55 = subtle parallax drift continues
- *   1.00 = section leaving viewport
+ *   0.38 = fully fanned out in 3D positions (dramatic moment)
+ *   0.55 = hold the fanned pose
+ *   0.70 = cards normalize — all scale to 1.0, rotation flattens, full opacity
+ *   1.00 = cards flat and equal, content fully readable
  *
  * Each property array must match the shared `SCROLL_KEYS` length.
  */
-const SCROLL_KEYS = [0, 0.08, 0.20, 0.38, 0.55, 1.0];
+const SCROLL_KEYS = [0, 0.08, 0.20, 0.38, 0.55, 0.70, 1.0];
 
 interface CardTrajectory {
   rotateY: number[];
@@ -76,37 +77,37 @@ interface CardTrajectory {
 
 const CARD_TRAJECTORIES: CardTrajectory[] = [
   // ── Sageworx (featured) ──────────────────────────────────
-  // Rises first, fans left, scales up, comes forward
+  // Rises first, fans left, scales up, then normalizes
   {
-    rotateY:  [0,   0,   2,   22,   22,  22],
-    rotateX:  [35,  35,  8,   0,    -1,  -1],
-    rotateZ:  [4,   4,   1,   0,    0,   0],
-    x:        [0,   0,   0,  -20,  -20, -20],
-    y:        [120, 120, 30,  0,   -4,  -4],
-    scale:    [0.85, 0.85, 0.95, 1.06, 1.06, 1.06],
-    opacity:  [0,   0.2, 0.8, 1,    1,   1],
+    rotateY:  [0,   0,   2,   22,   22,   6,   0],
+    rotateX:  [35,  35,  8,   0,    -1,   0,   0],
+    rotateZ:  [4,   4,   1,   0,    0,    0,   0],
+    x:        [0,   0,   0,  -20,  -20,  -4,   0],
+    y:        [120, 120, 30,  0,   -4,    0,   0],
+    scale:    [0.85, 0.85, 0.95, 1.06, 1.06, 1.0, 1.0],
+    opacity:  [0,   0.2, 0.8, 1,    1,    1,   1],
   },
   // ── Freelance (middle) ───────────────────────────────────
-  // Rises slightly later, stays centre with subtle tilt
+  // Rises later, stays centre, then scales up to match
   {
-    rotateY:  [0,   0,   0,   8,    8,   8],
-    rotateX:  [35,  35,  14,  0,    0,   0],
-    rotateZ:  [-2,  -2,  -1,  0,    0,   0],
-    x:        [0,   0,   0,   0,    0,   0],
-    y:        [140, 140, 60,  0,    2,   2],
-    scale:    [0.85, 0.85, 0.90, 0.94, 0.94, 0.94],
-    opacity:  [0,   0,   0.5, 1,    1,   1],
+    rotateY:  [0,   0,   0,   8,    8,    2,   0],
+    rotateX:  [35,  35,  14,  0,    0,    0,   0],
+    rotateZ:  [-2,  -2,  -1,  0,    0,    0,   0],
+    x:        [0,   0,   0,   0,    0,    0,   0],
+    y:        [140, 140, 60,  0,    2,    0,   0],
+    scale:    [0.85, 0.85, 0.90, 0.94, 0.94, 1.0, 1.0],
+    opacity:  [0,   0,   0.5, 1,    1,    1,   1],
   },
   // ── Traditional (back) ───────────────────────────────────
-  // Rises last, fans right, scales down, recedes
+  // Rises last, fans right, recedes, then scales up to match
   {
-    rotateY:  [0,   0,   -2,  -12,  -12, -12],
-    rotateX:  [35,  35,  18,  2,    2,   2],
-    rotateZ:  [-4,  -4,  -2,  0,    0,   0],
-    x:        [0,   0,   0,   20,   20,  20],
-    y:        [160, 160, 90,  8,    10,  10],
-    scale:    [0.85, 0.85, 0.88, 0.90, 0.90, 0.90],
-    opacity:  [0,   0,   0.3, 0.85, 0.85, 0.85],
+    rotateY:  [0,   0,   -2,  -12,  -12,  -3,  0],
+    rotateX:  [35,  35,  18,  2,    2,    0,   0],
+    rotateZ:  [-4,  -4,  -2,  0,    0,    0,   0],
+    x:        [0,   0,   0,   20,   20,   4,   0],
+    y:        [160, 160, 90,  8,    10,   0,   0],
+    scale:    [0.85, 0.85, 0.88, 0.90, 0.90, 1.0, 1.0],
+    opacity:  [0,   0,   0.3, 0.85, 0.85, 1,   1],
   },
 ];
 
