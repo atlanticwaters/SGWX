@@ -2,7 +2,8 @@ const DEFAULT_LOGOS = ["Google", "Spotify", "Nike", "Polestar", "Airbnb", "Linea
 
 interface LogoWallProps {
   heading?: string;
-  logos?: string[];
+  // Sanity may return string arrays as plain strings or as objects with { value }
+  logos?: (string | { value?: string })[];
 }
 
 export default function LogoWall({
@@ -15,14 +16,17 @@ export default function LogoWall({
         {heading}
       </p>
       <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-        {logos.map((logo) => (
-          <span
-            key={logo}
-            className="text-lg font-semibold tracking-wide text-sgwx-text opacity-25 transition-opacity duration-300 hover:opacity-70"
-          >
-            {logo}
-          </span>
-        ))}
+        {logos.map((logo, i) => {
+          const name = typeof logo === "string" ? logo : (logo as { value?: string }).value ?? "";
+          return (
+            <span
+              key={name || i}
+              className="text-lg font-semibold tracking-wide text-sgwx-text opacity-25 transition-opacity duration-300 hover:opacity-70"
+            >
+              {name}
+            </span>
+          );
+        })}
       </div>
     </div>
   );

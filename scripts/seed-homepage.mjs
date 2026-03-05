@@ -178,15 +178,7 @@ const homepage = {
   impactEyebrow: "Case Studies",
   impactHeading: "Making An Impact",
   logoWallHeading: "Trusted by ambitious brands and global leaders",
-  logos: [
-    { _type: "string", _key: "l1", value: "Google" },
-    { _type: "string", _key: "l2", value: "Spotify" },
-    { _type: "string", _key: "l3", value: "Nike" },
-    { _type: "string", _key: "l4", value: "Polestar" },
-    { _type: "string", _key: "l5", value: "Airbnb" },
-    { _type: "string", _key: "l6", value: "Linear" },
-    { _type: "string", _key: "l7", value: "Vercel" },
-  ],
+  logos: ["Google", "Spotify", "Nike", "Polestar", "Airbnb", "Linear", "Vercel"],
 
   // ── Spotlights ───────────────────────────────────────────
   spotlightsEyebrow: "Spotlights",
