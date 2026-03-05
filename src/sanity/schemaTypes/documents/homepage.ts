@@ -260,9 +260,20 @@ export const homepage = defineType({
     defineField({
       name: 'logos',
       type: 'array',
-      title: 'Logo Names',
+      title: 'Logos',
       group: 'impact',
-      of: [{ type: 'string' }],
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({ name: 'image', type: 'image', title: 'Logo Image' }),
+            defineField({ name: 'alt', type: 'string', title: 'Alt Text' }),
+          ],
+          preview: {
+            select: { title: 'alt', media: 'image' },
+          },
+        },
+      ],
     }),
 
     // ── Spotlights ─────────────────────────────────────────

@@ -178,7 +178,6 @@ const homepage = {
   impactEyebrow: "Case Studies",
   impactHeading: "Making An Impact",
   logoWallHeading: "Trusted by ambitious brands and global leaders",
-  logos: ["Google", "Spotify", "Nike", "Polestar", "Airbnb", "Linear", "Vercel"],
 
   // ── Spotlights ───────────────────────────────────────────
   spotlightsEyebrow: "Spotlights",

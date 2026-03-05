@@ -16,7 +16,7 @@ interface ImpactSectionProps {
   eyebrow?: string;
   heading?: string;
   logoWallHeading?: string;
-  logos?: string[];
+  logos?: { imageUrl: string; alt: string }[];
   caseStudies: CaseStudy[];
 }
 

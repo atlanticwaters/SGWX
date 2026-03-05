@@ -514,7 +514,7 @@ export interface HomepageData {
   impactEyebrow: string;
   impactHeading: string;
   logoWallHeading: string;
-  logos: string[];
+  logos: { imageUrl: string; alt: string }[];
   // Spotlights
   spotlightsEyebrow: string;
   spotlightsHeading: string;
@@ -529,7 +529,9 @@ export interface HomepageData {
 
 export async function getHomepage(): Promise<HomepageData | null> {
   if (!client) return null;
-  return client.fetch<HomepageData | null>(
+  const raw = await client.fetch<
+    (Omit<HomepageData, "logos"> & { logos?: { image: SanityImageSource; alt: string }[] }) | null
+  >(
     `*[_type == "homepage" && _id == "homepage"][0] {
       heroHeading, heroParagraph1, heroParagraph2,
       heroPrimaryCta { label, href, variant },
@@ -546,7 +548,8 @@ export async function getHomepage(): Promise<HomepageData | null> {
       processEyebrow, processHeading, processSubheading,
       processStages[] { number, title, id, description, accent },
       processFooterLink { label, href, variant },
-      impactEyebrow, impactHeading, logoWallHeading, logos,
+      impactEyebrow, impactHeading, logoWallHeading,
+      logos[] { image, alt },
       spotlightsEyebrow, spotlightsHeading,
       spotlightsCta { label, href, variant },
       finalCtaHeading,
@@ -555,4 +558,14 @@ export async function getHomepage(): Promise<HomepageData | null> {
       seo { title, description, noIndex }
     }`
   );
+  if (!raw) return null;
+  return {
+    ...raw,
+    logos: (raw.logos ?? [])
+      .filter((logo) => logo?.image)
+      .map((logo) => ({
+        imageUrl: urlFor(logo.image).height(40).auto("format").url(),
+        alt: logo.alt ?? "",
+      })),
+  };
 }
