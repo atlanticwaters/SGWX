@@ -13,6 +13,7 @@ import { page } from './documents/page'
 import { landingPage } from './documents/landing-page'
 import { testimonial } from './documents/testimonial'
 import { cardStyle } from './documents/card-style'
+import { homepage } from './documents/homepage'
 
 // Objects
 import { seo } from './objects/seo'
@@ -54,6 +55,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   landingPage,
   testimonial,
   cardStyle,
+  homepage,
   // Objects
   seo,
   link,

@@ -1,6 +1,6 @@
 import type { StructureResolver } from 'sanity/structure'
 
-const SINGLETONS = ['siteSettings']
+const SINGLETONS = ['siteSettings', 'homepage']
 
 const MANUALLY_ORGANIZED = [
   ...SINGLETONS,
@@ -29,6 +29,15 @@ export const structure: StructureResolver = (S) =>
             .schemaType('siteSettings')
             .documentId('siteSettings')
             .title('Site Settings')
+        ),
+
+      S.listItem()
+        .title('Homepage')
+        .child(
+          S.document()
+            .schemaType('homepage')
+            .documentId('homepage')
+            .title('Homepage')
         ),
 
       S.divider(),
