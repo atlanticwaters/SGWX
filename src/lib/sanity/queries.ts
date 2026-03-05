@@ -471,3 +471,88 @@ export async function getTestimonialsByVerticals(verticals: string[]): Promise<T
     { verticals }
   );
 }
+
+// ─── Homepage Types & Query ─────────────────────────────────────────────────
+
+export interface HomepageCta {
+  label: string;
+  href: string;
+  variant: "primary" | "secondary" | "ghost";
+}
+
+export interface HomepageData {
+  // Hero
+  heroHeading: string;
+  heroParagraph1: string;
+  heroParagraph2: string;
+  heroPrimaryCta: HomepageCta;
+  heroSecondaryCta: HomepageCta;
+  // Changing Game
+  changingGameHeading: string;
+  changingGameCards: { heading: string; body: string }[];
+  // Comparison
+  comparisonEyebrow: string;
+  comparisonHeading: string;
+  comparisonColumns: { criteria: string; agency: string; freelance: string; sageworx: string };
+  comparisonRows: { criteria: string; traditional: string; freelancers: string; sageworx: string }[];
+  comparisonCta: HomepageCta;
+  // Clients
+  clientsEyebrow: string;
+  clientsHeading: string;
+  clientSegments: { type: string; painPoint: string; solution: string }[];
+  // Experts
+  expertsEyebrow: string;
+  expertsHeading: string;
+  expertsSubheading: string;
+  // Process
+  processEyebrow: string;
+  processHeading: string;
+  processSubheading: string;
+  processStages: { number: string; title: string; id: string; description: string; accent: "green" | "cyan" }[];
+  processFooterLink: HomepageCta;
+  // Impact
+  impactEyebrow: string;
+  impactHeading: string;
+  logoWallHeading: string;
+  logos: string[];
+  // Spotlights
+  spotlightsEyebrow: string;
+  spotlightsHeading: string;
+  spotlightsCta: HomepageCta;
+  // Final CTA
+  finalCtaHeading: string;
+  finalCtaPrimaryCta: HomepageCta;
+  finalCtaSecondaryCta: HomepageCta;
+  // SEO
+  seo?: { title?: string; description?: string; noIndex?: boolean };
+}
+
+export async function getHomepage(): Promise<HomepageData | null> {
+  if (!client) return null;
+  return client.fetch<HomepageData | null>(
+    `*[_type == "homepage" && _id == "homepage"][0] {
+      heroHeading, heroParagraph1, heroParagraph2,
+      heroPrimaryCta { label, href, variant },
+      heroSecondaryCta { label, href, variant },
+      changingGameHeading,
+      changingGameCards[] { heading, body },
+      comparisonEyebrow, comparisonHeading,
+      comparisonColumns { criteria, agency, freelance, sageworx },
+      comparisonRows[] { criteria, traditional, freelancers, sageworx },
+      comparisonCta { label, href, variant },
+      clientsEyebrow, clientsHeading,
+      clientSegments[] { type, painPoint, solution },
+      expertsEyebrow, expertsHeading, expertsSubheading,
+      processEyebrow, processHeading, processSubheading,
+      processStages[] { number, title, id, description, accent },
+      processFooterLink { label, href, variant },
+      impactEyebrow, impactHeading, logoWallHeading, logos,
+      spotlightsEyebrow, spotlightsHeading,
+      spotlightsCta { label, href, variant },
+      finalCtaHeading,
+      finalCtaPrimaryCta { label, href, variant },
+      finalCtaSecondaryCta { label, href, variant },
+      seo { title, description, noIndex }
+    }`
+  );
+}
