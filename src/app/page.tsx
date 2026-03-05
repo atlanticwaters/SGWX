@@ -9,7 +9,7 @@ import ImpactSection from "@/components/home/ImpactSection";
 import SpotlightsSection from "@/components/home/SpotlightsSection";
 import FinalCtaSection from "@/components/home/FinalCtaSection";
 import SectionDivider from "@/components/ui/SectionDivider";
-import { getAllCaseStudies, getAllBlogPosts, getSectionBackgrounds, getMembersForStrip } from "@/lib/sanity/queries";
+import { getAllCaseStudies, getAllBlogPosts, getSectionBackgrounds, getMembersForStrip, getHomepage } from "@/lib/sanity/queries";
 
 export const metadata: Metadata = {
   title: "Sageworx | Go Further. Faster.",
@@ -18,11 +18,12 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const [caseStudies, blogPosts, backgrounds, members] = await Promise.all([
+  const [caseStudies, blogPosts, backgrounds, members, homepage] = await Promise.all([
     getAllCaseStudies(),
     getAllBlogPosts(),
     getSectionBackgrounds(),
     getMembersForStrip(),
+    getHomepage(),
   ]);
 
   // Build a slug -> { imageUrl, overlayColor } lookup for easy assignment
@@ -32,18 +33,75 @@ export default async function Home() {
 
   return (
     <>
-      <HeroSection />
-      <ChangingGameSection backgroundUrl={bg["dark-foliage"]?.imageUrl} overlayColor={bg["dark-foliage"]?.overlayColor} />
-      <ComparisonTable />
+      <HeroSection
+        heading={homepage?.heroHeading}
+        paragraph1={homepage?.heroParagraph1}
+        paragraph2={homepage?.heroParagraph2}
+        primaryCta={homepage?.heroPrimaryCta}
+        secondaryCta={homepage?.heroSecondaryCta}
+      />
+      <ChangingGameSection
+        heading={homepage?.changingGameHeading}
+        cards={homepage?.changingGameCards}
+        backgroundUrl={bg["dark-foliage"]?.imageUrl}
+        overlayColor={bg["dark-foliage"]?.overlayColor}
+      />
+      <ComparisonTable
+        eyebrow={homepage?.comparisonEyebrow}
+        heading={homepage?.comparisonHeading}
+        columns={homepage?.comparisonColumns}
+        rows={homepage?.comparisonRows}
+        cta={homepage?.comparisonCta}
+      />
       <SectionDivider />
-      <ClientsSection backgroundUrl={bg["geometric-architecture"]?.imageUrl} overlayColor={bg["geometric-architecture"]?.overlayColor} />
-      <ExpertsSection members={members} backgroundUrl={bg["spiral-geometry"]?.imageUrl} overlayColor={bg["spiral-geometry"]?.overlayColor} />
+      <ClientsSection
+        eyebrow={homepage?.clientsEyebrow}
+        heading={homepage?.clientsHeading}
+        segments={homepage?.clientSegments}
+        backgroundUrl={bg["geometric-architecture"]?.imageUrl}
+        overlayColor={bg["geometric-architecture"]?.overlayColor}
+      />
+      <ExpertsSection
+        eyebrow={homepage?.expertsEyebrow}
+        heading={homepage?.expertsHeading}
+        subheading={homepage?.expertsSubheading}
+        members={members}
+        backgroundUrl={bg["spiral-geometry"]?.imageUrl}
+        overlayColor={bg["spiral-geometry"]?.overlayColor}
+      />
       <SectionDivider />
-      <ProcessSection backgroundUrl={bg["fluid-waves"]?.imageUrl} overlayColor={bg["fluid-waves"]?.overlayColor} />
-      <ImpactSection caseStudies={caseStudies} />
+      <ProcessSection
+        eyebrow={homepage?.processEyebrow}
+        heading={homepage?.processHeading}
+        subheading={homepage?.processSubheading}
+        stages={homepage?.processStages}
+        footerLink={homepage?.processFooterLink}
+        backgroundUrl={bg["fluid-waves"]?.imageUrl}
+        overlayColor={bg["fluid-waves"]?.overlayColor}
+      />
+      <ImpactSection
+        eyebrow={homepage?.impactEyebrow}
+        heading={homepage?.impactHeading}
+        logoWallHeading={homepage?.logoWallHeading}
+        logos={homepage?.logos}
+        caseStudies={caseStudies}
+      />
       <SectionDivider />
-      <SpotlightsSection posts={blogPosts} backgroundUrl={bg["dark-mountain"]?.imageUrl} overlayColor={bg["dark-mountain"]?.overlayColor} />
-      <FinalCtaSection backgroundUrl={bg["abstract-curves"]?.imageUrl} overlayColor={bg["abstract-curves"]?.overlayColor} />
+      <SpotlightsSection
+        eyebrow={homepage?.spotlightsEyebrow}
+        heading={homepage?.spotlightsHeading}
+        cta={homepage?.spotlightsCta}
+        posts={blogPosts}
+        backgroundUrl={bg["dark-mountain"]?.imageUrl}
+        overlayColor={bg["dark-mountain"]?.overlayColor}
+      />
+      <FinalCtaSection
+        heading={homepage?.finalCtaHeading}
+        primaryCta={homepage?.finalCtaPrimaryCta}
+        secondaryCta={homepage?.finalCtaSecondaryCta}
+        backgroundUrl={bg["abstract-curves"]?.imageUrl}
+        overlayColor={bg["abstract-curves"]?.overlayColor}
+      />
     </>
   );
 }
