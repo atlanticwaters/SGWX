@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { useRef } from "react";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -43,7 +43,7 @@ interface ComparisonTableProps {
   cta?: { label: string; href: string };
 }
 
-/* ─── Individual 3D Card ────────────────────────────────────────────────── */
+/* ─── Card data ─────────────────────────────────────────────────────────── */
 
 interface CardData {
   title: string;
@@ -51,56 +51,67 @@ interface CardData {
   isFeatured: boolean;
 }
 
+/*
+ * Per-card scroll trajectory.
+ * start  = stacked state (cards overlapping, flat, centered)
+ * end    = fanned-out 3D state
+ *
+ * scrollYProgress mapping:
+ *   0.0  = section top hits viewport bottom
+ *   ~0.3 = section roughly centred → cards fully fanned
+ *   1.0  = section bottom hits viewport top
+ */
+const CARD_TRAJECTORIES: {
+  rotateY: number[];
+  rotateX: number[];
+  translateX: number[];
+  translateZ: number[];
+  y: number[];
+  opacity: number[];
+}[] = [
+  // Sageworx — fans to the left, rotates to face right, comes forward
+  { rotateY: [0, 18], rotateX: [6, 0], translateX: [0, -8], translateZ: [0, 60], y: [60, 0], opacity: [0, 1] },
+  // Freelance — stays centre, slight tilt
+  { rotateY: [0, 6], rotateX: [6, 0], translateX: [0, 0], translateZ: [0, 0], y: [80, 0], opacity: [0, 1] },
+  // Traditional — fans to the right, recedes
+  { rotateY: [0, -8], rotateX: [6, 0], translateX: [0, 8], translateZ: [0, -40], y: [100, 0], opacity: [0, 1] },
+];
+
+/* ─── Scroll-driven card ────────────────────────────────────────────────── */
+
+function useCardTransforms(progress: MotionValue<number>, index: number) {
+  const t = CARD_TRAJECTORIES[index];
+  // Cards fan out between 0 → 0.35 of the scroll range, then hold
+  const range = [0, 0.35];
+
+  const rotateY = useTransform(progress, range, t.rotateY);
+  const rotateX = useTransform(progress, range, t.rotateX);
+  const x = useTransform(progress, range, t.translateX);
+  const z = useTransform(progress, range, t.translateZ);
+  const y = useTransform(progress, range, t.y);
+  const opacity = useTransform(progress, range, t.opacity);
+
+  return { rotateY, rotateX, x, z, y, opacity };
+}
+
 function ComparisonCard({
   card,
   index,
-  isInView,
+  scrollProgress,
 }: {
   card: CardData;
   index: number;
-  isInView: boolean;
+  scrollProgress: MotionValue<number>;
 }) {
-  // Desktop 3D transforms — Sageworx (0) is left/front, Traditional (2) is right/back
-  const desktopTransforms = [
-    // Sageworx — front-left, rotated to face right
-    { rotateY: 18, translateZ: 60, translateX: 30 },
-    // Freelance — center, subtle tilt
-    { rotateY: 6, translateZ: 0, translateX: 0 },
-    // Traditional — back-right, rotated away
-    { rotateY: -8, translateZ: -40, translateX: -30 },
-  ];
-
-  const transform = desktopTransforms[index];
+  const { rotateY, rotateX, x, z, y, opacity } = useCardTransforms(scrollProgress, index);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 60, rotateY: 0, rotateX: 8 }}
-      animate={
-        isInView
-          ? {
-              opacity: 1,
-              y: 0,
-              rotateX: 0,
-              // Only apply 3D rotation on larger screens via CSS — framer handles the entrance
-            }
-          : {}
-      }
-      transition={{
-        duration: 0.8,
-        ease: [0.16, 1, 0.3, 1],
-        delay: index * 0.15,
-      }}
       className="comparison-card relative"
-      style={
-        {
-          "--card-rotateY": `${transform.rotateY}deg`,
-          "--card-translateZ": `${transform.translateZ}px`,
-          "--card-translateX": `${transform.translateX}px`,
-        } as React.CSSProperties
-      }
+      style={{ rotateY, rotateX, x, z, y, opacity }}
     >
       <div
-        className={`relative overflow-hidden rounded-2xl border backdrop-blur-sm ${
+        className={`relative overflow-hidden rounded-2xl border backdrop-blur-sm transition-shadow duration-500 ${
           card.isFeatured
             ? "border-sgwx-green/50 bg-sgwx-surface/95 shadow-[0_0_40px_rgba(110,168,127,0.15),0_0_80px_rgba(110,168,127,0.05)]"
             : "border-sgwx-border bg-sgwx-surface/80"
@@ -171,8 +182,13 @@ export default function ComparisonTable({
   rows = DEFAULT_ROWS,
   cta = { label: "Explore Our Model", href: "/model" },
 }: ComparisonTableProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-80px" });
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Track scroll progress of the entire section through the viewport
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
 
   // Build card data: Sageworx first (left on desktop, top on mobile)
   const cards: CardData[] = [
@@ -194,24 +210,21 @@ export default function ComparisonTable({
   ];
 
   return (
-    <section className="py-16 md:py-24">
+    <section ref={sectionRef} className="py-16 md:py-24">
       <Container>
         <AnimatedSection>
           <SectionHeading eyebrow={eyebrow} heading={heading} align="right" />
         </AnimatedSection>
 
         {/* 3D Card Container */}
-        <div
-          ref={containerRef}
-          className="comparison-perspective mt-12 sm:mt-16"
-        >
+        <div className="comparison-perspective mt-12 sm:mt-16">
           <div className="comparison-cards-grid">
             {cards.map((card, i) => (
               <ComparisonCard
                 key={card.title}
                 card={card}
                 index={i}
-                isInView={isInView}
+                scrollProgress={scrollYProgress}
               />
             ))}
           </div>
