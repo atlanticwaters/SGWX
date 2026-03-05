@@ -43,8 +43,6 @@ interface ComparisonTableProps {
   cta?: { label: string; href: string };
 }
 
-/* ─── Card data ─────────────────────────────────────────────────────────── */
-
 interface CardData {
   title: string;
   rows: { label: string; value: string }[];
@@ -52,47 +50,83 @@ interface CardData {
 }
 
 /*
- * Per-card scroll trajectory.
- * start  = stacked state (cards overlapping, flat, centered)
- * end    = fanned-out 3D state
+ * Multi-phase scroll choreography per card.
  *
- * scrollYProgress mapping:
- *   0.0  = section top hits viewport bottom
- *   ~0.3 = section roughly centred → cards fully fanned
- *   1.0  = section bottom hits viewport top
+ * scrollYProgress keyframes:
+ *   0.00 = section top hits viewport bottom (entering)
+ *   0.08 = cards begin to appear
+ *   0.20 = cards face the viewer, still stacked
+ *   0.38 = fully fanned out in 3D positions
+ *   0.55 = subtle parallax drift continues
+ *   1.00 = section leaving viewport
+ *
+ * Each property array must match the shared `SCROLL_KEYS` length.
  */
-const CARD_TRAJECTORIES: {
+const SCROLL_KEYS = [0, 0.08, 0.20, 0.38, 0.55, 1.0];
+
+interface CardTrajectory {
   rotateY: number[];
   rotateX: number[];
-  translateX: number[];
-  translateZ: number[];
+  rotateZ: number[];
+  x: number[];
   y: number[];
+  scale: number[];
   opacity: number[];
-}[] = [
-  // Sageworx — fans to the left, rotates to face right, comes forward
-  { rotateY: [0, 18], rotateX: [6, 0], translateX: [0, -8], translateZ: [0, 60], y: [60, 0], opacity: [0, 1] },
-  // Freelance — stays centre, slight tilt
-  { rotateY: [0, 6], rotateX: [6, 0], translateX: [0, 0], translateZ: [0, 0], y: [80, 0], opacity: [0, 1] },
-  // Traditional — fans to the right, recedes
-  { rotateY: [0, -8], rotateX: [6, 0], translateX: [0, 8], translateZ: [0, -40], y: [100, 0], opacity: [0, 1] },
+}
+
+const CARD_TRAJECTORIES: CardTrajectory[] = [
+  // ── Sageworx (featured) ──────────────────────────────────
+  // Rises first, fans left, scales up, comes forward
+  {
+    rotateY:  [0,   0,   2,   22,   22,  22],
+    rotateX:  [35,  35,  8,   0,    -1,  -1],
+    rotateZ:  [4,   4,   1,   0,    0,   0],
+    x:        [0,   0,   0,  -20,  -20, -20],
+    y:        [120, 120, 30,  0,   -4,  -4],
+    scale:    [0.85, 0.85, 0.95, 1.06, 1.06, 1.06],
+    opacity:  [0,   0.2, 0.8, 1,    1,   1],
+  },
+  // ── Freelance (middle) ───────────────────────────────────
+  // Rises slightly later, stays centre with subtle tilt
+  {
+    rotateY:  [0,   0,   0,   8,    8,   8],
+    rotateX:  [35,  35,  14,  0,    0,   0],
+    rotateZ:  [-2,  -2,  -1,  0,    0,   0],
+    x:        [0,   0,   0,   0,    0,   0],
+    y:        [140, 140, 60,  0,    2,   2],
+    scale:    [0.85, 0.85, 0.90, 0.94, 0.94, 0.94],
+    opacity:  [0,   0,   0.5, 1,    1,   1],
+  },
+  // ── Traditional (back) ───────────────────────────────────
+  // Rises last, fans right, scales down, recedes
+  {
+    rotateY:  [0,   0,   -2,  -12,  -12, -12],
+    rotateX:  [35,  35,  18,  2,    2,   2],
+    rotateZ:  [-4,  -4,  -2,  0,    0,   0],
+    x:        [0,   0,   0,   20,   20,  20],
+    y:        [160, 160, 90,  8,    10,  10],
+    scale:    [0.85, 0.85, 0.88, 0.90, 0.90, 0.90],
+    opacity:  [0,   0,   0.3, 0.85, 0.85, 0.85],
+  },
 ];
 
-/* ─── Scroll-driven card ────────────────────────────────────────────────── */
+/* ─── Scroll-driven transforms hook ─────────────────────────────────────── */
 
 function useCardTransforms(progress: MotionValue<number>, index: number) {
   const t = CARD_TRAJECTORIES[index];
-  // Cards fan out between 0 → 0.35 of the scroll range, then hold
-  const range = [0, 0.35];
 
-  const rotateY = useTransform(progress, range, t.rotateY);
-  const rotateX = useTransform(progress, range, t.rotateX);
-  const x = useTransform(progress, range, t.translateX);
-  const z = useTransform(progress, range, t.translateZ);
-  const y = useTransform(progress, range, t.y);
-  const opacity = useTransform(progress, range, t.opacity);
+  const rotateY = useTransform(progress, SCROLL_KEYS, t.rotateY);
+  const rotateX = useTransform(progress, SCROLL_KEYS, t.rotateX);
+  const rotateZ = useTransform(progress, SCROLL_KEYS, t.rotateZ);
+  const x       = useTransform(progress, SCROLL_KEYS, t.x);
+  const y       = useTransform(progress, SCROLL_KEYS, t.y);
+  const scale   = useTransform(progress, SCROLL_KEYS, t.scale);
+  const opacity = useTransform(progress, SCROLL_KEYS, t.opacity);
 
-  return { rotateY, rotateX, x, z, y, opacity };
+  return { rotateY, rotateX, rotateZ, x, y, scale, opacity };
 }
+
+/* ─── Individual 3D Card ────────────────────────────────────────────────── */
 
 function ComparisonCard({
   card,
@@ -103,30 +137,42 @@ function ComparisonCard({
   index: number;
   scrollProgress: MotionValue<number>;
 }) {
-  const { rotateY, rotateX, x, z, y, opacity } = useCardTransforms(scrollProgress, index);
+  const { rotateY, rotateX, rotateZ, x, y, scale, opacity } = useCardTransforms(scrollProgress, index);
 
   return (
     <motion.div
       className="comparison-card relative"
-      style={{ rotateY, rotateX, x, z, y, opacity }}
+      style={{ rotateY, rotateX, rotateZ, x, y, scale, opacity }}
     >
+      {/* Radial glow behind the Sageworx card */}
+      {card.isFeatured && (
+        <div className="comparison-glow pointer-events-none absolute -inset-8 -z-10 rounded-3xl opacity-0" />
+      )}
+
       <div
-        className={`relative overflow-hidden rounded-2xl border backdrop-blur-sm transition-shadow duration-500 ${
+        className={`relative overflow-hidden rounded-2xl border ${
           card.isFeatured
-            ? "border-sgwx-green/50 bg-sgwx-surface/95 shadow-[0_0_40px_rgba(110,168,127,0.15),0_0_80px_rgba(110,168,127,0.05)]"
-            : "border-sgwx-border bg-sgwx-surface/80"
+            ? "comparison-featured-card border-sgwx-green/60 bg-sgwx-surface"
+            : "border-sgwx-border/60 bg-sgwx-surface/70"
         }`}
       >
-        {/* Top accent bar for featured card */}
+        {/* Animated edge glow for featured card */}
         {card.isFeatured && (
-          <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-sgwx-green/40 via-sgwx-green to-sgwx-green/40" />
+          <>
+            <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-sgwx-green-bright to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-sgwx-green/30 to-transparent" />
+            <div className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-sgwx-green/30 to-transparent" />
+            <div className="absolute inset-y-0 right-0 w-px bg-gradient-to-b from-transparent via-sgwx-green/30 to-transparent" />
+          </>
         )}
 
         {/* Card Header */}
-        <div className={`px-5 pb-3 pt-5 sm:px-6 sm:pt-6 ${card.isFeatured ? "pt-6 sm:pt-7" : ""}`}>
+        <div className={`px-5 pb-2 sm:px-6 ${card.isFeatured ? "pt-6 sm:pt-7" : "pt-5 sm:pt-6"}`}>
           <h3
-            className={`text-lg font-bold uppercase tracking-wider sm:text-xl ${
-              card.isFeatured ? "text-sgwx-green" : "text-sgwx-text"
+            className={`font-bold uppercase tracking-wider ${
+              card.isFeatured
+                ? "text-xl text-sgwx-green-bright sm:text-2xl"
+                : "text-lg text-sgwx-text/70 sm:text-xl"
             }`}
           >
             {card.title}
@@ -134,22 +180,22 @@ function ComparisonCard({
         </div>
 
         {/* Row Items */}
-        <div className="flex flex-col gap-2 px-4 pb-5 sm:gap-2.5 sm:px-5 sm:pb-6">
+        <div className="flex flex-col gap-2 px-4 pb-5 pt-1 sm:gap-2.5 sm:px-5 sm:pb-6">
           {card.rows.map((row) => (
             <div
               key={row.label}
               className={`rounded-xl px-3.5 py-3 sm:px-4 sm:py-3.5 ${
                 card.isFeatured
-                  ? "border border-sgwx-green/20 bg-sgwx-highlight-col"
-                  : "border border-sgwx-border-subtle bg-sgwx-bg-alt/60"
+                  ? "border border-sgwx-green/25 bg-sgwx-green/[0.06]"
+                  : "border border-sgwx-border-subtle/60 bg-sgwx-bg-alt/40"
               }`}
             >
               <div className="flex items-start gap-2.5">
                 <span
-                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs ${
+                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
                     card.isFeatured
-                      ? "bg-sgwx-green/20 text-sgwx-check"
-                      : "bg-sgwx-border text-sgwx-text-dim"
+                      ? "bg-sgwx-green/25 text-sgwx-green-bright"
+                      : "bg-sgwx-border/60 text-sgwx-text-dim"
                   }`}
                 >
                   ✓
@@ -157,12 +203,14 @@ function ComparisonCard({
                 <div className="min-w-0">
                   <p
                     className={`truncate text-sm font-semibold ${
-                      card.isFeatured ? "text-sgwx-text" : "text-sgwx-text-muted"
+                      card.isFeatured ? "text-sgwx-text" : "text-sgwx-text-muted/80"
                     }`}
                   >
                     {row.value.split(".")[0]}...
                   </p>
-                  <p className="mt-0.5 text-xs text-sgwx-text-dim">{row.value}</p>
+                  <p className={`mt-0.5 text-xs ${card.isFeatured ? "text-sgwx-text-muted" : "text-sgwx-text-dim"}`}>
+                    {row.value}
+                  </p>
                 </div>
               </div>
             </div>
@@ -184,13 +232,11 @@ export default function ComparisonTable({
 }: ComparisonTableProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Track scroll progress of the entire section through the viewport
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
   });
 
-  // Build card data: Sageworx first (left on desktop, top on mobile)
   const cards: CardData[] = [
     {
       title: columns.sageworx,

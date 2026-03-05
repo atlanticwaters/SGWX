@@ -115,8 +115,8 @@
 /* ─── 3D Comparison Cards ─────────────────────────────────────────────── */
 
 .comparison-perspective {
-  perspective: 1200px;
-  perspective-origin: center center;
+  perspective: 1400px;
+  perspective-origin: 40% 50%;
 }
 
 /* Mobile: vertical stack */
@@ -131,19 +131,64 @@
   will-change: transform, opacity;
 }
 
+/* Radial glow behind the Sageworx card — fades in via parent opacity */
+.comparison-glow {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(110, 168, 127, 0.25) 0%,
+    rgba(110, 168, 127, 0.08) 40%,
+    transparent 70%
+  );
+  filter: blur(30px);
+  animation: glow-breathe 4s ease-in-out infinite;
+}
+
+@keyframes glow-breathe {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.05); }
+}
+
+/* Featured card: pulsing box-shadow + shimmer */
+.comparison-featured-card {
+  box-shadow:
+    0 0 30px rgba(110, 168, 127, 0.12),
+    0 0 60px rgba(110, 168, 127, 0.06),
+    0 4px 24px rgba(0, 0, 0, 0.3);
+  animation: card-glow-pulse 3s ease-in-out infinite;
+}
+
+@keyframes card-glow-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 30px rgba(110, 168, 127, 0.12),
+      0 0 60px rgba(110, 168, 127, 0.06),
+      0 4px 24px rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 50px rgba(159, 219, 176, 0.22),
+      0 0 100px rgba(110, 168, 127, 0.10),
+      0 4px 24px rgba(0, 0, 0, 0.3);
+  }
+}
+
 /* Desktop: 3-column grid, overlapping, z-stacked */
 @media (min-width: 768px) {
+  .comparison-perspective {
+    perspective-origin: 40% 50%;
+  }
+
   .comparison-cards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 0;
-    align-items: center;
+    align-items: start;
     padding: 2rem 0;
   }
 
   .comparison-card:nth-child(1) {
     z-index: 3;
-    margin-right: -1.5rem;
+    margin-right: -2rem;
   }
 
   .comparison-card:nth-child(2) {
@@ -152,6 +197,6 @@
 
   .comparison-card:nth-child(3) {
     z-index: 1;
-    margin-left: -1.5rem;
+    margin-left: -2rem;
   }
 }
