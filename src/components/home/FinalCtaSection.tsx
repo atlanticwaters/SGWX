@@ -3,7 +3,21 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import Button from "@/components/ui/Button";
 import SectionBackground from "@/components/ui/SectionBackground";
 
-export default function FinalCtaSection({ backgroundUrl, overlayColor }: { backgroundUrl?: string; overlayColor?: string }) {
+interface FinalCtaSectionProps {
+  heading?: string;
+  primaryCta?: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+  backgroundUrl?: string;
+  overlayColor?: string;
+}
+
+export default function FinalCtaSection({
+  heading = "Ready to move forward faster?",
+  primaryCta = { label: "Activate Your Team", href: "/contact" },
+  secondaryCta = { label: "Meet Our Members", href: "/members" },
+  backgroundUrl,
+  overlayColor,
+}: FinalCtaSectionProps) {
   return (
     <section className="relative py-24 md:py-32">
       {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as "sage" | "steel" | "teal" | "amber" | "carbon"} />}
@@ -11,12 +25,12 @@ export default function FinalCtaSection({ backgroundUrl, overlayColor }: { backg
         <AnimatedSection>
           <div className="ml-auto max-w-3xl text-right">
             <h2 className="text-3xl font-normal tracking-tight text-sgwx-text md:text-4xl lg:text-5xl">
-              Ready to move forward faster?
+              {heading}
             </h2>
             <div className="mt-10 flex items-center justify-end gap-4">
-              <Button href="/contact">Activate Your Team</Button>
-              <Button href="/members" variant="secondary">
-                Meet Our Members
+              <Button href={primaryCta.href}>{primaryCta.label}</Button>
+              <Button href={secondaryCta.href} variant="secondary">
+                {secondaryCta.label}
               </Button>
             </div>
           </div>

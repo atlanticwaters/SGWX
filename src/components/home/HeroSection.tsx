@@ -25,7 +25,21 @@ const transition = (delay: number) => ({
   delay,
 });
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  heading?: string;
+  paragraph1?: string;
+  paragraph2?: string;
+  primaryCta?: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+}
+
+export default function HeroSection({
+  heading = "Go Further. Faster.",
+  paragraph1 = "We bring together seasoned marketing and creative experts\u2014bespoke teams who understand your work, thrive on the challenge and deliver when it counts.",
+  paragraph2 = "No agency bloat. No freelancer roulette. Just proven pros, ready to work.",
+  primaryCta = { label: "How We Roll", href: "/model" },
+  secondaryCta = { label: "Let\u2019s Chat", href: "/contact" },
+}: HeroSectionProps) {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -57,7 +71,7 @@ export default function HeroSection() {
           {...fadeUp}
           transition={transition(0)}
         >
-          Go Further. Faster.
+          {heading}
         </motion.h1>
 
         <motion.p
@@ -65,9 +79,7 @@ export default function HeroSection() {
           {...fadeUp}
           transition={transition(0.12)}
         >
-          We bring together seasoned marketing and creative experts—bespoke teams
-          who understand your work, thrive on the challenge and deliver when it
-          counts.
+          {paragraph1}
         </motion.p>
 
         <motion.p
@@ -75,7 +87,7 @@ export default function HeroSection() {
           {...fadeUp}
           transition={transition(0.24)}
         >
-          No agency bloat. No freelancer roulette. Just proven pros, ready to work.
+          {paragraph2}
         </motion.p>
 
         <motion.div
@@ -83,9 +95,9 @@ export default function HeroSection() {
           {...fadeUp}
           transition={transition(0.36)}
         >
-          <Button href="/model">How We Roll</Button>
-          <Button href="/contact" variant="secondary">
-            Let&apos;s Chat
+          <Button href={primaryCta.href}>{primaryCta.label}</Button>
+          <Button href={secondaryCta.href} variant="secondary">
+            {secondaryCta.label}
           </Button>
         </motion.div>
       </motion.div>

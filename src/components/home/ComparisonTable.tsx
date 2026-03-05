@@ -3,35 +3,56 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import Button from "@/components/ui/Button";
 
-const rows = [
+const DEFAULT_ROWS = [
   {
     criteria: "The Talent",
-    agency: "Junior-heavy. You fund the learning curve.",
-    freelance: "Hit-or-miss. A reset every time.",
+    traditional: "Junior-heavy. You fund the learning curve.",
+    freelancers: "Hit-or-miss. A reset every time.",
     sageworx: "Senior specialists with category fluency.",
   },
   {
     criteria: "The Workflow",
-    agency: "Long onboarding. Longer timelines.",
-    freelance: "Quick kickoff. Constant realignment.",
+    traditional: "Long onboarding. Longer timelines.",
+    freelancers: "Quick kickoff. Constant realignment.",
     sageworx: "Clean start with no churn.",
   },
   {
     criteria: "The Cost",
-    agency: "High overhead. Hidden fees.",
-    freelance: "Unpredictable commitment and constant training.",
+    traditional: "High overhead. Hidden fees.",
+    freelancers: "Unpredictable commitment and constant training.",
     sageworx: "Lean by design. Zero budget bloat.",
   },
 ];
 
-export default function ComparisonTable() {
+const DEFAULT_COLUMNS = {
+  criteria: "Criteria",
+  agency: "Traditional Agency",
+  freelance: "Freelance Marketplace",
+  sageworx: "Sageworx Protocol",
+};
+
+interface ComparisonTableProps {
+  eyebrow?: string;
+  heading?: string;
+  columns?: { criteria: string; agency: string; freelance: string; sageworx: string };
+  rows?: { criteria: string; traditional: string; freelancers: string; sageworx: string }[];
+  cta?: { label: string; href: string };
+}
+
+export default function ComparisonTable({
+  eyebrow = "The Model Makes a Difference",
+  heading = "Why Sageworx?",
+  columns = DEFAULT_COLUMNS,
+  rows = DEFAULT_ROWS,
+  cta = { label: "Explore Our Model", href: "/model" },
+}: ComparisonTableProps) {
   return (
     <section className="py-16 md:py-24">
       <Container>
         <AnimatedSection>
           <SectionHeading
-            eyebrow="The Model Makes a Difference"
-            heading="Why Sageworx?"
+            eyebrow={eyebrow}
+            heading={heading}
             align="right"
           />
         </AnimatedSection>
@@ -43,16 +64,16 @@ export default function ComparisonTable() {
               <thead>
                 <tr>
                   <th scope="col" className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-widest text-sgwx-text">
-                    Criteria
+                    {columns.criteria}
                   </th>
                   <th scope="col" className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-widest text-sgwx-text">
-                    Traditional Agency
+                    {columns.agency}
                   </th>
                   <th scope="col" className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-widest text-sgwx-text">
-                    Freelance Marketplace
+                    {columns.freelance}
                   </th>
                   <th scope="col" className="border-t-2 border-sgwx-green bg-sgwx-highlight-col px-6 py-4 text-left text-sm font-bold uppercase tracking-widest text-sgwx-green">
-                    Sageworx Protocol
+                    {columns.sageworx}
                   </th>
                 </tr>
               </thead>
@@ -63,10 +84,10 @@ export default function ComparisonTable() {
                       {row.criteria}
                     </td>
                     <td className="px-6 py-5 text-sm text-sgwx-text-muted">
-                      {row.agency}
+                      {row.traditional}
                     </td>
                     <td className="px-6 py-5 text-sm text-sgwx-text-muted">
-                      {row.freelance}
+                      {row.freelancers}
                     </td>
                     <td className="bg-sgwx-highlight-col px-6 py-5 text-sm text-sgwx-text">
                       <span className="mr-2 text-sgwx-check">✓</span>
@@ -81,7 +102,7 @@ export default function ComparisonTable() {
 
         <AnimatedSection delay={0.25}>
           <div className="mt-10 text-center">
-            <Button href="/model">Explore Our Model</Button>
+            <Button href={cta.href}>{cta.label}</Button>
           </div>
         </AnimatedSection>
       </Container>

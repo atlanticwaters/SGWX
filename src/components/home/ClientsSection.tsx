@@ -12,31 +12,38 @@ const DeepFieldCanvas = dynamic(
   { ssr: false }
 );
 
-const clients = [
+const DEFAULT_SEGMENTS = [
   {
     type: "Challenger Brands",
-    pain: "Approval loops slow you down. Big agencies deliver decks instead of progress.",
+    painPoint: "Approval loops slow you down. Big agencies deliver decks instead of progress.",
     solution: "We clear the path and get to execution, quickly and thoughtfully.",
-    deepFieldVariant: 1 as const,
   },
   {
     type: "Niche Agencies",
-    pain: "A client needs something outside your wheelhouse. You either scramble or say no.",
+    painPoint: "A client needs something outside your wheelhouse. You either scramble or say no.",
     solution: "Expand your capabilities with fractional specialists, not added overhead.",
-    deepFieldVariant: 4 as const,
   },
   {
     type: "Startups",
-    pain: "Burn rate matters. Big hires come with big risks.",
+    painPoint: "Burn rate matters. Big hires come with big risks.",
     solution: "Senior leadership that scales as needed.",
-    deepFieldVariant: 6 as const,
   },
 ];
 
+const DEEP_FIELD_VARIANTS = [1, 4, 6] as const;
+
+interface ClientSegment {
+  type: string;
+  painPoint: string;
+  solution: string;
+}
+
 function ClientCard({
   client,
+  deepFieldVariant,
 }: {
-  client: (typeof clients)[number];
+  client: ClientSegment;
+  deepFieldVariant: 1 | 3 | 4 | 5 | 6;
 }) {
   const [hovered, setHovered] = useState(false);
 
@@ -64,7 +71,7 @@ function ClientCard({
             transformOrigin: "center center",
           }}
         >
-          <DeepFieldCanvas variant={client.deepFieldVariant} size={400} />
+          <DeepFieldCanvas variant={deepFieldVariant} size={400} />
         </div>
       </div>
 
@@ -106,7 +113,7 @@ function ClientCard({
                 className="mt-1 text-lg font-medium leading-relaxed transition-colors duration-500"
                 style={{ color: hovered ? "#e8ece9" : "#96a29b" }}
               >
-                {client.pain}
+                {client.painPoint}
               </p>
             </div>
           </div>
@@ -142,23 +149,37 @@ function ClientCard({
   );
 }
 
-export default function ClientsSection({ backgroundUrl, overlayColor }: { backgroundUrl?: string; overlayColor?: string }) {
+interface ClientsSectionProps {
+  eyebrow?: string;
+  heading?: string;
+  segments?: ClientSegment[];
+  backgroundUrl?: string;
+  overlayColor?: string;
+}
+
+export default function ClientsSection({
+  eyebrow = "Who We Serve",
+  heading = "Curated Partners For Your Business",
+  segments = DEFAULT_SEGMENTS,
+  backgroundUrl,
+  overlayColor,
+}: ClientsSectionProps) {
   return (
     <section className="relative bg-sgwx-bg-alt py-16 md:py-24">
       {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as "sage" | "steel" | "teal" | "amber" | "carbon"} />}
       <Container>
         <AnimatedSection>
           <SectionHeading
-            eyebrow="Who We Serve"
-            heading="Curated Partners For Your Business"
+            eyebrow={eyebrow}
+            heading={heading}
             size="large"
           />
         </AnimatedSection>
 
         <div className="mt-12 flex flex-col gap-4">
-          {clients.map((client, i) => (
-            <AnimatedSection key={client.type} delay={0.1 + i * 0.08}>
-              <ClientCard client={client} />
+          {segments.map((segment, i) => (
+            <AnimatedSection key={segment.type} delay={0.1 + i * 0.08}>
+              <ClientCard client={segment} deepFieldVariant={DEEP_FIELD_VARIANTS[i % DEEP_FIELD_VARIANTS.length]} />
             </AnimatedSection>
           ))}
         </div>

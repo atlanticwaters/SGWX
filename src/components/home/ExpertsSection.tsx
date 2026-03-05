@@ -19,6 +19,9 @@ interface StripMember {
 }
 
 interface ExpertsSectionProps {
+  eyebrow?: string;
+  heading?: string;
+  subheading?: string;
   members: StripMember[];
   backgroundUrl?: string;
   overlayColor?: string;
@@ -92,7 +95,14 @@ function MemberCard({ member }: { member: StripMember }) {
   );
 }
 
-export default function ExpertsSection({ members, backgroundUrl, overlayColor }: ExpertsSectionProps) {
+export default function ExpertsSection({
+  eyebrow = "The Collective",
+  heading = "Hand-Picked Experts",
+  subheading = "We assemble expert teams for the challenge at hand.",
+  members,
+  backgroundUrl,
+  overlayColor,
+}: ExpertsSectionProps) {
   const shuffled = useMemo(() => interleaveMembers(members), [members]);
 
   // Duplicate the list for seamless looping
@@ -105,9 +115,9 @@ export default function ExpertsSection({ members, backgroundUrl, overlayColor }:
       <Container>
         <AnimatedSection>
           <SectionHeading
-            eyebrow="The Collective"
-            heading="Hand-Picked Experts"
-            subheading="We assemble expert teams for the challenge at hand."
+            eyebrow={eyebrow}
+            heading={heading}
+            subheading={subheading}
             size="display"
           />
         </AnimatedSection>

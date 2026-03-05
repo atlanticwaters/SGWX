@@ -13,15 +13,25 @@ interface CaseStudy {
 }
 
 interface ImpactSectionProps {
+  eyebrow?: string;
+  heading?: string;
+  logoWallHeading?: string;
+  logos?: string[];
   caseStudies: CaseStudy[];
 }
 
-export default function ImpactSection({ caseStudies }: ImpactSectionProps) {
+export default function ImpactSection({
+  eyebrow = "Case Studies",
+  heading = "Making An Impact",
+  logoWallHeading,
+  logos,
+  caseStudies,
+}: ImpactSectionProps) {
   return (
     <section className="py-16 md:py-24">
       <Container>
         <AnimatedSection>
-          <SectionHeading eyebrow="Case Studies" heading="Making An Impact" size="medium" align="right" />
+          <SectionHeading eyebrow={eyebrow} heading={heading} size="medium" align="right" />
         </AnimatedSection>
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -39,7 +49,7 @@ export default function ImpactSection({ caseStudies }: ImpactSectionProps) {
         </div>
 
         <AnimatedSection delay={0.3}>
-          <LogoWall />
+          <LogoWall heading={logoWallHeading} logos={logos} />
         </AnimatedSection>
       </Container>
     </section>

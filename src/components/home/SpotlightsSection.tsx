@@ -13,20 +13,30 @@ interface Post {
 }
 
 interface SpotlightsSectionProps {
+  eyebrow?: string;
+  heading?: string;
+  cta?: { label: string; href: string; variant?: string };
   posts: Post[];
   backgroundUrl?: string;
   overlayColor?: string;
 }
 
-export default function SpotlightsSection({ posts, backgroundUrl, overlayColor }: SpotlightsSectionProps) {
+export default function SpotlightsSection({
+  eyebrow = "Spotlights",
+  heading = "Every project is an opportunity to push boundaries, challenge conventions, and make a mark.",
+  cta = { label: "More Spotlights", href: "/spotlights", variant: "secondary" },
+  posts,
+  backgroundUrl,
+  overlayColor,
+}: SpotlightsSectionProps) {
   return (
     <section className="relative bg-sgwx-bg-alt py-16 md:py-24">
       {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as "sage" | "steel" | "teal" | "amber" | "carbon"} />}
       <Container>
         <AnimatedSection>
           <SectionHeading
-            eyebrow="Spotlights"
-            heading="Every project is an opportunity to push boundaries, challenge conventions, and make a mark."
+            eyebrow={eyebrow}
+            heading={heading}
             size="display"
           />
         </AnimatedSection>
@@ -46,8 +56,8 @@ export default function SpotlightsSection({ posts, backgroundUrl, overlayColor }
 
         <AnimatedSection delay={0.35}>
           <div className="mt-12 text-center">
-            <Button href="/spotlights" variant="secondary">
-              More Spotlights
+            <Button href={cta.href} variant="secondary">
+              {cta.label}
             </Button>
           </div>
         </AnimatedSection>

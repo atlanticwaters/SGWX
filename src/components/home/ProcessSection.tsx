@@ -13,40 +13,46 @@ const DeepFieldCanvas = dynamic(
   { ssr: false }
 );
 
-const stages = [
+interface ProcessStage {
+  number: string;
+  title: string;
+  id: string;
+  description: string;
+  accent: "green" | "cyan";
+}
+
+const DEFAULT_STAGES: ProcessStage[] = [
   {
-    num: "01",
+    number: "01",
     title: "Launch",
     id: "launch",
-    desc: "Brand foundation + market entry. Strategic and visual infrastructure to compete from day one.",
-    accent: "green" as const,
-    deepFieldVariant: 1 as const,
+    description: "Brand foundation + market entry. Strategic and visual infrastructure to compete from day one.",
+    accent: "green",
   },
   {
-    num: "02",
+    number: "02",
     title: "Engage",
     id: "engage",
-    desc: "Content + experiences that connect. Campaigns, video, interactive \u2014 the work that moves people to act.",
-    accent: "cyan" as const,
-    deepFieldVariant: 3 as const,
+    description: "Content + experiences that connect. Campaigns, video, interactive \u2014 the work that moves people to act.",
+    accent: "cyan",
   },
   {
-    num: "03",
+    number: "03",
     title: "Mobilize",
     id: "mobilize",
-    desc: "Building communities + amplifying reach. Turning customers into advocates and audiences into movements.",
-    accent: "green" as const,
-    deepFieldVariant: 5 as const,
+    description: "Building communities + amplifying reach. Turning customers into advocates and audiences into movements.",
+    accent: "green",
   },
   {
-    num: "04",
+    number: "04",
     title: "Transform",
     id: "transform",
-    desc: "Internal alignment + organizational evolution. When the mission shifts to culture, we engineer the change.",
-    accent: "cyan" as const,
-    deepFieldVariant: 6 as const,
+    description: "Internal alignment + organizational evolution. When the mission shifts to culture, we engineer the change.",
+    accent: "cyan",
   },
 ];
+
+const DEEP_FIELD_VARIANTS = [1, 3, 5, 6] as const;
 
 const accentColors = {
   green: {
@@ -67,7 +73,7 @@ const accentColors = {
   },
 };
 
-function StageCard({ stage }: { stage: (typeof stages)[number] }) {
+function StageCard({ stage, deepFieldVariant }: { stage: ProcessStage; deepFieldVariant: 1 | 3 | 5 | 6 }) {
   const [hovered, setHovered] = useState(false);
   const colors = accentColors[stage.accent];
 
@@ -98,7 +104,7 @@ function StageCard({ stage }: { stage: (typeof stages)[number] }) {
             transformOrigin: "center center",
           }}
         >
-          <DeepFieldCanvas variant={stage.deepFieldVariant} size={400} />
+          <DeepFieldCanvas variant={deepFieldVariant} size={400} />
         </div>
       </div>
 
@@ -123,7 +129,7 @@ function StageCard({ stage }: { stage: (typeof stages)[number] }) {
           transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), -webkit-text-stroke 0.5s",
         }}
       >
-        {stage.num}
+        {stage.number}
       </div>
 
       {/* Content */}
@@ -133,7 +139,7 @@ function StageCard({ stage }: { stage: (typeof stages)[number] }) {
           className="font-mono text-[10px] font-medium uppercase tracking-widest transition-colors duration-500"
           style={{ color: hovered ? colors.labelBright : colors.label }}
         >
-          stage {stage.num}
+          stage {stage.number}
         </p>
 
         {/* Title */}
@@ -146,7 +152,7 @@ function StageCard({ stage }: { stage: (typeof stages)[number] }) {
 
         {/* Description */}
         <p className="mt-3 flex-1 text-sm leading-relaxed text-sgwx-text-muted">
-          {stage.desc}
+          {stage.description}
         </p>
 
         {/* Explore link — reveals on hover */}
@@ -178,13 +184,25 @@ function StageCard({ stage }: { stage: (typeof stages)[number] }) {
   );
 }
 
-export default function ProcessSection({
-  backgroundUrl,
-  overlayColor,
-}: {
+interface ProcessSectionProps {
+  eyebrow?: string;
+  heading?: string;
+  subheading?: string;
+  stages?: ProcessStage[];
+  footerLink?: { label: string; href: string };
   backgroundUrl?: string;
   overlayColor?: string;
-}) {
+}
+
+export default function ProcessSection({
+  eyebrow = "Our Process",
+  heading = "The Growth Sequence",
+  subheading = "Smart content + experiences built for every stage of your brand\u2019s evolution.",
+  stages = DEFAULT_STAGES,
+  footerLink = { label: "Explore the full sequence", href: "/process" },
+  backgroundUrl,
+  overlayColor,
+}: ProcessSectionProps) {
   return (
     <section className="relative bg-sgwx-bg-alt py-16 md:py-24">
       {backgroundUrl && (
@@ -198,16 +216,16 @@ export default function ProcessSection({
       <Container>
         <AnimatedSection>
           <SectionHeading
-            eyebrow="Our Process"
-            heading="The Growth Sequence"
-            subheading="Smart content + experiences built for every stage of your brand\u2019s evolution."
+            eyebrow={eyebrow}
+            heading={heading}
+            subheading={subheading}
           />
         </AnimatedSection>
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
           {stages.map((stage, i) => (
-            <AnimatedSection key={stage.num} delay={0.08 + i * 0.08}>
-              <StageCard stage={stage} />
+            <AnimatedSection key={stage.number} delay={0.08 + i * 0.08}>
+              <StageCard stage={stage} deepFieldVariant={DEEP_FIELD_VARIANTS[i % DEEP_FIELD_VARIANTS.length]} />
             </AnimatedSection>
           ))}
         </div>
@@ -215,10 +233,10 @@ export default function ProcessSection({
         <AnimatedSection delay={0.5}>
           <div className="mt-10 text-center">
             <Link
-              href="/process"
+              href={footerLink.href}
               className="inline-flex items-center gap-2 text-sm tracking-wide text-sgwx-green transition-colors hover:text-sgwx-green-bright"
             >
-              Explore the full sequence
+              {footerLink.label}
               <svg
                 className="h-4 w-4"
                 viewBox="0 0 20 20"

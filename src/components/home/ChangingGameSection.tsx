@@ -190,46 +190,61 @@ function WaveIcon() {
   );
 }
 
-export default function ChangingGameSection({ backgroundUrl, overlayColor }: { backgroundUrl?: string; overlayColor?: string }) {
+const DEFAULT_CARDS = [
+  {
+    heading: "Brands have been stuck choosing between two extremes.",
+    body: "A traditional agency weighed down by static layers. Or a loose collection of freelancers who are never quite on the same page.",
+  },
+  {
+    heading: "The market moves too fast for the first option. Your needs are too important for the second.",
+    body: "Technology isn\u2019t the strategy. People are. The best teams understand which tools elevate the work.",
+  },
+];
+
+const CARD_ICONS = [ScaleIcon, WaveIcon];
+
+interface ChangingGameSectionProps {
+  heading?: string;
+  cards?: { heading: string; body: string }[];
+  backgroundUrl?: string;
+  overlayColor?: string;
+}
+
+export default function ChangingGameSection({
+  heading = "The Rules Are Changing. Tilt Them In Your Favor.",
+  cards = DEFAULT_CARDS,
+  backgroundUrl,
+  overlayColor,
+}: ChangingGameSectionProps) {
   return (
     <section className="relative bg-sgwx-bg-alt py-20 md:py-32">
       {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as "sage" | "steel" | "teal" | "amber" | "carbon"} />}
       <Container>
         <AnimatedSection>
-          <SectionHeading heading="The Rules Are Changing. Tilt Them In Your Favor." size="display" />
+          <SectionHeading heading={heading} size="display" />
         </AnimatedSection>
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
-          <AnimatedSection delay={0.1} className="h-full">
-            <Card className="flex h-full flex-col">
-              <div className="mb-5">
-                <ScaleIcon />
-              </div>
-              <h3 className="text-xl font-semibold text-sgwx-text md:text-2xl">
-                Brands have been stuck choosing between two extremes.
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-sgwx-text-muted md:text-base">
-                A traditional agency weighed down by static layers. Or a loose
-                collection of freelancers who are never quite on the same page.
-              </p>
-            </Card>
-          </AnimatedSection>
-
-          <AnimatedSection delay={0.18} className="h-full">
-            <Card className="flex h-full flex-col">
-              <div className="mb-5">
-                <WaveIcon />
-              </div>
-              <h3 className="text-xl font-semibold text-sgwx-text md:text-2xl">
-                The market moves too fast for the first option. Your needs are
-                too important for the second.
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-sgwx-text-muted md:text-base">
-                Technology isn&apos;t the strategy. People are. The best teams
-                understand which tools elevate the work.
-              </p>
-            </Card>
-          </AnimatedSection>
+          {cards.map((card, i) => {
+            const Icon = CARD_ICONS[i];
+            return (
+              <AnimatedSection key={i} delay={0.1 + i * 0.08} className="h-full">
+                <Card className="flex h-full flex-col">
+                  {Icon && (
+                    <div className="mb-5">
+                      <Icon />
+                    </div>
+                  )}
+                  <h3 className="text-xl font-semibold text-sgwx-text md:text-2xl">
+                    {card.heading}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-sgwx-text-muted md:text-base">
+                    {card.body}
+                  </p>
+                </Card>
+              </AnimatedSection>
+            );
+          })}
         </div>
       </Container>
     </section>
