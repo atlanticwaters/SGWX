@@ -172,6 +172,35 @@
   }
 }
 
+/* Background grid with scanning line */
+.comparison-bg-grid {
+  background-image:
+    linear-gradient(rgba(110, 168, 127, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(110, 168, 127, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 70%);
+}
+
+.comparison-bg-grid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(110, 168, 127, 0.06) 50%,
+    transparent 100%
+  );
+  background-size: 100% 30%;
+  animation: grid-scan 6s ease-in-out infinite;
+}
+
+@keyframes grid-scan {
+  0%   { background-position: 0 -30%; }
+  100% { background-position: 0 130%; }
+}
+
 /* Desktop: 3-column grid, overlapping, z-stacked */
 @media (min-width: 768px) {
   .comparison-perspective {

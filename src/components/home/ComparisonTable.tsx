@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { motion, useScroll, useTransform, useInView, type MotionValue } from "framer-motion";
 import { useRef } from "react";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -47,7 +47,196 @@ interface CardData {
   title: string;
   rows: { label: string; value: string }[];
   isFeatured: boolean;
+  icon: React.ComponentType;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ *  Animated Line-Draw Icons
+ *  Pattern: fill shapes fade in → stroke paths draw → glow layer traces
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+const drawEase = [0.16, 1, 0.3, 1] as const;
+
+interface FillDef { d: string; color: string }
+interface StrokeDef { d: string }
+
+function AnimatedIcon({
+  fills,
+  strokes,
+  isFeatured = false,
+}: {
+  fills: FillDef[];
+  strokes: StrokeDef[];
+  isFeatured?: boolean;
+}) {
+  const ref = useRef<SVGSVGElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+
+  const strokeBase = isFeatured ? "#4A7A58" : "#2e3634";
+  const strokePeak = isFeatured ? "#9FDBB0" : "#4A7A58";
+  const strokeEnd = isFeatured ? "#6EA87F" : "#2e3634";
+  const glowColor = isFeatured ? "#9FDBB0" : "#4A7A58";
+
+  return (
+    <motion.svg
+      ref={ref}
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      width="48"
+      height="48"
+      className="shrink-0"
+      aria-hidden="true"
+      initial={{ opacity: 0, scale: 0.88 }}
+      animate={inView ? { opacity: 1, scale: 1 } : {}}
+      transition={{ duration: 0.35, delay: 0.05, ease: drawEase }}
+    >
+      {fills.map((f, i) => (
+        <motion.path
+          key={`f${i}`}
+          d={f.d}
+          fill={f.color}
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.25, delay: 0.5 + i * 0.04, ease: "easeOut" }}
+        />
+      ))}
+      {strokes.map((s, i) => (
+        <motion.path
+          key={`s${i}`}
+          d={s.d}
+          fill="none"
+          stroke={strokeBase}
+          strokeWidth="1"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          initial={{ pathLength: 0 }}
+          animate={inView ? { pathLength: 1, stroke: [strokeBase, strokePeak, strokeEnd] } : {}}
+          transition={{
+            pathLength: { duration: 0.5, delay: 0.12 + i * 0.04, ease: drawEase },
+            stroke: { duration: 0.6, delay: 0.12 + i * 0.04, ease: "easeOut" },
+          }}
+        />
+      ))}
+      {strokes.map((s, i) => (
+        <motion.path
+          key={`g${i}`}
+          d={s.d}
+          fill="none"
+          stroke={glowColor}
+          strokeWidth="2.5"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={inView ? { pathLength: 1, opacity: [0, 0.5, 0] } : {}}
+          transition={{
+            pathLength: { duration: 0.5, delay: 0.12 + i * 0.04, ease: drawEase },
+            opacity: { duration: 0.55, delay: 0.12 + i * 0.04, ease: "easeInOut" },
+          }}
+          style={{ filter: "blur(4px)" }}
+        />
+      ))}
+    </motion.svg>
+  );
+}
+
+// ── Spacecraft (Sageworx) ────────────────────────────────────────────────
+
+const spacecraftFills: FillDef[] = [
+  { d: "m21.5 17.5 -6 -3.2V4.4l-4 -3.9 -4 3.9v9.9l-6 3.2 -1 3h22l-1 -3Z", color: "#1e2422" },
+  { d: "M15.5 14.3V4.4l-4 -3.9v20h11l-1 -3 -6 -3.2Z", color: "rgba(110,168,127,0.12)" },
+  { d: "M3.5 16.4V8l1 -1 1 1v7.4", color: "rgba(159,219,176,0.15)" },
+  { d: "M17.5 15.4V8l1 -1 1 1v8.4", color: "rgba(159,219,176,0.15)" },
+  { d: "M9.5 20.5h4l1.5 3H8l1.5 -3Z", color: "#D4EEDA" },
+  { d: "m3.5 20.5 -1 2h4l-1 -2", color: "#D4EEDA" },
+  { d: "m17.5 20.5 -1 2h4l-1 -2", color: "#D4EEDA" },
+];
+
+const spacecraftStrokes: StrokeDef[] = [
+  { d: "m13.5 13.2002 8 4.3 1 3H0.5l1 -3 8 -4.3" },
+  { d: "M13.5 20.5v-13l-2 -2 -2 2v13" },
+  { d: "M15.5 14.3V4.4l-4 -3.9 -4 3.9v9.9" },
+  { d: "M3.5 16.4V8l1 -1 1 1v7.4" },
+  { d: "M17.5 15.4V8l1 -1 1 1v8.4" },
+  { d: "M9.5 20.5h4l1.5 3H8l1.5 -3Z" },
+  { d: "m3.5 20.5 -1 2h4l-1 -2" },
+  { d: "m17.5 20.5 -1 2h4l-1 -2" },
+  { d: "M11.5 18.5v5" },
+  { d: "M11.5 8.5v1" },
+];
+
+function SpacecraftIcon() {
+  return <AnimatedIcon fills={spacecraftFills} strokes={spacecraftStrokes} isFeatured />;
+}
+
+// ── Store (Freelance Marketplace) ────────────────────────────────────────
+
+const storeFills: FillDef[] = [
+  { d: "M19.5 2.5h-16l-3 5h2v15h18v-15h2l-3 -5Z", color: "#1e2422" },
+  { d: "M22.5 7.5V10L21 11.5 19.5 10l-2 1.5 -2 -1.5 -2 1.5 -2 -1.5 -2 1.5 -2 -1.5 -2 1.5 -2 -1.5L2 11.5 0.5 10V7.5h22Z", color: "rgba(74,87,84,0.25)" },
+  { d: "m13.5 13.5 -11 5h11v-5Z", color: "rgba(74,87,84,0.15)" },
+  { d: "M20.5 20.5h-18v2h18v-2Z", color: "#2e3634" },
+];
+
+const storeStrokes: StrokeDef[] = [
+  { d: "M22.5 7.5H0.5l3 -5h16l3 5Z" },
+  { d: "M20.5 13.5v9h-18v-9" },
+  { d: "M0.5 22.5h22" },
+  { d: "M2.5 18.5h11" },
+  { d: "M13.5 22.5v-9" },
+  { d: "M15.5 18.5v-3" },
+  { d: "m3.5 7.5 3 -5" },
+  { d: "m7.5 7.5 2 -5" },
+  { d: "M11.5 7.5v-5" },
+  { d: "m19.5 7.5 -3 -5" },
+  { d: "m15.5 7.5 -2 -5" },
+  { d: "m11.5 10 -2 1.5 -2 -1.5 -2 1.5 -2 -1.5L2 11.5 0.5 10V7.5" },
+  { d: "m11.5 10 2 1.5 2 -1.5 2 1.5 2 -1.5 1.5 1.5 1.5 -1.5V7.5" },
+  { d: "M3.5 10V7.5" },
+  { d: "M7.5 10V7.5" },
+  { d: "M11.5 10V7.5" },
+  { d: "M15.5 9.986V7.5" },
+  { d: "M19.5 10V7.5" },
+];
+
+function StoreIcon() {
+  return <AnimatedIcon fills={storeFills} strokes={storeStrokes} />;
+}
+
+// ── Building (Traditional Agency) ────────────────────────────────────────
+
+const buildingFills: FillDef[] = [
+  { d: "M12.5 23.499h-11V7.99902l11 -3V23.499Z", color: "#1e2422" },
+  { d: "M21.5 23.499h-7V7.49902l7 1V23.499Z", color: "#1e2422" },
+  { d: "M12.5 4.99902 1.5 23.499h11V4.99902Z", color: "rgba(74,87,84,0.15)" },
+  { d: "m21.5 8.49902 -7 14.99998h7V8.49902Z", color: "rgba(74,87,84,0.15)" },
+  { d: "M3.5 7.45402v-4.955l5.5 1v2.454", color: "#2e3634" },
+];
+
+const buildingStrokes: StrokeDef[] = [
+  { d: "M12.5 23.499h-11V7.99902l11 -3V23.499Z" },
+  { d: "M21.5 23.499h-7V7.49902l7 1V23.499Z" },
+  { d: "M16.5 10.499h3" },
+  { d: "M16.5 12.499h3" },
+  { d: "M16.5 14.499h3" },
+  { d: "M16.5 16.499h3" },
+  { d: "M16.5 18.499h3" },
+  { d: "M3.5 12.499h7" },
+  { d: "M4.5 9.49902h6" },
+  { d: "M3.5 15.499h7" },
+  { d: "M3.5 18.499h7" },
+  { d: "M8.5 20.499h-3v3h3v-3Z" },
+  { d: "M19.5 20.499h-3v3h3v-3Z" },
+  { d: "M0.5 23.499h23" },
+  { d: "M3.5 7.45402v-4.955l5.5 1v2.454" },
+  { d: "M7.5 3.22602V0.499023" },
+];
+
+function BuildingIcon() {
+  return <AnimatedIcon fills={buildingFills} strokes={buildingStrokes} />;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ *  Scroll-driven 3D card choreography
+ * ═══════════════════════════════════════════════════════════════════════ */
 
 /*
  * Multi-phase scroll choreography per card.
@@ -77,7 +266,6 @@ interface CardTrajectory {
 
 const CARD_TRAJECTORIES: CardTrajectory[] = [
   // ── Sageworx (featured) ──────────────────────────────────
-  // Rises first, fans left, scales up, then normalizes
   {
     rotateY:  [0,   0,   2,   22,   22,   6,   0],
     rotateX:  [35,  35,  8,   0,    -1,   0,   0],
@@ -88,7 +276,6 @@ const CARD_TRAJECTORIES: CardTrajectory[] = [
     opacity:  [0,   0.2, 0.8, 1,    1,    1,   1],
   },
   // ── Freelance (middle) ───────────────────────────────────
-  // Rises later, stays centre, then scales up to match
   {
     rotateY:  [0,   0,   0,   8,    8,    2,   0],
     rotateX:  [35,  35,  14,  0,    0,    0,   0],
@@ -99,7 +286,6 @@ const CARD_TRAJECTORIES: CardTrajectory[] = [
     opacity:  [0,   0,   0.5, 1,    1,    1,   1],
   },
   // ── Traditional (back) ───────────────────────────────────
-  // Rises last, fans right, recedes, then scales up to match
   {
     rotateY:  [0,   0,   -2,  -12,  -12,  -3,  0],
     rotateX:  [35,  35,  18,  2,    2,    0,   0],
@@ -110,8 +296,6 @@ const CARD_TRAJECTORIES: CardTrajectory[] = [
     opacity:  [0,   0,   0.3, 0.85, 0.85, 1,   1],
   },
 ];
-
-/* ─── Scroll-driven transforms hook ─────────────────────────────────────── */
 
 function useCardTransforms(progress: MotionValue<number>, index: number) {
   const t = CARD_TRAJECTORIES[index];
@@ -139,13 +323,13 @@ function ComparisonCard({
   scrollProgress: MotionValue<number>;
 }) {
   const { rotateY, rotateX, rotateZ, x, y, scale, opacity } = useCardTransforms(scrollProgress, index);
+  const Icon = card.icon;
 
   return (
     <motion.div
       className="comparison-card relative"
       style={{ rotateY, rotateX, rotateZ, x, y, scale, opacity }}
     >
-      {/* Radial glow behind the Sageworx card */}
       {card.isFeatured && (
         <div className="comparison-glow pointer-events-none absolute -inset-8 -z-10 rounded-3xl opacity-0" />
       )}
@@ -157,7 +341,6 @@ function ComparisonCard({
             : "border-sgwx-border/60 bg-sgwx-surface/70"
         }`}
       >
-        {/* Animated edge glow for featured card */}
         {card.isFeatured && (
           <>
             <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-sgwx-green-bright to-transparent" />
@@ -167,8 +350,9 @@ function ComparisonCard({
           </>
         )}
 
-        {/* Card Header */}
-        <div className={`px-5 pb-2 sm:px-6 ${card.isFeatured ? "pt-6 sm:pt-7" : "pt-5 sm:pt-6"}`}>
+        {/* Card Header with Icon */}
+        <div className={`flex items-center gap-3.5 px-5 pb-2 sm:px-6 ${card.isFeatured ? "pt-6 sm:pt-7" : "pt-5 sm:pt-6"}`}>
+          <Icon />
           <h3
             className={`font-bold uppercase tracking-wider ${
               card.isFeatured
@@ -242,22 +426,28 @@ export default function ComparisonTable({
     {
       title: columns.sageworx,
       isFeatured: true,
+      icon: SpacecraftIcon,
       rows: rows.map((r) => ({ label: r.criteria, value: r.sageworx })),
     },
     {
       title: columns.freelance,
       isFeatured: false,
+      icon: StoreIcon,
       rows: rows.map((r) => ({ label: r.criteria, value: r.freelancers })),
     },
     {
       title: columns.agency,
       isFeatured: false,
+      icon: BuildingIcon,
       rows: rows.map((r) => ({ label: r.criteria, value: r.traditional })),
     },
   ];
 
   return (
-    <section ref={sectionRef} className="py-16 md:py-24">
+    <section ref={sectionRef} className="relative py-16 md:py-24">
+      {/* Background grid animation */}
+      <div className="comparison-bg-grid pointer-events-none absolute inset-0 -z-10 overflow-hidden" />
+
       <Container>
         <AnimatedSection>
           <SectionHeading eyebrow={eyebrow} heading={heading} align="right" />
