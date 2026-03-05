@@ -112,26 +112,44 @@
   }
 }
 
-/* ─── 3D Comparison Cards ─────────────────────────────────────────────── */
+/* ─── Deck-style Comparison Cards ────────────────────────────────────── */
 
 .comparison-perspective {
-  perspective: 1400px;
-  perspective-origin: 40% 50%;
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
 }
 
-/* Mobile: vertical stack */
-.comparison-cards-grid {
+/* Mobile: vertical stack — Sageworx on top */
+.comparison-deck {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  position: relative;
 }
 
-.comparison-card {
-  transform-style: preserve-3d;
+/* On mobile, reorder so center card (Sageworx) appears first */
+.comparison-center-card { order: -1; }
+.comparison-side-left   { order: 0; }
+.comparison-side-right  { order: 1; }
+
+.comparison-side-card,
+.comparison-center-card {
   will-change: transform, opacity;
+  position: relative;
 }
 
-/* Radial glow behind the Sageworx card — fades in via parent opacity */
+/* Side cards: hover lift (transition only — framer handles entrance) */
+.comparison-side-card {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.comparison-side-card:hover {
+  transform: scale(1.03) translateY(-4px) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* Radial glow behind the Sageworx card */
 .comparison-glow {
   background: radial-gradient(
     ellipse at center,
@@ -148,7 +166,7 @@
   50%      { opacity: 1;   transform: scale(1.05); }
 }
 
-/* Featured card: pulsing box-shadow + shimmer */
+/* Featured card: pulsing box-shadow */
 .comparison-featured-card {
   box-shadow:
     0 0 30px rgba(110, 168, 127, 0.12),
@@ -201,31 +219,38 @@
   100% { background-position: 0 130%; }
 }
 
-/* Desktop: 3-column grid, overlapping, z-stacked */
+/* Desktop: 3-column deck, center card larger, sides overlap behind */
 @media (min-width: 768px) {
-  .comparison-perspective {
-    perspective-origin: 40% 50%;
-  }
-
-  .comparison-cards-grid {
+  .comparison-deck {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 1.15fr 1fr;
     gap: 0;
-    align-items: start;
+    align-items: center;
     padding: 2rem 0;
   }
 
-  .comparison-card:nth-child(1) {
+  /* Reset mobile ordering — grid positions handle layout */
+  .comparison-center-card { order: 0; }
+  .comparison-side-left   { order: 0; }
+  .comparison-side-right  { order: 0; }
+
+  .comparison-center-card {
     z-index: 3;
-    margin-right: -2rem;
+    transform: scale(1.05);
   }
 
-  .comparison-card:nth-child(2) {
-    z-index: 2;
-  }
-
-  .comparison-card:nth-child(3) {
+  .comparison-side-left {
     z-index: 1;
-    margin-left: -2rem;
+    margin-right: -1.5rem;
+  }
+
+  .comparison-side-right {
+    z-index: 1;
+    margin-left: -1.5rem;
+  }
+
+  .comparison-side-card:hover {
+    z-index: 2;
+    transform: scale(1.04) translateY(-4px) !important;
   }
 }
