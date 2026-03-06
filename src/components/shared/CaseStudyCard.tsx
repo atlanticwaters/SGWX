@@ -19,7 +19,7 @@ export default function CaseStudyCard({
   return (
     <Link
       href={href}
-      className="group block overflow-hidden rounded-2xl border border-sgwx-border bg-sgwx-surface transition-all duration-300 hover:border-sgwx-green/40 hover:shadow-[0_0_32px_rgba(110,168,127,0.08)]"
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-sgwx-border bg-sgwx-surface transition-all duration-300 hover:border-sgwx-green/40 hover:shadow-[0_0_32px_rgba(110,168,127,0.08)]"
     >
       {/* Thumbnail — 16:10 aspect ratio */}
       <div className="relative overflow-hidden" style={{ aspectRatio: "16/10" }}>
@@ -51,11 +51,11 @@ export default function CaseStudyCard({
       </div>
 
       {/* Text content */}
-      <div className="p-6">
+      <div className="flex flex-1 flex-col p-6">
         <h3 className="text-xl font-normal tracking-tight text-sgwx-text">
           {title}
         </h3>
-        <p className="mt-2 text-sm leading-relaxed text-sgwx-text-muted">
+        <p className="mt-2 flex-1 text-sm leading-relaxed text-sgwx-text-muted">
           {description}
         </p>
         <div className="mt-4 flex items-center gap-1.5 font-mono text-[10px] font-semibold tracking-widest uppercase text-sgwx-green transition-colors group-hover:text-sgwx-green-bright">

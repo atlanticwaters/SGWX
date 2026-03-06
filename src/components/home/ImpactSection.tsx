@@ -36,7 +36,7 @@ export default function ImpactSection({
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
           {caseStudies.map((study, i) => (
-            <AnimatedSection key={study.slug} delay={0.1 + i * 0.08}>
+            <AnimatedSection key={study.slug} delay={0.1 + i * 0.08} className="h-full">
               <CaseStudyCard
                 category={study.category}
                 title={study.title}
