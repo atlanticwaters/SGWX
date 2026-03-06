@@ -291,7 +291,7 @@ function ComparisonCard({ card }: { card: CardDef }) {
 
   return (
     <div
-      className={`relative overflow-hidden rounded-2xl border ${c.border} ${
+      className={`relative h-full overflow-hidden rounded-2xl border ${c.border} ${
         card.isFeatured ? "comparison-featured-card bg-sgwx-surface" : "bg-sgwx-surface/70"
       }`}
     >
