@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
@@ -354,6 +354,7 @@ export default function ComparisonTable({
 }: ComparisonTableProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const [hoveredCard, setHoveredCard] = useState<"left" | "right" | null>(null);
 
   const agencyCard: CardDef = {
     title: columns.agency,
@@ -389,23 +390,55 @@ export default function ComparisonTable({
         </AnimatedSection>
 
         <div ref={containerRef} className="comparison-perspective mt-12 sm:mt-16">
-          <div className="comparison-deck">
+          <motion.div
+            className="comparison-deck"
+            animate={{
+              gridTemplateColumns:
+                hoveredCard === "left"
+                  ? "1.3fr 0.85fr 0.85fr"
+                  : hoveredCard === "right"
+                    ? "0.85fr 0.85fr 1.3fr"
+                    : "0.85fr 1.3fr 0.85fr",
+            }}
+            transition={{ duration: 0.5, ease: drawEase }}
+          >
             {/* Left — Agency (slides out from behind center to the left) */}
             <motion.div
               className="comparison-side-card comparison-side-left"
               initial={{ opacity: 0, x: "45%", scale: 0.78 }}
-              animate={isInView ? { opacity: 1, x: 0, scale: 0.92 } : {}}
-              transition={{ duration: 0.8, delay: 0.35, ease: drawEase }}
+              animate={
+                isInView
+                  ? {
+                      opacity: 1,
+                      x: 0,
+                      scale: hoveredCard === "left" ? 1.02 : 0.92,
+                      y: hoveredCard === "left" ? -4 : 0,
+                    }
+                  : {}
+              }
+              transition={{ duration: 0.5, ease: drawEase }}
+              onMouseEnter={() => setHoveredCard("left")}
+              onMouseLeave={() => setHoveredCard(null)}
+              style={{ zIndex: hoveredCard === "left" ? 3 : 1 }}
             >
               <ComparisonCard card={agencyCard} />
             </motion.div>
 
-            {/* Center — Sageworx (appears first, always on top) */}
+            {/* Center — Sageworx (appears first, always on top when not hovering sides) */}
             <motion.div
               className="comparison-center-card"
               initial={{ opacity: 0, y: 20, scale: 0.92 }}
-              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-              transition={{ duration: 0.6, delay: 0.1, ease: drawEase }}
+              animate={
+                isInView
+                  ? {
+                      opacity: 1,
+                      y: 0,
+                      scale: hoveredCard ? 0.92 : 1.05,
+                    }
+                  : {}
+              }
+              transition={{ duration: 0.5, ease: drawEase }}
+              style={{ zIndex: hoveredCard ? 1 : 3 }}
             >
               <div className="comparison-glow pointer-events-none absolute -inset-8 -z-10 rounded-3xl" />
               <ComparisonCard card={sageworxCard} />
@@ -415,12 +448,24 @@ export default function ComparisonTable({
             <motion.div
               className="comparison-side-card comparison-side-right"
               initial={{ opacity: 0, x: "-45%", scale: 0.78 }}
-              animate={isInView ? { opacity: 1, x: 0, scale: 0.92 } : {}}
-              transition={{ duration: 0.8, delay: 0.35, ease: drawEase }}
+              animate={
+                isInView
+                  ? {
+                      opacity: 1,
+                      x: 0,
+                      scale: hoveredCard === "right" ? 1.02 : 0.92,
+                      y: hoveredCard === "right" ? -4 : 0,
+                    }
+                  : {}
+              }
+              transition={{ duration: 0.5, ease: drawEase }}
+              onMouseEnter={() => setHoveredCard("right")}
+              onMouseLeave={() => setHoveredCard(null)}
+              style={{ zIndex: hoveredCard === "right" ? 3 : 1 }}
             >
               <ComparisonCard card={freelanceCard} />
             </motion.div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Accessible sr-only table */}

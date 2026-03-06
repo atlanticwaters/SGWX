@@ -138,15 +138,9 @@
   position: relative;
 }
 
-/* Side cards: hover lift (transition only — framer handles entrance) */
+/* Side cards: framer handles all transforms */
 .comparison-side-card {
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.comparison-side-card:hover {
-  transform: scale(0.95) translateY(-4px) !important;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  transition: box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Radial glow behind the Sageworx card */
@@ -223,7 +217,7 @@
 @media (min-width: 768px) {
   .comparison-deck {
     display: grid;
-    grid-template-columns: 0.85fr 1.3fr 0.85fr;
+    /* grid-template-columns controlled by framer-motion */
     gap: 0;
     align-items: center;
     padding: 2rem 0;
@@ -234,29 +228,16 @@
   .comparison-side-left   { order: 0; }
   .comparison-side-right  { order: 0; }
 
-  .comparison-center-card {
-    z-index: 3;
-    transform: scale(1.05);
-  }
-
   .comparison-side-card {
-    transform: scale(0.92);
     min-width: 0;
     overflow: hidden;
   }
 
   .comparison-side-left {
-    z-index: 1;
     margin-right: 1.125rem;
   }
 
   .comparison-side-right {
-    z-index: 1;
     margin-left: 1.125rem;
-  }
-
-  .comparison-side-card:hover {
-    z-index: 2;
-    transform: scale(0.96) translateY(-4px) !important;
   }
 }
