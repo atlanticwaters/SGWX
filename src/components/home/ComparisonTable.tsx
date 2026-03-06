@@ -413,6 +413,12 @@ export default function ComparisonTable({
                       x: 0,
                       scale: hoveredCard === "left" ? 1.02 : 0.92,
                       y: hoveredCard === "left" ? -4 : 0,
+                      filter:
+                        hoveredCard === "left"
+                          ? "brightness(1.15) contrast(1.1)"
+                          : hoveredCard
+                            ? "brightness(0.6) contrast(0.85)"
+                            : "brightness(1) contrast(1)",
                     }
                   : {}
               }
@@ -434,6 +440,9 @@ export default function ComparisonTable({
                       opacity: 1,
                       y: 0,
                       scale: hoveredCard ? 0.92 : 1.05,
+                      filter: hoveredCard
+                        ? "brightness(0.6) contrast(0.85)"
+                        : "brightness(1) contrast(1)",
                     }
                   : {}
               }
@@ -455,6 +464,12 @@ export default function ComparisonTable({
                       x: 0,
                       scale: hoveredCard === "right" ? 1.02 : 0.92,
                       y: hoveredCard === "right" ? -4 : 0,
+                      filter:
+                        hoveredCard === "right"
+                          ? "brightness(1.15) contrast(1.1)"
+                          : hoveredCard
+                            ? "brightness(0.6) contrast(0.85)"
+                            : "brightness(1) contrast(1)",
                     }
                   : {}
               }
