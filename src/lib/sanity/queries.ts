@@ -508,11 +508,13 @@ export interface HomepageData {
   processEyebrow: string;
   processHeading: string;
   processSubheading: string;
-  processStages: { number: string; title: string; id: string; description: string; accent: "green" | "cyan" }[];
+  processStages: { number: string; title: string; id: string; description: string; output?: string; accent: "green" | "cyan" }[];
   processFooterLink: HomepageCta;
   // Impact
   impactEyebrow: string;
   impactHeading: string;
+  featuredCaseStudies?: CaseStudyListItem[];
+  caseStudyDisplayCount?: number;
   logoWallHeading: string;
   logos: { imageUrl: string; alt: string }[];
   // Spotlights
@@ -530,7 +532,10 @@ export interface HomepageData {
 export async function getHomepage(): Promise<HomepageData | null> {
   if (!client) return null;
   const raw = await client.fetch<
-    (Omit<HomepageData, "logos"> & { logos?: { image: SanityImageSource; alt: string }[] }) | null
+    (Omit<HomepageData, "logos" | "featuredCaseStudies"> & {
+      logos?: { image: SanityImageSource; alt: string }[];
+      featuredCaseStudies?: (Omit<CaseStudyListItem, "thumbnailUrl"> & { thumbnail?: SanityImageSource })[];
+    }) | null
   >(
     `*[_type == "homepage" && _id == "homepage"][0] {
       heroHeading, heroParagraph1, heroParagraph2,
@@ -546,9 +551,15 @@ export async function getHomepage(): Promise<HomepageData | null> {
       clientSegments[] { type, painPoint, solution },
       expertsEyebrow, expertsHeading, expertsSubheading,
       processEyebrow, processHeading, processSubheading,
-      processStages[] { number, title, id, description, accent },
+      processStages[] { number, title, id, description, output, accent },
       processFooterLink { label, href, variant },
-      impactEyebrow, impactHeading, logoWallHeading,
+      impactEyebrow, impactHeading,
+      featuredCaseStudies[]-> {
+        _id, title, "slug": slug.current, client, category, year, tags,
+        shortDescription, thumbnail, order
+      },
+      caseStudyDisplayCount,
+      logoWallHeading,
       logos[] { image, alt },
       spotlightsEyebrow, spotlightsHeading,
       spotlightsCta { label, href, variant },
@@ -561,6 +572,22 @@ export async function getHomepage(): Promise<HomepageData | null> {
   if (!raw) return null;
   return {
     ...raw,
+    featuredCaseStudies: raw.featuredCaseStudies
+      ?.filter((cs) => cs != null)
+      .map((cs) => ({
+        _id: cs._id,
+        title: cs.title,
+        slug: cs.slug,
+        client: cs.client,
+        category: cs.category,
+        year: cs.year,
+        tags: cs.tags,
+        shortDescription: cs.shortDescription,
+        thumbnailUrl: cs.thumbnail
+          ? urlFor(cs.thumbnail).width(800).quality(75).auto("format").url()
+          : undefined,
+        order: cs.order,
+      })),
     logos: (raw.logos ?? [])
       .filter((logo) => logo?.image)
       .map((logo) => ({

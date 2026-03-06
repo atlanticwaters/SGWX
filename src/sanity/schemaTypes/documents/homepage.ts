@@ -214,6 +214,7 @@ export const homepage = defineType({
             defineField({ name: 'title', type: 'string', title: 'Title' }),
             defineField({ name: 'id', type: 'string', title: 'Anchor ID (e.g. "launch")' }),
             defineField({ name: 'description', type: 'text', title: 'Description', rows: 2 }),
+            defineField({ name: 'output', type: 'string', title: 'Output' }),
             defineField({
               name: 'accent',
               type: 'string',
@@ -250,6 +251,35 @@ export const homepage = defineType({
       type: 'string',
       title: 'Heading',
       group: 'impact',
+    }),
+    defineField({
+      name: 'featuredCaseStudies',
+      type: 'array',
+      title: 'Featured Case Studies',
+      description: 'Pick and reorder the case studies to feature. Leave empty to show all. Count must be a multiple of 2 for the grid layout.',
+      group: 'impact',
+      of: [
+        {
+          type: 'reference',
+          to: [{ type: 'caseStudy' }],
+        },
+      ],
+      validation: (rule) =>
+        rule.custom((arr) => {
+          if (!arr || arr.length === 0) return true
+          return arr.length % 2 === 0 || 'Must select a multiple of 2 case studies'
+        }),
+    }),
+    defineField({
+      name: 'caseStudyDisplayCount',
+      type: 'number',
+      title: 'Display Count',
+      description: 'How many featured case studies to show (must be a multiple of 2).',
+      group: 'impact',
+      options: {
+        list: [2, 4, 6, 8],
+      },
+      initialValue: 4,
     }),
     defineField({
       name: 'logoWallHeading',

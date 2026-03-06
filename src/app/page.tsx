@@ -31,6 +31,12 @@ export default async function Home() {
     backgrounds.map((b) => [b.slug, { imageUrl: b.imageUrl, overlayColor: b.overlayColor }])
   );
 
+  // Use featured case studies from CMS if configured, otherwise fall back to all
+  const displayStudies = homepage?.featuredCaseStudies?.length
+    ? homepage.featuredCaseStudies
+    : caseStudies;
+  const displayCount = homepage?.caseStudyDisplayCount ?? 4;
+
   return (
     <>
       <HeroSection
@@ -54,6 +60,13 @@ export default async function Home() {
         cta={homepage?.comparisonCta}
       />
       <SectionDivider />
+      <ImpactSection
+        eyebrow={homepage?.impactEyebrow}
+        heading={homepage?.impactHeading}
+        logoWallHeading={homepage?.logoWallHeading}
+        logos={homepage?.logos}
+        caseStudies={displayStudies.slice(0, displayCount)}
+      />
       <ClientsSection
         eyebrow={homepage?.clientsEyebrow}
         heading={homepage?.clientsHeading}
@@ -78,13 +91,6 @@ export default async function Home() {
         footerLink={homepage?.processFooterLink}
         backgroundUrl={bg["fluid-waves"]?.imageUrl}
         overlayColor={bg["fluid-waves"]?.overlayColor}
-      />
-      <ImpactSection
-        eyebrow={homepage?.impactEyebrow}
-        heading={homepage?.impactHeading}
-        logoWallHeading={homepage?.logoWallHeading}
-        logos={homepage?.logos}
-        caseStudies={caseStudies}
       />
       <SectionDivider />
       <SpotlightsSection

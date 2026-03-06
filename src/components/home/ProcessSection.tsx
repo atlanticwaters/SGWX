@@ -18,36 +18,57 @@ interface ProcessStage {
   title: string;
   id: string;
   description: string;
+  output?: string;
   accent: "green" | "cyan";
 }
 
 const DEFAULT_STAGES: ProcessStage[] = [
   {
     number: "01",
-    title: "Launch",
-    id: "launch",
-    description: "Brand foundation + market entry. Strategic and visual infrastructure to compete from day one.",
+    title: "Immersion & Brief",
+    id: "immersion",
+    description: "We define the problem, align on goals, and set success markers.",
+    output: "Mission Brief",
     accent: "green",
   },
   {
     number: "02",
-    title: "Engage",
-    id: "engage",
-    description: "Content + experiences that connect. Campaigns, video, interactive \u2014 the work that moves people to act.",
+    title: "Build The Team",
+    id: "build-team",
+    description: "We assemble the right mix of seasoned talent for category expertise.",
+    output: "Purpose Built Team",
     accent: "cyan",
   },
   {
     number: "03",
-    title: "Mobilize",
-    id: "mobilize",
-    description: "Building communities + amplifying reach. Turning customers into advocates and audiences into movements.",
+    title: "Shape The Direction",
+    id: "shape-direction",
+    description: "We convert the brief into clear avenues for strategic and creative exploration.",
+    output: "Strategic Roadmap",
     accent: "green",
   },
   {
     number: "04",
-    title: "Transform",
-    id: "transform",
-    description: "Internal alignment + organizational evolution. When the mission shifts to culture, we engineer the change.",
+    title: "Create & Refine",
+    id: "create-refine",
+    description: "Work unfolds in focused sprints. Strategy, creative, and production operate as one.",
+    output: "Accelerated Progress",
+    accent: "cyan",
+  },
+  {
+    number: "05",
+    title: "Capture Learnings",
+    id: "capture-learnings",
+    description: "Insights, decisions, and learnings inform the work now and the work to come.",
+    output: "Shared Knowledge",
+    accent: "green",
+  },
+  {
+    number: "06",
+    title: "Evolve & Scale",
+    id: "evolve-scale",
+    description: "Leadership stays consistent. Specialists come in as needed. You get continuity without long-term overhead.",
+    output: "Sustained Momentum",
     accent: "cyan",
   },
 ];
@@ -155,6 +176,14 @@ function StageCard({ stage, deepFieldVariant }: { stage: ProcessStage; deepField
           {stage.description}
         </p>
 
+        {/* Output */}
+        {stage.output && (
+          <p className="mt-3 font-mono text-[10px] uppercase tracking-widest text-sgwx-text-dim">
+            Output:{" "}
+            <span className="text-sgwx-text-muted">{stage.output}</span>
+          </p>
+        )}
+
         {/* Explore link — reveals on hover */}
         <div
           className="mt-4 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest"
@@ -222,7 +251,7 @@ export default function ProcessSection({
           />
         </AnimatedSection>
 
-        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {stages.map((stage, i) => (
             <AnimatedSection key={stage.number} delay={0.08 + i * 0.08}>
               <StageCard stage={stage} deepFieldVariant={DEEP_FIELD_VARIANTS[i % DEEP_FIELD_VARIANTS.length]} />
