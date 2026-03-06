@@ -241,12 +241,12 @@
 
   .comparison-side-left {
     z-index: 1;
-    margin-right: -1.5rem;
+    margin-right: 1.125rem;
   }
 
   .comparison-side-right {
     z-index: 1;
-    margin-left: -1.5rem;
+    margin-left: 1.125rem;
   }
 
   .comparison-side-card:hover {
