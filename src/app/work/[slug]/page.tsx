@@ -11,6 +11,8 @@ import {
 } from "@/lib/sanity/queries";
 import type { SanityBlock } from "@/lib/sanity/queries";
 
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   const slugs = await getCaseStudySlugs();
   return slugs.map((slug) => ({ slug }));

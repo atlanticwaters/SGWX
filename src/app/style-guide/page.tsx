@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import StyleGuideClient from "./StyleGuideClient";
 import { getStyleGuidePage } from "@/lib/sanity/queries";
 
+export const revalidate = 60;
+
 const fallbackMeta = {
   title: "Style Guide",
   description: "SGWX Design System — tokens, components, and patterns.",

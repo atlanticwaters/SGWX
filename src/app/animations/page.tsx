@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import AnimationsShowcase from "./AnimationsShowcase";
 import { getAnimationsPage } from "@/lib/sanity/queries";
 
+export const revalidate = 60;
+
 const fallbackMeta = {
   title: "Animations Showcase",
   description: "SGWX 3D animation library — preview all available background animations.",

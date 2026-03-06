@@ -7,6 +7,8 @@ import ProgressBar from "@/components/process/ProgressBar";
 import StageNav from "@/components/process/StageNav";
 import { getSectionBackgroundBySlug, getProcessPage } from "@/lib/sanity/queries";
 
+export const revalidate = 60;
+
 const fallbackMeta = {
   title: "Our Process",
   description:

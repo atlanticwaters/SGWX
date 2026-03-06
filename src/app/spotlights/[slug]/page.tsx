@@ -6,6 +6,8 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import { getBlogPostBySlug, getBlogPostSlugs } from "@/lib/sanity/queries";
 import type { SanityBlock } from "@/lib/sanity/queries";
 
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   const slugs = await getBlogPostSlugs();
   return slugs.map((slug) => ({ slug }));

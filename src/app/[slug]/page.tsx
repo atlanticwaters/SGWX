@@ -11,6 +11,8 @@ import BoldHeroTemplate from "@/components/landing-pages/BoldHeroTemplate";
 import MinimalTemplate from "@/components/landing-pages/MinimalTemplate";
 import ServicesShowcaseTemplate from "@/components/landing-pages/ServicesShowcaseTemplate";
 
+export const revalidate = 60;
+
 const RESERVED_SLUGS = [
   "actions",
   "admin",

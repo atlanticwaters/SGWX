@@ -6,6 +6,8 @@ import AnimatedSection from "@/components/ui/AnimatedSection";
 import Container from "@/components/ui/Container";
 import { getMemberBySlug, getMemberSlugs } from "@/lib/sanity/queries";
 
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   const slugs = await getMemberSlugs();
   return slugs.map((slug) => ({ slug }));

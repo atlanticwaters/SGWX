@@ -11,6 +11,8 @@ import FinalCtaSection from "@/components/home/FinalCtaSection";
 import SectionDivider from "@/components/ui/SectionDivider";
 import { getAllCaseStudies, getAllBlogPosts, getSectionBackgrounds, getMembersForStrip, getHomepage } from "@/lib/sanity/queries";
 
+export const revalidate = 60;
+
 const fallbackMeta = {
   title: "Sageworx | Go Further. Faster.",
   description:

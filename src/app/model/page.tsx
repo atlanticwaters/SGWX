@@ -10,6 +10,8 @@ import TechnologySection from "@/components/model/TechnologySection";
 import FitSection from "@/components/model/FitSection";
 import { getSectionBackgroundBySlug, getModelPage } from "@/lib/sanity/queries";
 
+export const revalidate = 60;
+
 const fallbackMeta = {
   title: "Our Model",
   description:

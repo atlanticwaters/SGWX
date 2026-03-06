@@ -8,6 +8,8 @@ import MemberGallery from "@/components/members/MemberGallery";
 import JoinSection from "@/components/members/JoinSection";
 import { getFeaturedMembers, getAllMembers, getSectionBackgroundBySlug, getMembersPage } from "@/lib/sanity/queries";
 
+export const revalidate = 60;
+
 const fallbackMeta = {
   title: "Our Members",
   description:

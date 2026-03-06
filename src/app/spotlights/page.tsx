@@ -3,6 +3,8 @@ import SpotlightsHero from "@/components/spotlights/SpotlightsHero";
 import SpotlightsGrid from "@/components/spotlights/SpotlightsGrid";
 import { getAllBlogPosts, getSectionBackgroundBySlug, getSpotlightsPage } from "@/lib/sanity/queries";
 
+export const revalidate = 60;
+
 const fallbackMeta = {
   title: "Spotlights",
   description:

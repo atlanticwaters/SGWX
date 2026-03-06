@@ -3,6 +3,8 @@ import WorkHero from "@/components/work/WorkHero";
 import CaseStudyGrid from "@/components/work/CaseStudyGrid";
 import { getAllCaseStudies, getSectionBackgroundBySlug, getWorkPage } from "@/lib/sanity/queries";
 
+export const revalidate = 60;
+
 const fallbackMeta = {
   title: "Our Work",
   description:
