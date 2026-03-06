@@ -393,8 +393,8 @@ export default function ComparisonTable({
             {/* Left — Agency (slides out from behind center to the left) */}
             <motion.div
               className="comparison-side-card comparison-side-left"
-              initial={{ opacity: 0, x: "45%", scale: 0.85 }}
-              animate={isInView ? { opacity: 1, x: 0, scale: 1 } : {}}
+              initial={{ opacity: 0, x: "45%", scale: 0.78 }}
+              animate={isInView ? { opacity: 1, x: 0, scale: 0.92 } : {}}
               transition={{ duration: 0.8, delay: 0.35, ease: drawEase }}
             >
               <ComparisonCard card={agencyCard} />
@@ -414,8 +414,8 @@ export default function ComparisonTable({
             {/* Right — Freelance (slides out from behind center to the right) */}
             <motion.div
               className="comparison-side-card comparison-side-right"
-              initial={{ opacity: 0, x: "-45%", scale: 0.85 }}
-              animate={isInView ? { opacity: 1, x: 0, scale: 1 } : {}}
+              initial={{ opacity: 0, x: "-45%", scale: 0.78 }}
+              animate={isInView ? { opacity: 1, x: 0, scale: 0.92 } : {}}
               transition={{ duration: 0.8, delay: 0.35, ease: drawEase }}
             >
               <ComparisonCard card={freelanceCard} />
