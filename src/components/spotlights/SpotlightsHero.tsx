@@ -19,9 +19,11 @@ const transition = (delay: number) => ({
 interface SpotlightsHeroProps {
   backgroundUrl?: string;
   overlayColor?: string;
+  heading?: string;
+  subheading?: string;
 }
 
-export default function SpotlightsHero({ backgroundUrl, overlayColor }: SpotlightsHeroProps) {
+export default function SpotlightsHero({ backgroundUrl, overlayColor, heading, subheading }: SpotlightsHeroProps) {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -44,7 +46,7 @@ export default function SpotlightsHero({ backgroundUrl, overlayColor }: Spotligh
           {...fadeUp}
           transition={transition(0)}
         >
-          Spotlights
+          {heading ?? "Spotlights"}
         </motion.h1>
 
         <motion.p
@@ -52,8 +54,7 @@ export default function SpotlightsHero({ backgroundUrl, overlayColor }: Spotligh
           {...fadeUp}
           transition={transition(0.12)}
         >
-          Insights, featured work, and perspectives from the Sageworx
-          collective.
+          {subheading ?? "Insights, featured work, and perspectives from the Sageworx collective."}
         </motion.p>
       </motion.div>
     </section>

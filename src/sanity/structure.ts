@@ -1,6 +1,6 @@
 import type { StructureResolver } from 'sanity/structure'
 
-const SINGLETONS = ['siteSettings', 'homepage']
+const SINGLETONS = ['siteSettings', 'homepage', 'modelPage', 'processPage', 'membersPage', 'workPage', 'spotlightsPage', 'styleGuidePage', 'animationsPage']
 
 const MANUALLY_ORGANIZED = [
   ...SINGLETONS,
@@ -38,6 +38,69 @@ export const structure: StructureResolver = (S) =>
             .schemaType('homepage')
             .documentId('homepage')
             .title('Homepage')
+        ),
+
+      S.listItem()
+        .title('Model Page')
+        .child(
+          S.document()
+            .schemaType('modelPage')
+            .documentId('modelPage')
+            .title('Model Page')
+        ),
+
+      S.listItem()
+        .title('Process Page')
+        .child(
+          S.document()
+            .schemaType('processPage')
+            .documentId('processPage')
+            .title('Process Page')
+        ),
+
+      S.listItem()
+        .title('Members Page')
+        .child(
+          S.document()
+            .schemaType('membersPage')
+            .documentId('membersPage')
+            .title('Members Page')
+        ),
+
+      S.listItem()
+        .title('Work Page')
+        .child(
+          S.document()
+            .schemaType('workPage')
+            .documentId('workPage')
+            .title('Work Page')
+        ),
+
+      S.listItem()
+        .title('Spotlights Page')
+        .child(
+          S.document()
+            .schemaType('spotlightsPage')
+            .documentId('spotlightsPage')
+            .title('Spotlights Page')
+        ),
+
+      S.listItem()
+        .title('Style Guide Page')
+        .child(
+          S.document()
+            .schemaType('styleGuidePage')
+            .documentId('styleGuidePage')
+            .title('Style Guide Page')
+        ),
+
+      S.listItem()
+        .title('Animations Page')
+        .child(
+          S.document()
+            .schemaType('animationsPage')
+            .documentId('animationsPage')
+            .title('Animations Page')
         ),
 
       S.divider(),

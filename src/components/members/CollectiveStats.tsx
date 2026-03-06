@@ -12,13 +12,18 @@ interface Stat {
   label: string;
 }
 
-const stats: Stat[] = [
+const defaultStats: Stat[] = [
   { value: 50, suffix: "+", label: "Fortune 500 Brands Served" },
   { value: 200, suffix: "+", label: "Major Awards Won" },
   { value: 90, suffix: "%", label: "With 15+ Years Experience" },
   { value: 12, suffix: "", label: "Languages Spoken" },
   { value: 300, suffix: "+", label: "Product Launches Supported" },
   { value: 25, suffix: "+", label: "Industries Represented" },
+];
+
+const defaultParagraphs = [
+  "Today, the Sageworx collective is a diverse group of independent consultants, boutique agency owners, and subject matter experts. We are former Chief Creative Officers, VPs of Marketing, and heads of production from the biggest names in the business. We are strategists, creatives, producers, and makers who have chosen independence but thrive on collaboration.",
+  "We operate as a true collective\u2014sharing business, challenging one another, and improving our craft together. This is our unfair advantage: a stable of award-winning, M-shaped specialists who are constantly sharing intelligence and learnings from across multiple industries and all over the world.",
 ];
 
 function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
@@ -36,7 +41,6 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
     function tick(now: number) {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      // Ease-out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
       setDisplay(Math.round(eased * value));
 
@@ -73,40 +77,40 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
   );
 }
 
-export default function CollectiveStats() {
+interface CollectiveStatsProps {
+  eyebrow?: string;
+  heading?: string;
+  paragraphs?: string[];
+  stats?: { value: string; suffix?: string; label: string }[];
+}
+
+export default function CollectiveStats({ eyebrow, heading, paragraphs, stats }: CollectiveStatsProps) {
+  const paras = paragraphs ?? defaultParagraphs;
+  const allStats: Stat[] = stats
+    ? stats.map((s) => ({ value: parseInt(s.value, 10) || 0, suffix: s.suffix ?? "", label: s.label }))
+    : defaultStats;
+
   return (
     <section className="bg-sgwx-bg py-16 md:py-24">
       <Container>
         <AnimatedSection>
           <SectionHeading
-            eyebrow="By the Numbers"
-            heading="A Network of Multi-disciplined Powerhouses."
+            eyebrow={eyebrow ?? "By the Numbers"}
+            heading={heading ?? "A Network of Multi-disciplined Powerhouses."}
             size="display"
           />
         </AnimatedSection>
 
         <AnimatedSection delay={0.12}>
           <div className="mt-8 max-w-3xl space-y-6 text-base leading-relaxed text-sgwx-text-muted md:text-lg">
-            <p>
-              Today, the Sageworx collective is a diverse group of independent
-              consultants, boutique agency owners, and subject matter experts. We
-              are former Chief Creative Officers, VPs of Marketing, and heads of
-              production from the biggest names in the business. We are
-              strategists, creatives, producers, and makers who have chosen
-              independence but thrive on collaboration.
-            </p>
-            <p>
-              We operate as a true collective&mdash;sharing business, challenging
-              one another, and improving our craft together. This is our unfair
-              advantage: a stable of award-winning, M-shaped specialists who are
-              constantly sharing intelligence and learnings from across multiple
-              industries and all over the world.
-            </p>
+            {paras.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
           </div>
         </AnimatedSection>
 
         <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3 lg:gap-6">
-          {stats.map((stat, i) => (
+          {allStats.map((stat, i) => (
             <AnimatedSection key={stat.label} delay={0.18 + i * 0.08}>
               <Card hover={false} className="text-center">
                 <p className="text-3xl font-bold text-sgwx-green-bright md:text-4xl lg:text-5xl">

@@ -14,6 +14,13 @@ import { landingPage } from './documents/landing-page'
 import { testimonial } from './documents/testimonial'
 import { cardStyle } from './documents/card-style'
 import { homepage } from './documents/homepage'
+import { modelPage } from './documents/model-page'
+import { processPage } from './documents/process-page'
+import { membersPage } from './documents/members-page'
+import { workPage } from './documents/work-page'
+import { spotlightsPage } from './documents/spotlights-page'
+import { styleGuidePage } from './documents/style-guide-page'
+import { animationsPage } from './documents/animations-page'
 
 // Objects
 import { seo } from './objects/seo'
@@ -56,6 +63,13 @@ export const schemaTypes: SchemaTypeDefinition[] = [
   testimonial,
   cardStyle,
   homepage,
+  modelPage,
+  processPage,
+  membersPage,
+  workPage,
+  spotlightsPage,
+  styleGuidePage,
+  animationsPage,
   // Objects
   seo,
   link,

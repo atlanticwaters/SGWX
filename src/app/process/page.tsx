@@ -5,15 +5,15 @@ import type { StageData } from "@/components/process/StageSection";
 import ProcessClosing from "@/components/process/ProcessClosing";
 import ProgressBar from "@/components/process/ProgressBar";
 import StageNav from "@/components/process/StageNav";
-import { getSectionBackgroundBySlug } from "@/lib/sanity/queries";
+import { getSectionBackgroundBySlug, getProcessPage } from "@/lib/sanity/queries";
 
-export const metadata: Metadata = {
+const fallbackMeta = {
   title: "Our Process",
   description:
-    "The Growth Sequence — smart content + experiences built for every stage of your brand's evolution.",
+    "The Growth Sequence \u2014 smart content + experiences built for every stage of your brand\u2019s evolution.",
 };
 
-const stages: StageData[] = [
+const defaultStages: StageData[] = [
   {
     id: "launch",
     number: "01",
@@ -113,18 +113,42 @@ const stages: StageData[] = [
   },
 ];
 
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getProcessPage();
+  return {
+    title: data?.seo?.title ?? fallbackMeta.title,
+    description: data?.seo?.description ?? fallbackMeta.description,
+  };
+}
+
 export default async function ProcessPage() {
-  const heroBg = await getSectionBackgroundBySlug("fluid-waves");
+  const [heroBg, data] = await Promise.all([
+    getSectionBackgroundBySlug("fluid-waves"),
+    getProcessPage(),
+  ]);
+
+  const stages = (data?.stages as StageData[]) ?? defaultStages;
 
   return (
     <>
       <ProgressBar />
       <StageNav />
-      <ProcessHero backgroundUrl={heroBg?.imageUrl} overlayColor={heroBg?.overlayColor} />
+      <ProcessHero
+        backgroundUrl={heroBg?.imageUrl}
+        overlayColor={heroBg?.overlayColor}
+        eyebrow={data?.heroEyebrow}
+        heading={data?.heroHeading}
+        body={data?.heroBody}
+      />
       {stages.map((stage) => (
         <StageSection key={stage.id} {...stage} />
       ))}
-      <ProcessClosing />
+      <ProcessClosing
+        stageWords={data?.closingStageWords}
+        wordmark={data?.closingWordmark}
+        tagline={data?.closingTagline}
+        cta={data?.closingCta}
+      />
     </>
   );
 }

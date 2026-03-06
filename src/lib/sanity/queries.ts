@@ -472,6 +472,327 @@ export async function getTestimonialsByVerticals(verticals: string[]): Promise<T
   );
 }
 
+// ─── Site Settings Types & Query ─────────────────────────────────────────────
+
+export interface SiteSettingsNavItem {
+  label: string;
+  href: string;
+  isCta?: boolean;
+}
+
+export interface SiteSettingsData {
+  siteTitle?: string;
+  description?: string;
+  navigation?: SiteSettingsNavItem[];
+  footer?: {
+    copyright?: string;
+    socialLinks?: { platform: string; url: string }[];
+  };
+}
+
+export async function getSiteSettings(): Promise<SiteSettingsData | null> {
+  if (!client) return null;
+  return client.fetch<SiteSettingsData | null>(
+    `*[_type == "siteSettings" && _id == "siteSettings"][0] {
+      siteTitle,
+      description,
+      navigation[] { label, href, isCta },
+      footer { copyright, socialLinks[] { platform, url } }
+    }`
+  );
+}
+
+// ─── Model Page Types & Query ───────────────────────────────────────────────
+
+export interface ModelPageData {
+  heroEyebrow?: string;
+  heroHeading?: string;
+  heroBody?: string;
+  heroPrimaryCta?: HomepageCta;
+  heroSecondaryCta?: HomepageCta;
+  rightTeamEyebrow?: string;
+  rightTeamHeading?: string;
+  rightTeamParagraphs?: string[];
+  capabilitiesEyebrow?: string;
+  capabilitiesTabs?: { id: string; label: string; items: string[] }[];
+  microteamsEyebrow?: string;
+  microteamsHeading?: string;
+  microteamsBody?: string;
+  microteamsBullets?: string[];
+  microteamsClosing?: string;
+  momentumEyebrow?: string;
+  momentumHeading?: string;
+  momentumBody?: string;
+  momentumBullets?: string[];
+  momentumClosing?: string;
+  icpEyebrow?: string;
+  icpHeading?: string;
+  icpSubheading?: string;
+  icpCards?: { badge: string; headline: string; body: string; testimonialQuote?: string; testimonialAttribution?: string }[];
+  continuityEyebrow?: string;
+  continuityHeading?: string;
+  continuityParagraphs?: string[];
+  technologyEyebrow?: string;
+  technologyHeading?: string;
+  technologyParagraphs?: string[];
+  fitEyebrow?: string;
+  fitHeading?: string;
+  fitSubheading?: string;
+  fitGoodItems?: string[];
+  fitNotItems?: string[];
+  fitClosing?: string;
+  fitCtas?: HomepageCta[];
+  seo?: { title?: string; description?: string; noIndex?: boolean };
+}
+
+export async function getModelPage(): Promise<ModelPageData | null> {
+  if (!client) return null;
+  return client.fetch<ModelPageData | null>(
+    `*[_type == "modelPage" && _id == "modelPage"][0] {
+      heroEyebrow, heroHeading, heroBody,
+      heroPrimaryCta { label, href, variant },
+      heroSecondaryCta { label, href, variant },
+      rightTeamEyebrow, rightTeamHeading, rightTeamParagraphs,
+      capabilitiesEyebrow,
+      capabilitiesTabs[] { id, label, items },
+      microteamsEyebrow, microteamsHeading, microteamsBody, microteamsBullets, microteamsClosing,
+      momentumEyebrow, momentumHeading, momentumBody, momentumBullets, momentumClosing,
+      icpEyebrow, icpHeading, icpSubheading,
+      icpCards[] { badge, headline, body, testimonialQuote, testimonialAttribution },
+      continuityEyebrow, continuityHeading, continuityParagraphs,
+      technologyEyebrow, technologyHeading, technologyParagraphs,
+      fitEyebrow, fitHeading, fitSubheading, fitGoodItems, fitNotItems, fitClosing,
+      fitCtas[] { label, href, variant },
+      seo { title, description, noIndex }
+    }`
+  );
+}
+
+// ─── Work Page Types & Query ────────────────────────────────────────────────
+
+export interface WorkPageData {
+  heroHeading?: string;
+  heroSubheading?: string;
+  heroProjectsLabel?: string;
+  heroStatusLabel?: string;
+  heroStatusValue?: string;
+  seo?: { title?: string; description?: string; noIndex?: boolean };
+}
+
+export async function getWorkPage(): Promise<WorkPageData | null> {
+  if (!client) return null;
+  return client.fetch<WorkPageData | null>(
+    `*[_type == "workPage" && _id == "workPage"][0] {
+      heroHeading, heroSubheading, heroProjectsLabel, heroStatusLabel, heroStatusValue,
+      seo { title, description, noIndex }
+    }`
+  );
+}
+
+// ─── Spotlights Page Types & Query ──────────────────────────────────────────
+
+export interface SpotlightsPageData {
+  heroHeading?: string;
+  heroSubheading?: string;
+  seo?: { title?: string; description?: string; noIndex?: boolean };
+}
+
+export async function getSpotlightsPage(): Promise<SpotlightsPageData | null> {
+  if (!client) return null;
+  return client.fetch<SpotlightsPageData | null>(
+    `*[_type == "spotlightsPage" && _id == "spotlightsPage"][0] {
+      heroHeading, heroSubheading,
+      seo { title, description, noIndex }
+    }`
+  );
+}
+
+// ─── Members Page Types & Query ─────────────────────────────────────────────
+
+export interface MembersStatItem {
+  value: string;
+  suffix?: string;
+  label: string;
+}
+
+export interface MembersPageData {
+  heroHeading?: string;
+  heroBody?: string;
+  originEyebrow?: string;
+  originHeading?: string;
+  originParagraphs?: string[];
+  growthEyebrow?: string;
+  growthHeading?: string;
+  growthParagraphs?: string[];
+  statsEyebrow?: string;
+  statsHeading?: string;
+  statsParagraphs?: string[];
+  statsItems?: MembersStatItem[];
+  joinHeading?: string;
+  joinSubheading?: string;
+  joinParagraphs?: string[];
+  joinCta?: HomepageCta;
+  seo?: { title?: string; description?: string; noIndex?: boolean };
+}
+
+export async function getMembersPage(): Promise<MembersPageData | null> {
+  if (!client) return null;
+  return client.fetch<MembersPageData | null>(
+    `*[_type == "membersPage" && _id == "membersPage"][0] {
+      heroHeading, heroBody,
+      originEyebrow, originHeading, originParagraphs,
+      growthEyebrow, growthHeading, growthParagraphs,
+      statsEyebrow, statsHeading, statsParagraphs,
+      statsItems[] { value, suffix, label },
+      joinHeading, joinSubheading, joinParagraphs,
+      joinCta { label, href, variant },
+      seo { title, description, noIndex }
+    }`
+  );
+}
+
+// ─── Process Page Types & Query ─────────────────────────────────────────────
+
+export interface ProcessStageData {
+  id: string;
+  number: string;
+  name: string;
+  accent: "green" | "cyan";
+  focus: string;
+  services: string[];
+  proof: { client: string; description: string; result: string };
+  glowPosition: string;
+  deepFieldVariant: number;
+}
+
+export interface ProcessStepData {
+  num: string;
+  title: string;
+  whatsHappening: string;
+  whyItMatters: string;
+  whatYouGet: string;
+}
+
+export interface ProcessPrincipleCard {
+  badge: string;
+  title: string;
+  paragraphs: string[];
+}
+
+export interface ProcessPageData {
+  heroEyebrow?: string;
+  heroHeading?: string;
+  heroBody?: string;
+  stages?: ProcessStageData[];
+  sixStepsEyebrow?: string;
+  sixStepsHeading?: string;
+  sixStepsItems?: ProcessStepData[];
+  principlesEyebrow?: string;
+  principlesHeading?: string;
+  principlesSubheading?: string;
+  principlesCards?: ProcessPrincipleCard[];
+  governanceEyebrow?: string;
+  governanceHeading?: string;
+  governanceBullets?: string[];
+  fitEyebrow?: string;
+  fitHeading?: string;
+  fitGoodItems?: string[];
+  fitNotItems?: string[];
+  closingStageWords?: { text: string; color: string }[];
+  closingWordmark?: string;
+  closingTagline?: string;
+  closingCta?: HomepageCta;
+  closeHeading?: string;
+  closeBody?: string;
+  closeCta?: HomepageCta;
+  seo?: { title?: string; description?: string; noIndex?: boolean };
+}
+
+export async function getProcessPage(): Promise<ProcessPageData | null> {
+  if (!client) return null;
+  return client.fetch<ProcessPageData | null>(
+    `*[_type == "processPage" && _id == "processPage"][0] {
+      heroEyebrow, heroHeading, heroBody,
+      stages[] { id, number, name, accent, focus, services, proof { client, description, result }, glowPosition, deepFieldVariant },
+      sixStepsEyebrow, sixStepsHeading,
+      sixStepsItems[] { num, title, whatsHappening, whyItMatters, whatYouGet },
+      principlesEyebrow, principlesHeading, principlesSubheading,
+      principlesCards[] { badge, title, paragraphs },
+      governanceEyebrow, governanceHeading, governanceBullets,
+      fitEyebrow, fitHeading, fitGoodItems, fitNotItems,
+      closingStageWords[] { text, color },
+      closingWordmark, closingTagline,
+      closingCta { label, href, variant },
+      closeHeading, closeBody,
+      closeCta { label, href, variant },
+      seo { title, description, noIndex }
+    }`
+  );
+}
+
+// ─── Style Guide Page Types & Query ─────────────────────────────────────────
+
+export interface StyleGuideSectionDescription {
+  sectionId: string;
+  heading: string;
+  description?: string;
+}
+
+export interface StyleGuidePageData {
+  headerHeading?: string;
+  headerSubheading?: string;
+  sectionDescriptions?: StyleGuideSectionDescription[];
+  seo?: { title?: string; description?: string; noIndex?: boolean };
+}
+
+export async function getStyleGuidePage(): Promise<StyleGuidePageData | null> {
+  if (!client) return null;
+  return client.fetch<StyleGuidePageData | null>(
+    `*[_type == "styleGuidePage" && _id == "styleGuidePage"][0] {
+      headerHeading, headerSubheading,
+      sectionDescriptions[] { sectionId, heading, description },
+      seo { title, description, noIndex }
+    }`
+  );
+}
+
+// ─── Animations Page Types & Query ──────────────────────────────────────────
+
+export interface AnimationsThreeEntry {
+  name: string;
+  description: string;
+  fileName: string;
+}
+
+export interface AnimationsDeepFieldEntry {
+  variant: number;
+  name: string;
+  subtitle: string;
+  description: string;
+  technique: string;
+  bgColor: string;
+}
+
+export interface AnimationsPageData {
+  headerHeading?: string;
+  headerSubheading?: string;
+  threeAnimations?: AnimationsThreeEntry[];
+  deepFields?: AnimationsDeepFieldEntry[];
+  seo?: { title?: string; description?: string; noIndex?: boolean };
+}
+
+export async function getAnimationsPage(): Promise<AnimationsPageData | null> {
+  if (!client) return null;
+  return client.fetch<AnimationsPageData | null>(
+    `*[_type == "animationsPage" && _id == "animationsPage"][0] {
+      headerHeading, headerSubheading,
+      threeAnimations[] { name, description, fileName },
+      deepFields[] { variant, name, subtitle, description, technique, bgColor },
+      seo { title, description, noIndex }
+    }`
+  );
+}
+
 // ─── Homepage Types & Query ─────────────────────────────────────────────────
 
 export interface HomepageCta {

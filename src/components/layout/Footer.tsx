@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const footerLinks = [
+const defaultFooterLinks = [
   { label: "Model", href: "/model" },
   { label: "Members", href: "/members" },
   { label: "Process", href: "/process" },
@@ -9,7 +9,14 @@ const footerLinks = [
   { label: "Spotlights", href: "/spotlights" },
 ];
 
-export default function Footer() {
+interface FooterProps {
+  links?: { label: string; href: string }[];
+  copyright?: string;
+}
+
+export default function Footer({ links, copyright }: FooterProps) {
+  const footerLinks = links ?? defaultFooterLinks;
+
   return (
     <footer className="border-t border-sgwx-border-subtle bg-sgwx-bg">
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 py-12 md:flex-row">
@@ -21,7 +28,7 @@ export default function Footer() {
             height={33}
           />
           <p className="text-sm text-sgwx-text-dim">
-            &copy; {new Date().getFullYear()} Sageworx, LLC.
+            {copyright ?? `\u00A9 ${new Date().getFullYear()} Sageworx, LLC.`}
           </p>
         </div>
         <nav className="flex gap-6">

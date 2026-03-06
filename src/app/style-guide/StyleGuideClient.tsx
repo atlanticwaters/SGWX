@@ -159,9 +159,26 @@ function Swatch({ name, value, className }: { name: string; value: string; class
   );
 }
 
+/* ─── Props ────────────────────────────────────────────────────────────────── */
+
+interface SectionDescription {
+  sectionId: string;
+  heading: string;
+  description?: string;
+}
+
+interface StyleGuideClientProps {
+  headerHeading?: string;
+  headerSubheading?: string;
+  sectionDescriptions?: SectionDescription[];
+}
+
 /* ─── Page ─────────────────────────────────────────────────────────────────── */
 
-export default function StyleGuideClient() {
+export default function StyleGuideClient({ headerHeading, headerSubheading, sectionDescriptions }: StyleGuideClientProps) {
+  const sectionMap = Object.fromEntries(
+    (sectionDescriptions ?? []).map((s) => [s.sectionId, s])
+  );
   return (
     <div className="min-h-screen bg-sgwx-bg">
       {/* ═══ Header ═══ */}
@@ -169,11 +186,10 @@ export default function StyleGuideClient() {
         <Container>
           <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Design System</p>
           <h1 className="mt-3 text-4xl font-thin tracking-tight text-sgwx-text md:text-5xl lg:text-6xl">
-            SGWX Style Guide
+            {headerHeading ?? "SGWX Style Guide"}
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-sgwx-text-muted">
-            Every color, component, and typographic token in the Sageworx design system.
-            Click any swatch to copy its value.
+            {headerSubheading ?? "Every color, component, and typographic token in the Sageworx design system. Click any swatch to copy its value."}
           </p>
           <nav className="mt-8 flex flex-wrap gap-3">
             {[
@@ -202,7 +218,7 @@ export default function StyleGuideClient() {
       </div>
 
       {/* ═══ Colors ═══ */}
-      <GuideSection id="colors" title="Color Palette">
+      <GuideSection id="colors" title={sectionMap["colors"]?.heading ?? "Color Palette"}>
         <div className="space-y-12">
           {colorGroups.map((group) => (
             <div key={group.label}>
@@ -222,7 +238,7 @@ export default function StyleGuideClient() {
       <SectionDivider />
 
       {/* ═══ Glows & Overlays ═══ */}
-      <GuideSection id="glows" title="Glows & Overlays">
+      <GuideSection id="glows" title={sectionMap["glows"]?.heading ?? "Glows & Overlays"}>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {glows.map((g) => (
             <div key={g.name}>
@@ -254,7 +270,7 @@ export default function StyleGuideClient() {
       <SectionDivider />
 
       {/* ═══ Overlay Colors ═══ */}
-      <GuideSection id="overlays" title="Overlay Colors">
+      <GuideSection id="overlays" title={sectionMap["overlays"]?.heading ?? "Overlay Colors"}>
         <p className="mb-6 text-sm text-sgwx-text-muted">
           CMS-controlled color tints applied over section background images via the SectionBackground component.
           Each variant shifts the color grade while preserving the darkened, desaturated base treatment.
@@ -278,7 +294,7 @@ export default function StyleGuideClient() {
       <SectionDivider />
 
       {/* ═══ Typography ═══ */}
-      <GuideSection id="typography" title="Typography">
+      <GuideSection id="typography" title={sectionMap["typography"]?.heading ?? "Typography"}>
         <div className="mb-12 grid grid-cols-1 gap-8 md:grid-cols-2">
           <div>
             <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-sgwx-text-dim">Sans (Inter)</h3>
@@ -318,7 +334,7 @@ export default function StyleGuideClient() {
       <SectionDivider />
 
       {/* ═══ Buttons ═══ */}
-      <GuideSection id="buttons" title="Buttons">
+      <GuideSection id="buttons" title={sectionMap["buttons"]?.heading ?? "Buttons"}>
         <div className="space-y-10">
           <div>
             <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sgwx-text-dim">Variants</h3>
@@ -351,7 +367,7 @@ export default function StyleGuideClient() {
       <SectionDivider />
 
       {/* ═══ Cards ═══ */}
-      <GuideSection id="cards" title="Cards">
+      <GuideSection id="cards" title={sectionMap["cards"]?.heading ?? "Cards"}>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           <div>
             <p className="mb-3 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Hover Card (default)</p>
@@ -397,7 +413,7 @@ export default function StyleGuideClient() {
       <SectionDivider />
 
       {/* ═══ Badges ═══ */}
-      <GuideSection id="badges" title="Badges">
+      <GuideSection id="badges" title={sectionMap["badges"]?.heading ?? "Badges"}>
         <div className="flex flex-wrap items-center gap-4">
           <div className="text-center">
             <Badge>Green Badge</Badge>
@@ -421,7 +437,7 @@ export default function StyleGuideClient() {
       <SectionDivider />
 
       {/* ═══ Section Headings ═══ */}
-      <GuideSection id="headings" title="Section Headings">
+      <GuideSection id="headings" title={sectionMap["headings"]?.heading ?? "Section Headings"}>
         <div className="space-y-12">
           <div>
             <p className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Display Size</p>
@@ -465,7 +481,7 @@ export default function StyleGuideClient() {
       <SectionDivider />
 
       {/* ═══ Dividers ═══ */}
-      <GuideSection id="dividers" title="Section Dividers">
+      <GuideSection id="dividers" title={sectionMap["dividers"]?.heading ?? "Section Dividers"}>
         <p className="mb-6 text-sm text-sgwx-text-muted">
           Gradient divider line that fades from transparent on both edges. Used between major page sections.
         </p>
@@ -484,7 +500,7 @@ export default function StyleGuideClient() {
       <SectionDivider />
 
       {/* ═══ Animations ═══ */}
-      <GuideSection id="animations" title="Animation Patterns">
+      <GuideSection id="animations" title={sectionMap["animations"]?.heading ?? "Animation Patterns"}>
         <div className="space-y-10">
           <div>
             <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-sgwx-text-dim">Easing Curve</h3>
@@ -554,7 +570,7 @@ const transition = (delay: number) => ({
       <SectionDivider />
 
       {/* ═══ Process Accents ═══ */}
-      <GuideSection id="process" title="Process Page Accents">
+      <GuideSection id="process" title={sectionMap["process"]?.heading ?? "Process Page Accents"}>
         <p className="mb-6 text-sm text-sgwx-text-muted">
           The process page uses alternating accent colors across the 4 growth stages for visual rhythm.
         </p>

@@ -30,9 +30,23 @@ interface WorkHeroProps {
   count?: number;
   backgroundUrl?: string;
   overlayColor?: string;
+  heading?: string;
+  subheading?: string;
+  projectsLabel?: string;
+  statusLabel?: string;
+  statusValue?: string;
 }
 
-export default function WorkHero({ count = 0, backgroundUrl, overlayColor }: WorkHeroProps) {
+export default function WorkHero({
+  count = 0,
+  backgroundUrl,
+  overlayColor,
+  heading,
+  subheading,
+  projectsLabel,
+  statusLabel,
+  statusValue,
+}: WorkHeroProps) {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -63,7 +77,7 @@ export default function WorkHero({ count = 0, backgroundUrl, overlayColor }: Wor
           {...fadeUp}
           transition={transition(0)}
         >
-          Our Work
+          {heading ?? "Our Work"}
         </motion.h1>
 
         <motion.p
@@ -71,8 +85,7 @@ export default function WorkHero({ count = 0, backgroundUrl, overlayColor }: Wor
           {...fadeUp}
           transition={transition(0.12)}
         >
-          Real outcomes for real brands. Explore how Sageworx teams have
-          delivered impact across industries.
+          {subheading ?? "Real outcomes for real brands. Explore how Sageworx teams have delivered impact across industries."}
         </motion.p>
 
         {/* HUD status line */}
@@ -82,7 +95,7 @@ export default function WorkHero({ count = 0, backgroundUrl, overlayColor }: Wor
           transition={transition(0.24)}
         >
           <span className="text-sgwx-text-muted">
-            Projects:{" "}
+            {projectsLabel ?? "Projects"}:{" "}
             <span className="text-sgwx-green">{count}</span>
           </span>
           <span
@@ -90,8 +103,8 @@ export default function WorkHero({ count = 0, backgroundUrl, overlayColor }: Wor
             aria-hidden="true"
           />
           <span className="text-sgwx-text-muted">
-            Status:{" "}
-            <span className="text-sgwx-cyan">Active</span>
+            {statusLabel ?? "Status"}:{" "}
+            <span className="text-sgwx-cyan">{statusValue ?? "Active"}</span>
           </span>
         </motion.div>
       </motion.div>

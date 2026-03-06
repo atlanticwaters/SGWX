@@ -2,35 +2,42 @@ import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 
-const bullets = [
+const defaultBullets = [
   "Strategic decisions stick",
   "Creative systems become reusable assets",
   "Every sprint delivers real, measurable progress",
 ];
 
-export default function MomentumSection() {
+interface MomentumSectionProps {
+  eyebrow?: string;
+  heading?: string;
+  body?: string;
+  bullets?: string[];
+  closing?: string;
+}
+
+export default function MomentumSection({ eyebrow, heading, body, bullets, closing }: MomentumSectionProps) {
+  const items = bullets ?? defaultBullets;
+
   return (
     <section className="bg-sgwx-bg py-16 md:py-24">
       <Container>
         <AnimatedSection>
           <SectionHeading
-            eyebrow="Momentum"
-            heading="Built for Momentum."
+            eyebrow={eyebrow ?? "Momentum"}
+            heading={heading ?? "Built for Momentum."}
           />
         </AnimatedSection>
 
         <AnimatedSection delay={0.12}>
           <p className="mt-8 max-w-3xl text-base leading-relaxed text-sgwx-text-muted md:text-lg">
-            Speed is a byproduct of alignment, not the goal itself. Our model is
-            designed to create and sustain momentum. By getting the right people
-            in the room from the beginning, we eliminate the costly resets and
-            circular debates that stall progress. The work doesn&apos;t just get
-            done; it builds on itself.
+            {body ??
+              "Speed is a byproduct of alignment, not the goal itself. Our model is designed to create and sustain momentum. By getting the right people in the room from the beginning, we eliminate the costly resets and circular debates that stall progress. The work doesn\u2019t just get done; it builds on itself."}
           </p>
         </AnimatedSection>
 
         <ul className="mt-8 max-w-3xl space-y-4">
-          {bullets.map((bullet, i) => (
+          {items.map((bullet, i) => (
             <AnimatedSection key={bullet} delay={0.2 + i * 0.08}>
               <li className="flex items-start gap-3">
                 <span
@@ -47,8 +54,7 @@ export default function MomentumSection() {
 
         <AnimatedSection delay={0.5}>
           <p className="mt-8 max-w-3xl text-base leading-relaxed text-sgwx-text-muted md:text-lg">
-            This is about moving forward with intention, so every step takes you
-            further.
+            {closing ?? "This is about moving forward with intention, so every step takes you further."}
           </p>
         </AnimatedSection>
       </Container>

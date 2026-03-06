@@ -11,11 +11,19 @@ import FinalCtaSection from "@/components/home/FinalCtaSection";
 import SectionDivider from "@/components/ui/SectionDivider";
 import { getAllCaseStudies, getAllBlogPosts, getSectionBackgrounds, getMembersForStrip, getHomepage } from "@/lib/sanity/queries";
 
-export const metadata: Metadata = {
+const fallbackMeta = {
   title: "Sageworx | Go Further. Faster.",
   description:
     "We bring together seasoned marketing and creative experts\u2014bespoke teams who understand your work, thrive on the challenge and deliver when it counts. No agency bloat. No freelancer roulette.",
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getHomepage();
+  return {
+    title: data?.seo?.title ?? fallbackMeta.title,
+    description: data?.seo?.description ?? fallbackMeta.description,
+  };
+}
 
 export default async function Home() {
   const [caseStudies, blogPosts, backgrounds, members, homepage] = await Promise.all([

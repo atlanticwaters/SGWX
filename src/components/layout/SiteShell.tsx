@@ -5,16 +5,32 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import PageTransition from "@/components/layout/PageTransition";
 
-export default function SiteShell({ children }: { children: React.ReactNode }) {
+interface SiteShellProps {
+  children: React.ReactNode;
+  navItems?: { label: string; href: string }[];
+  ctaLabel?: string;
+  ctaHref?: string;
+  footerLinks?: { label: string; href: string }[];
+  footerCopyright?: string;
+}
+
+export default function SiteShell({
+  children,
+  navItems,
+  ctaLabel,
+  ctaHref,
+  footerLinks,
+  footerCopyright,
+}: SiteShellProps) {
   const pathname = usePathname();
   const isStudio = pathname.startsWith("/studio");
 
   return (
     <>
-      <Header />
+      <Header navItems={navItems} ctaLabel={ctaLabel} ctaHref={ctaHref} />
       {!isStudio && <PageTransition />}
       <main className="pt-16">{children}</main>
-      <Footer />
+      <Footer links={footerLinks} copyright={footerCopyright} />
     </>
   );
 }

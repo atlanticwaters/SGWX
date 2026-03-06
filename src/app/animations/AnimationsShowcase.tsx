@@ -193,7 +193,36 @@ const deepFields: DeepFieldEntry[] = [
   },
 ];
 
-export default function AnimationsShowcase() {
+interface AnimationsShowcaseProps {
+  headerHeading?: string;
+  headerSubheading?: string;
+  threeAnimations?: { name: string; description: string; fileName: string }[];
+  deepFields?: { variant: number; name: string; subtitle: string; description: string; technique: string; bgColor: string }[];
+}
+
+export default function AnimationsShowcase({ headerHeading, headerSubheading, threeAnimations: cmsThree, deepFields: cmsDeep }: AnimationsShowcaseProps) {
+  // Merge CMS descriptive text with code-coupled data
+  const mergedThree = threeAnimations.map((anim, i) => {
+    const cms = cmsThree?.[i];
+    return {
+      ...anim,
+      name: cms?.name ?? anim.name,
+      description: cms?.description ?? anim.description,
+      file: cms?.fileName ?? anim.file,
+    };
+  });
+
+  const mergedDeep = deepFields.map((df, i) => {
+    const cms = cmsDeep?.find((c) => c.variant === df.variant) ?? cmsDeep?.[i];
+    return {
+      ...df,
+      name: cms?.name ?? df.name,
+      subtitle: cms?.subtitle ?? df.subtitle,
+      description: cms?.description ?? df.description,
+      technique: cms?.technique ?? df.technique,
+      bgColor: cms?.bgColor ?? df.bgColor,
+    };
+  });
   return (
     <div className="min-h-screen bg-sgwx-bg py-16 md:py-24">
       <Container>
@@ -201,12 +230,10 @@ export default function AnimationsShowcase() {
         <AnimatedSection>
           <Badge className="mb-4">Internal Reference</Badge>
           <h1 className="text-4xl font-normal tracking-tight text-sgwx-text md:text-5xl">
-            Animation Library
+            {headerHeading ?? "Animation Library"}
           </h1>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-sgwx-text-muted">
-            All background animations compiled for the SGWX site. Each
-            preview renders at 500&times;500px. Use these to assign animations
-            to page backgrounds and sections.
+            {headerSubheading ?? "All background animations compiled for the SGWX site. Each preview renders at 500\u00d7500px. Use these to assign animations to page backgrounds and sections."}
           </p>
         </AnimatedSection>
 
@@ -223,7 +250,7 @@ export default function AnimationsShowcase() {
         </AnimatedSection>
 
         <div className="mt-10 space-y-16">
-          {threeAnimations.map((anim, i) => (
+          {mergedThree.map((anim, i) => (
             <AnimatedSection key={anim.name} delay={i * 0.1}>
               <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
                 {/* Preview container — 500x500 */}
@@ -312,7 +339,7 @@ export default function AnimationsShowcase() {
         </AnimatedSection>
 
         <div className="mt-10 space-y-16">
-          {deepFields.map((df, i) => (
+          {mergedDeep.map((df, i) => (
             <AnimatedSection key={df.variant} delay={i * 0.08}>
               <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
                 {/* Preview container — 500x500 */}

@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Container from "@/components/ui/Container";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 
-const tabs = [
+const defaultTabs = [
   {
     id: "launch",
     label: "Launch",
@@ -54,16 +54,22 @@ const tabs = [
   },
 ];
 
-export default function CapabilitiesGrid() {
+interface CapabilitiesGridProps {
+  eyebrow?: string;
+  tabs?: { id: string; label: string; items: string[] }[];
+}
+
+export default function CapabilitiesGrid({ eyebrow, tabs }: CapabilitiesGridProps) {
   const [activeTab, setActiveTab] = useState(0);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const capTabs = tabs ?? defaultTabs;
 
   return (
     <section className="bg-sgwx-bg py-16 md:py-24">
       <Container>
         <AnimatedSection>
           <p className="mb-6 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
-            Capabilities
+            {eyebrow ?? "Capabilities"}
           </p>
 
           {/* Tab navigation */}
@@ -72,7 +78,7 @@ export default function CapabilitiesGrid() {
             aria-label="Capabilities categories"
             className="flex flex-wrap gap-2"
           >
-            {tabs.map((tab, i) => (
+            {capTabs.map((tab, i) => (
               <button
                 key={tab.id}
                 ref={(el) => { tabRefs.current[i] = el; }}
@@ -85,9 +91,9 @@ export default function CapabilitiesGrid() {
                 onKeyDown={(e) => {
                   let next = i;
                   if (e.key === "ArrowRight") {
-                    next = (i + 1) % tabs.length;
+                    next = (i + 1) % capTabs.length;
                   } else if (e.key === "ArrowLeft") {
-                    next = (i - 1 + tabs.length) % tabs.length;
+                    next = (i - 1 + capTabs.length) % capTabs.length;
                   } else {
                     return;
                   }
@@ -111,17 +117,17 @@ export default function CapabilitiesGrid() {
         <div className="mt-10">
           <AnimatePresence mode="wait">
             <motion.div
-              key={tabs[activeTab].id}
+              key={capTabs[activeTab].id}
               role="tabpanel"
-              id={`tabpanel-${tabs[activeTab].id}`}
-              aria-labelledby={`tab-${tabs[activeTab].id}`}
+              id={`tabpanel-${capTabs[activeTab].id}`}
+              aria-labelledby={`tab-${capTabs[activeTab].id}`}
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             >
               <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {tabs[activeTab].items.map((item, i) => (
+                {capTabs[activeTab].items.map((item, i) => (
                   <motion.li
                     key={item}
                     initial={{ opacity: 0, y: 12 }}

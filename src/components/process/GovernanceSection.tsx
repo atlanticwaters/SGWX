@@ -3,27 +3,35 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import Card from "@/components/ui/Card";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 
-const bullets = [
+const defaultBullets = [
   "Sageworx contracts, insures, and stands behind the work; our members are vetted, contracted, and governed under a single engagement.",
   "AI is used to accelerate early drafts and analysis; judgment, direction, and final decisions remain human-led.",
   "We do not train models on proprietary client data, and we follow client-specific security and compliance requirements. AI tools are applied in a controlled, task-specific manner, aligned to each client\u2019s legal, security, and regulatory standards, with clear boundaries around data handling, access, and usage throughout the engagement.",
   "You pay for active senior expertise\u2014not bench time, training, or layers.",
 ];
 
-export default function GovernanceSection() {
+interface GovernanceSectionProps {
+  eyebrow?: string;
+  heading?: string;
+  bullets?: string[];
+}
+
+export default function GovernanceSection({ eyebrow, heading, bullets }: GovernanceSectionProps) {
+  const items = bullets ?? defaultBullets;
+
   return (
     <section className="bg-sgwx-bg-alt py-16 md:py-24">
       <Container>
         <AnimatedSection>
           <SectionHeading
-            eyebrow="Governance & Risk"
-            heading="Built for Real-World Constraints"
+            eyebrow={eyebrow ?? "Governance & Risk"}
+            heading={heading ?? "Built for Real-World Constraints"}
             align="right"
           />
         </AnimatedSection>
 
         <div className="mx-auto mt-12 max-w-3xl space-y-4">
-          {bullets.map((item, i) => (
+          {items.map((item, i) => (
             <AnimatedSection key={i} delay={0.1 + i * 0.08}>
               <Card hover={false}>
                 <div className="flex items-start gap-4">

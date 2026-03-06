@@ -20,9 +20,22 @@ const transition = (delay: number) => ({
 interface ModelHeroProps {
   backgroundUrl?: string;
   overlayColor?: string;
+  eyebrow?: string;
+  heading?: string;
+  body?: string;
+  primaryCta?: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
 }
 
-export default function ModelHero({ backgroundUrl, overlayColor }: ModelHeroProps) {
+export default function ModelHero({
+  backgroundUrl,
+  overlayColor,
+  eyebrow,
+  heading,
+  body,
+  primaryCta,
+  secondaryCta,
+}: ModelHeroProps) {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -46,7 +59,7 @@ export default function ModelHero({ backgroundUrl, overlayColor }: ModelHeroProp
           transition={transition(0)}
           aria-hidden="true"
         >
-          The right team, ready from day one.
+          {eyebrow ?? "The right team, ready from day one."}
         </motion.p>
 
         <motion.h1
@@ -54,7 +67,7 @@ export default function ModelHero({ backgroundUrl, overlayColor }: ModelHeroProp
           {...fadeUp}
           transition={transition(0.1)}
         >
-          Stop Resetting. Start Building.
+          {heading ?? "Stop Resetting. Start Building."}
         </motion.h1>
 
         <motion.p
@@ -62,10 +75,8 @@ export default function ModelHero({ backgroundUrl, overlayColor }: ModelHeroProp
           {...fadeUp}
           transition={transition(0.22)}
         >
-          The Sageworx model brings together senior, bespoke teams who already
-          know how to work together. We skip the learning curve and get right to
-          the work, delivering continuity and momentum without the overhead of a
-          traditional agency.
+          {body ??
+            "The Sageworx model brings together senior, bespoke teams who already know how to work together. We skip the learning curve and get right to the work, delivering continuity and momentum without the overhead of a traditional agency."}
         </motion.p>
 
         <motion.div
@@ -73,9 +84,11 @@ export default function ModelHero({ backgroundUrl, overlayColor }: ModelHeroProp
           {...fadeUp}
           transition={transition(0.34)}
         >
-          <Button href="/contact">Get Started</Button>
-          <Button href="/work" variant="secondary">
-            See Our Work
+          <Button href={primaryCta?.href ?? "/contact"}>
+            {primaryCta?.label ?? "Get Started"}
+          </Button>
+          <Button href={secondaryCta?.href ?? "/work"} variant="secondary">
+            {secondaryCta?.label ?? "See Our Work"}
           </Button>
         </motion.div>
       </motion.div>

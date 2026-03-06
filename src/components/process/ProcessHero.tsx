@@ -29,9 +29,12 @@ const transition = (delay: number) => ({
 interface ProcessHeroProps {
   backgroundUrl?: string;
   overlayColor?: string;
+  eyebrow?: string;
+  heading?: string;
+  body?: string;
 }
 
-export default function ProcessHero({ backgroundUrl, overlayColor }: ProcessHeroProps) {
+export default function ProcessHero({ backgroundUrl, overlayColor, eyebrow, heading, body }: ProcessHeroProps) {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -63,7 +66,7 @@ export default function ProcessHero({ backgroundUrl, overlayColor }: ProcessHero
           transition={transition(0)}
           aria-hidden="true"
         >
-          The Growth Sequence
+          {eyebrow ?? "The Growth Sequence"}
         </motion.p>
 
         <motion.h1
@@ -71,7 +74,7 @@ export default function ProcessHero({ backgroundUrl, overlayColor }: ProcessHero
           {...fadeUp}
           transition={transition(0.1)}
         >
-          Smart Content + Experiences
+          {heading ?? "Smart Content + Experiences"}
         </motion.h1>
 
         <motion.p
@@ -79,8 +82,7 @@ export default function ProcessHero({ backgroundUrl, overlayColor }: ProcessHero
           {...fadeUp}
           transition={transition(0.22)}
         >
-          The ultimate growth partner &mdash; built for every stage of your
-          brand&apos;s evolution.
+          {body ?? "The ultimate growth partner \u2014 built for every stage of your brand\u2019s evolution."}
         </motion.p>
       </motion.div>
     </section>

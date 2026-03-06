@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
 import MobileNav from "./MobileNav";
 
-const navItems = [
+const defaultNavItems = [
   { label: "Model", href: "/model" },
   { label: "Members", href: "/members" },
   { label: "Process", href: "/process" },
@@ -15,13 +15,22 @@ const navItems = [
   { label: "Spotlights", href: "/spotlights" },
 ];
 
-export default function Header() {
+interface HeaderProps {
+  navItems?: { label: string; href: string }[];
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+export default function Header({ navItems, ctaLabel, ctaHref }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
+
+  const items = navItems ?? defaultNavItems;
+  const cta = { label: ctaLabel ?? "Let\u2019s Chat!", href: ctaHref ?? "/contact" };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-sgwx-border-subtle bg-sgwx-bg/80 backdrop-blur-xl">
@@ -43,7 +52,7 @@ export default function Header() {
 
         {/* Desktop Nav */}
         <nav className="hidden items-center gap-8 lg:flex">
-          {navItems.map((item) => (
+          {items.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -53,10 +62,10 @@ export default function Header() {
             </Link>
           ))}
           <Link
-            href="/contact"
+            href={cta.href}
             className="rounded-full border border-sgwx-green bg-sgwx-green/10 px-5 py-2 text-sm font-medium text-sgwx-green transition-all hover:bg-sgwx-green/20"
           >
-            Let&apos;s Chat!
+            {cta.label}
           </Link>
         </nav>
 
@@ -78,7 +87,7 @@ export default function Header() {
       </div>
 
       <AnimatePresence>
-        {mobileOpen && <MobileNav items={navItems} onClose={() => setMobileOpen(false)} />}
+        {mobileOpen && <MobileNav items={items} ctaLabel={cta.label} ctaHref={cta.href} onClose={() => setMobileOpen(false)} />}
       </AnimatePresence>
     </header>
   );

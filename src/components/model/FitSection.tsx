@@ -4,28 +4,48 @@ import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 
-const goodFit = [
+const defaultGoodFit = [
   "Tired of managing a roster of disconnected freelancers",
   "Looking to scale your team\u2019s capabilities without adding headcount",
   "An agency needing to fill a capability gap for a key client",
   "Frustrated with the bloat and slow pace of traditional agencies",
 ];
 
-const notFit = [
+const defaultNotFit = [
   "Looking for the lowest-cost execution or junior support",
   "Expecting to fully outsource the work with minimal involvement",
   "Optimizing for sheer volume over strategic impact",
 ];
 
-export default function FitSection() {
+const defaultCtas = [
+  { label: "Ready to Take Action?", href: "/contact", variant: "primary" as const },
+  { label: "Check Out Our Work", href: "/work", variant: "secondary" as const },
+  { label: "Meet Our Members", href: "/members", variant: "ghost" as const },
+];
+
+interface FitSectionProps {
+  eyebrow?: string;
+  heading?: string;
+  subheading?: string;
+  goodItems?: string[];
+  notItems?: string[];
+  closing?: string;
+  ctas?: { label: string; href: string; variant?: string }[];
+}
+
+export default function FitSection({ eyebrow, heading, subheading, goodItems, notItems, closing, ctas }: FitSectionProps) {
+  const goodFit = goodItems ?? defaultGoodFit;
+  const notFit = notItems ?? defaultNotFit;
+  const fitCtas = ctas ?? defaultCtas;
+
   return (
     <section className="bg-sgwx-bg py-24 md:py-32">
       <Container>
         <AnimatedSection>
           <SectionHeading
-            eyebrow="Fit Check"
-            heading="Let\u2019s Be Direct."
-            subheading="The Sageworx model works best when there\u2019s a true partnership. We\u2019re a strong fit if you value senior judgment, strategic clarity, and close collaboration."
+            eyebrow={eyebrow ?? "Fit Check"}
+            heading={heading ?? "Let\u2019s Be Direct."}
+            subheading={subheading ?? "The Sageworx model works best when there\u2019s a true partnership. We\u2019re a strong fit if you value senior judgment, strategic clarity, and close collaboration."}
           />
         </AnimatedSection>
 
@@ -101,18 +121,19 @@ export default function FitSection() {
         <AnimatedSection delay={0.28}>
           <div className="mt-12 text-center">
             <p className="mx-auto max-w-2xl text-base leading-relaxed text-sgwx-text-muted md:text-lg">
-              If you&apos;re looking for alignment, intentionality, and outcomes
-              that last, we&apos;ll work extremely well together.
+              {closing ?? "If you\u2019re looking for alignment, intentionality, and outcomes that last, we\u2019ll work extremely well together."}
             </p>
 
             <div className="mt-10 flex flex-col flex-wrap items-center justify-center gap-4 sm:flex-row">
-              <Button href="/contact">Ready to Take Action?</Button>
-              <Button href="/work" variant="secondary">
-                Check Out Our Work
-              </Button>
-              <Button href="/members" variant="ghost">
-                Meet Our Members
-              </Button>
+              {fitCtas.map((cta) => (
+                <Button
+                  key={cta.href}
+                  href={cta.href}
+                  variant={(cta.variant as "primary" | "secondary" | "ghost") ?? "primary"}
+                >
+                  {cta.label}
+                </Button>
+              ))}
             </div>
           </div>
         </AnimatedSection>

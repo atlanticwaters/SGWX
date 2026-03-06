@@ -1,23 +1,41 @@
 import type { Metadata } from "next";
 import WorkHero from "@/components/work/WorkHero";
 import CaseStudyGrid from "@/components/work/CaseStudyGrid";
-import { getAllCaseStudies, getSectionBackgroundBySlug } from "@/lib/sanity/queries";
+import { getAllCaseStudies, getSectionBackgroundBySlug, getWorkPage } from "@/lib/sanity/queries";
 
-export const metadata: Metadata = {
+const fallbackMeta = {
   title: "Our Work",
   description:
     "Real outcomes for real brands. Explore how Sageworx teams have delivered impact across industries.",
 };
 
+export async function generateMetadata(): Promise<Metadata> {
+  const data = await getWorkPage();
+  return {
+    title: data?.seo?.title ?? fallbackMeta.title,
+    description: data?.seo?.description ?? fallbackMeta.description,
+  };
+}
+
 export default async function WorkPage() {
-  const [caseStudies, heroBg] = await Promise.all([
+  const [caseStudies, heroBg, data] = await Promise.all([
     getAllCaseStudies(),
     getSectionBackgroundBySlug("geometric-architecture"),
+    getWorkPage(),
   ]);
 
   return (
     <>
-      <WorkHero count={caseStudies.length} backgroundUrl={heroBg?.imageUrl} overlayColor={heroBg?.overlayColor} />
+      <WorkHero
+        count={caseStudies.length}
+        backgroundUrl={heroBg?.imageUrl}
+        overlayColor={heroBg?.overlayColor}
+        heading={data?.heroHeading}
+        subheading={data?.heroSubheading}
+        projectsLabel={data?.heroProjectsLabel}
+        statusLabel={data?.heroStatusLabel}
+        statusValue={data?.heroStatusValue}
+      />
       <CaseStudyGrid caseStudies={caseStudies} />
     </>
   );

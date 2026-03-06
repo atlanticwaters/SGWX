@@ -7,13 +7,11 @@ interface IcpCard {
   badge: string;
   headline: string;
   body: string;
-  testimonial?: {
-    quote: string;
-    attribution: string;
-  };
+  testimonialQuote?: string;
+  testimonialAttribution?: string;
 }
 
-const cards: IcpCard[] = [
+const defaultCards: IcpCard[] = [
   {
     badge: "For Startups",
     headline: "Burn Rate Matters. So Do Great Ideas.",
@@ -23,40 +21,45 @@ const cards: IcpCard[] = [
     badge: "For Small to Midsize Brands",
     headline: "Tired of Decks Instead of Progress?",
     body: "Your internal marketing and creative teams are stretched thin, and big agencies are slowing you down with endless approval loops. Sageworx integrates directly into your workflow, breaking through bottlenecks and accelerating execution. We act as a seamless extension of your team, delivering the seasoned firepower you need to make an impact.",
-    testimonial: {
-      quote:
-        "When client solutions push us beyond our core capabilities, Sageworx is our first call. They integrate seamlessly, bring the right expertise, and deliver work that helps us go beyond expectations. With ZENPEP, they allowed us to offer a solution that included game design and development\u2014expanding our core offerings and unlocking a new revenue stream with one of our top clients. Sageworx is a smart, scalable way to solve complex problems without adding overhead.",
-      attribution: "Christi De Ved, VP of Marketing, EverPass Media",
-    },
+    testimonialQuote:
+      "When client solutions push us beyond our core capabilities, Sageworx is our first call. They integrate seamlessly, bring the right expertise, and deliver work that helps us go beyond expectations. With ZENPEP, they allowed us to offer a solution that included game design and development\u2014expanding our core offerings and unlocking a new revenue stream with one of our top clients. Sageworx is a smart, scalable way to solve complex problems without adding overhead.",
+    testimonialAttribution: "Christi De Ved, VP of Marketing, EverPass Media",
   },
   {
     badge: "For Agencies & In-House Creative Teams",
     headline: "Say \u2018Yes\u2019 to Bigger Opportunities.",
     body: "A client needs something outside your wheelhouse. Don\u2019t scramble or say no. Sageworx allows you to expand your capabilities with fractional specialists who plug directly into your process. We help you pitch, plan, and deliver, all while remaining as visible (or invisible) to the client as you would like us to be.",
-    testimonial: {
-      quote:
-        "When client solutions push us beyond our core capabilities, Sageworx is our first call. They integrate seamlessly, bring the right expertise, and deliver work that helps us go beyond expectations. With ZENPEP, they allowed us to offer a solution that included game design and development\u2014expanding our core offerings and unlocking a new revenue stream with one of our top clients. Sageworx gives us a smart, scalable way to solve complex problems without adding overhead.",
-      attribution: "Will Morel, Creative Producer, Invivo Brands",
-    },
+    testimonialQuote:
+      "When client solutions push us beyond our core capabilities, Sageworx is our first call. They integrate seamlessly, bring the right expertise, and deliver work that helps us go beyond expectations. With ZENPEP, they allowed us to offer a solution that included game design and development\u2014expanding our core offerings and unlocking a new revenue stream with one of our top clients. Sageworx gives us a smart, scalable way to solve complex problems without adding overhead.",
+    testimonialAttribution: "Will Morel, Creative Producer, Invivo Brands",
   },
 ];
 
-export default function IcpSection() {
+interface IcpSectionProps {
+  eyebrow?: string;
+  heading?: string;
+  subheading?: string;
+  cards?: IcpCard[];
+}
+
+export default function IcpSection({ eyebrow, heading, subheading, cards }: IcpSectionProps) {
+  const icpCards = cards ?? defaultCards;
+
   return (
     <section className="bg-sgwx-bg-alt py-16 md:py-24">
       <Container>
         <AnimatedSection>
           <SectionHeading
-            eyebrow="Built for You"
-            heading="One Model. Built for You."
-            subheading="The Sageworx model stays consistent. How we show up changes based upon you and your needs."
+            eyebrow={eyebrow ?? "Built for You"}
+            heading={heading ?? "One Model. Built for You."}
+            subheading={subheading ?? "The Sageworx model stays consistent. How we show up changes based upon you and your needs."}
             size="display"
             align="right"
           />
         </AnimatedSection>
 
         <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {cards.map((card, i) => (
+          {icpCards.map((card, i) => (
             <AnimatedSection key={card.badge} delay={0.1 + i * 0.08}>
               <Card className="flex h-full flex-col gap-4">
                 <p className="font-mono text-[10px] font-medium uppercase tracking-widest text-sgwx-green">
@@ -71,16 +74,16 @@ export default function IcpSection() {
                   {card.body}
                 </p>
 
-                {card.testimonial && (
+                {card.testimonialQuote && (
                   <div className="mt-auto pt-6">
                     <div className="h-px bg-sgwx-border-subtle" />
                     <blockquote className="mt-4">
                       <p className="text-xs italic leading-relaxed text-sgwx-text-dim">
-                        &ldquo;{card.testimonial.quote}&rdquo;
+                        &ldquo;{card.testimonialQuote}&rdquo;
                       </p>
                       <footer className="mt-3">
                         <cite className="not-italic font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
-                          &mdash; {card.testimonial.attribution}
+                          &mdash; {card.testimonialAttribution}
                         </cite>
                       </footer>
                     </blockquote>

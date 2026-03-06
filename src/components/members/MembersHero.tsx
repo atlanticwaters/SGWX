@@ -19,9 +19,11 @@ const transition = (delay: number) => ({
 interface MembersHeroProps {
   backgroundUrl?: string;
   overlayColor?: string;
+  heading?: string;
+  body?: string;
 }
 
-export default function MembersHero({ backgroundUrl, overlayColor }: MembersHeroProps) {
+export default function MembersHero({ backgroundUrl, overlayColor, heading, body }: MembersHeroProps) {
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -44,7 +46,7 @@ export default function MembersHero({ backgroundUrl, overlayColor }: MembersHero
           {...fadeUp}
           transition={transition(0)}
         >
-          100+ Stories. One Mission.
+          {heading ?? "100+ Stories. One Mission."}
         </motion.h1>
 
         <motion.p
@@ -52,10 +54,8 @@ export default function MembersHero({ backgroundUrl, overlayColor }: MembersHero
           {...fadeUp}
           transition={transition(0.15)}
         >
-          Meet the minds behind the mission. A curated network of seasoned
-          experts, diverse thinkers, and award-winning senior leaders&mdash;each
-          with a unique story, a distinct point of view, and a shared passion
-          for making the work work better.
+          {body ??
+            "Meet the minds behind the mission. A curated network of seasoned experts, diverse thinkers, and award-winning senior leaders\u2014each with a unique story, a distinct point of view, and a shared passion for making the work work better."}
         </motion.p>
       </motion.div>
     </section>

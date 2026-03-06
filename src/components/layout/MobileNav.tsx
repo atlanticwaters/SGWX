@@ -5,10 +5,12 @@ import { motion } from "framer-motion";
 
 interface MobileNavProps {
   items: { label: string; href: string }[];
+  ctaLabel?: string;
+  ctaHref?: string;
   onClose: () => void;
 }
 
-export default function MobileNav({ items, onClose }: MobileNavProps) {
+export default function MobileNav({ items, ctaLabel, ctaHref, onClose }: MobileNavProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: -10 }}
@@ -28,11 +30,11 @@ export default function MobileNav({ items, onClose }: MobileNavProps) {
           </Link>
         ))}
         <Link
-          href="/contact"
+          href={ctaHref ?? "/contact"}
           onClick={onClose}
           className="mt-2 rounded-full border border-sgwx-green bg-sgwx-green/10 px-5 py-3 text-center text-sm font-medium text-sgwx-green"
         >
-          Let&apos;s Chat!
+          {ctaLabel ?? "Let\u2019s Chat!"}
         </Link>
       </nav>
     </motion.div>

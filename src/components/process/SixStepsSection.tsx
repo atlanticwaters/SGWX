@@ -14,61 +14,48 @@ interface Step {
   whatYouGet: string;
 }
 
-const steps: Step[] = [
+const defaultSteps: Step[] = [
   {
     num: "01",
     title: "Immersion & Brief",
-    whatsHappening:
-      "The problem is pressure-tested, constraints are surfaced early, and success markers are agreed upon.",
+    whatsHappening: "The problem is pressure-tested, constraints are surfaced early, and success markers are agreed upon.",
     whyItMatters: "Most wasted spend traces back to a weak brief.",
-    whatYouGet:
-      "A living Project Brief that aligns teams, leadership, and execution from day one. The north star for the engagement\u2014defining targets, constraints, and success markers at launch. Revisited at every stage to course-correct, validate progress against real-world signals, and adapt intelligently as conditions change without losing sight of the objective.",
+    whatYouGet: "A living Project Brief that aligns teams, leadership, and execution from day one. The north star for the engagement\u2014defining targets, constraints, and success markers at launch. Revisited at every stage to course-correct, validate progress against real-world signals, and adapt intelligently as conditions change without losing sight of the objective.",
   },
   {
     num: "02",
     title: "Curating The Team",
-    whatsHappening:
-      "A purpose-built team is assembled based on category fluency and role fit\u2014not availability.",
+    whatsHappening: "A purpose-built team is assembled based on category fluency and role fit\u2014not availability.",
     whyItMatters: "Teams win projects, not logos.",
-    whatYouGet:
-      "A category-fluent team ready to work immediately. An M-shaped team that can orient quickly, challenge assumptions, and move into execution without a learning curve\u2014aligned to the brief, fluent in your space, and ready to contribute from day one.",
+    whatYouGet: "A category-fluent team ready to work immediately. An M-shaped team that can orient quickly, challenge assumptions, and move into execution without a learning curve\u2014aligned to the brief, fluent in your space, and ready to contribute from day one.",
   },
   {
     num: "03",
     title: "Shaping The Direction",
-    whatsHappening:
-      "Insights are converted into clear strategic and creative lanes before production begins.",
+    whatsHappening: "Insights are converted into clear strategic and creative lanes before production begins.",
     whyItMatters: "Speed without direction is just motion.",
-    whatYouGet:
-      "A strategic roadmap that guides execution. A clear set of strategic and creative lanes tied directly to the Project Brief\u2014outlining priorities, tradeoffs, and sequencing so teams can move forward with confidence, make faster decisions, and stay aligned as the work accelerates.",
+    whatYouGet: "A strategic roadmap that guides execution. A clear set of strategic and creative lanes tied directly to the Project Brief\u2014outlining priorities, tradeoffs, and sequencing so teams can move forward with confidence, make faster decisions, and stay aligned as the work accelerates.",
   },
   {
     num: "04",
     title: "Creation & Refinement",
-    whatsHappening:
-      "Work unfolds in focused sprints where strategy, creative, and production operate as one.",
+    whatsHappening: "Work unfolds in focused sprints where strategy, creative, and production operate as one.",
     whyItMatters: "Momentum compounds when teams move together.",
-    whatYouGet:
-      "Accelerated progress without surprise pivots. A disciplined sprint rhythm anchored to the Project Brief, where work is reviewed against targets in real time, assumptions are tested early, and adjustments are made deliberately\u2014keeping momentum high while avoiding late-stage corrections or wasted effort.",
+    whatYouGet: "Accelerated progress without surprise pivots. A disciplined sprint rhythm anchored to the Project Brief, where work is reviewed against targets in real time, assumptions are tested early, and adjustments are made deliberately\u2014keeping momentum high while avoiding late-stage corrections or wasted effort.",
   },
   {
     num: "05",
     title: "Capturing Key Learnings",
-    whatsHappening:
-      "Decisions, insights, and learnings are captured as the work unfolds.",
+    whatsHappening: "Decisions, insights, and learnings are captured as the work unfolds.",
     whyItMatters: "Most teams relearn the same lessons repeatedly.",
-    whatYouGet:
-      "A shared intelligence library that strengthens future work. A durable record of decisions, insights, and performance signals tied back to the Project Brief\u2014so future initiatives start smarter, move faster, and build on what actually happened, not what was assumed.",
+    whatYouGet: "A shared intelligence library that strengthens future work. A durable record of decisions, insights, and performance signals tied back to the Project Brief\u2014so future initiatives start smarter, move faster, and build on what actually happened, not what was assumed.",
   },
   {
     num: "06",
     title: "Evolution & Scale",
-    whatsHappening:
-      "Leadership remains consistent while specialists rotate in as needed.",
-    whyItMatters:
-      "Growth shouldn\u2019t require reinvention every quarter.",
-    whatYouGet:
-      "Sustained momentum without long-term overhead. A durable operating rhythm where leadership continuity preserves context, M-shaped specialists plug in as needed, and the Project Brief evolves into a living reference\u2014allowing you to scale effort up or down while staying aligned to real goals, real performance, and what comes next.",
+    whatsHappening: "Leadership remains consistent while specialists rotate in as needed.",
+    whyItMatters: "Growth shouldn\u2019t require reinvention every quarter.",
+    whatYouGet: "Sustained momentum without long-term overhead. A durable operating rhythm where leadership continuity preserves context, M-shaped specialists plug in as needed, and the Project Brief evolves into a living reference\u2014allowing you to scale effort up or down while staying aligned to real goals, real performance, and what comes next.",
   },
 ];
 
@@ -77,9 +64,16 @@ const expandVariants = {
   expanded: { height: "auto", opacity: 1 },
 };
 
-export default function SixStepsSection() {
+interface SixStepsSectionProps {
+  eyebrow?: string;
+  heading?: string;
+  steps?: Step[];
+}
+
+export default function SixStepsSection({ eyebrow, heading, steps }: SixStepsSectionProps) {
   const [activeStep, setActiveStep] = useState(0);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const allSteps = steps ?? defaultSteps;
 
   const toggleStep = (index: number) => {
     setActiveStep((prev) => (prev === index ? -1 : index));
@@ -88,13 +82,13 @@ export default function SixStepsSection() {
   const handleKeyDown = (e: React.KeyboardEvent, index: number) => {
     let next = index;
     if (e.key === "ArrowDown") {
-      next = (index + 1) % steps.length;
+      next = (index + 1) % allSteps.length;
     } else if (e.key === "ArrowUp") {
-      next = (index - 1 + steps.length) % steps.length;
+      next = (index - 1 + allSteps.length) % allSteps.length;
     } else if (e.key === "Home") {
       next = 0;
     } else if (e.key === "End") {
-      next = steps.length - 1;
+      next = allSteps.length - 1;
     } else {
       return;
     }
@@ -107,14 +101,14 @@ export default function SixStepsSection() {
       <Container>
         <AnimatedSection>
           <SectionHeading
-            eyebrow="The Process"
-            heading="Six Steps. No Wasted Motion."
+            eyebrow={eyebrow ?? "The Process"}
+            heading={heading ?? "Six Steps. No Wasted Motion."}
             align="right"
           />
         </AnimatedSection>
 
         <div className="mx-auto mt-12 max-w-4xl">
-          {steps.map((step, i) => {
+          {allSteps.map((step, i) => {
             const isActive = activeStep === i;
             const panelId = `step-panel-${step.num}`;
             const triggerId = `step-trigger-${step.num}`;

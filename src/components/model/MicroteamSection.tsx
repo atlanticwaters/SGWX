@@ -2,20 +2,30 @@ import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 
-const bullets = [
+const defaultBullets = [
   "CMO-level perspective to guide the strategy",
   "Top-tier creative direction to elevate the work",
   "Executive Producer discipline to drive the execution",
 ];
 
-export default function MicroteamSection() {
+interface MicroteamSectionProps {
+  eyebrow?: string;
+  heading?: string;
+  body?: string;
+  bullets?: string[];
+  closing?: string;
+}
+
+export default function MicroteamSection({ eyebrow, heading, body, bullets, closing }: MicroteamSectionProps) {
+  const items = bullets ?? defaultBullets;
+
   return (
     <section className="bg-sgwx-bg-alt py-16 md:py-24">
       <Container>
         <AnimatedSection>
           <SectionHeading
-            eyebrow="Microteams"
-            heading="Small by Design. Senior by Default."
+            eyebrow={eyebrow ?? "Microteams"}
+            heading={heading ?? "Small by Design. Senior by Default."}
             size="medium"
             align="right"
           />
@@ -23,16 +33,13 @@ export default function MicroteamSection() {
 
         <AnimatedSection delay={0.12}>
           <p className="mt-8 max-w-3xl text-base leading-relaxed text-sgwx-text-muted md:text-lg">
-            Our microteams are intentionally lean and deeply experienced. This
-            isn&apos;t about saving money; it&apos;s about saving time and
-            getting to better outcomes, faster. When every member of the team is
-            a seasoned pro, you eliminate the endless review cycles and
-            communication breakdowns that stifle creativity.
+            {body ??
+              "Our microteams are intentionally lean and deeply experienced. This isn\u2019t about saving money; it\u2019s about saving time and getting to better outcomes, faster. When every member of the team is a seasoned pro, you eliminate the endless review cycles and communication breakdowns that stifle creativity."}
           </p>
         </AnimatedSection>
 
         <ul className="mt-8 max-w-3xl space-y-4">
-          {bullets.map((bullet, i) => (
+          {items.map((bullet, i) => (
             <AnimatedSection key={bullet} delay={0.2 + i * 0.08}>
               <li className="flex items-start gap-3">
                 <span
@@ -49,8 +56,8 @@ export default function MicroteamSection() {
 
         <AnimatedSection delay={0.5}>
           <p className="mt-8 max-w-3xl text-base leading-relaxed text-sgwx-text-muted md:text-lg">
-            You&apos;re not managing vendors. You&apos;re collaborating with a
-            single, unified team that takes ownership of the outcomes.
+            {closing ??
+              "You\u2019re not managing vendors. You\u2019re collaborating with a single, unified team that takes ownership of the outcomes."}
           </p>
         </AnimatedSection>
       </Container>
