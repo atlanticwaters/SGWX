@@ -306,7 +306,7 @@ function ComparisonCard({ card }: { card: CardDef }) {
 
       <div className={`flex items-center gap-3.5 px-5 pb-2 sm:px-6 ${card.isFeatured ? "pt-6 sm:pt-7" : "pt-5 sm:pt-6"}`}>
         <card.icon />
-        <h3 className={`font-light tracking-wider ${card.isFeatured ? "text-xl sm:text-2xl" : "text-lg sm:text-xl"} ${c.titleText}`}>
+        <h3 className={`font-thin tracking-tight ${card.isFeatured ? "text-xl sm:text-2xl" : "text-lg sm:text-xl"} ${c.titleText}`}>
           {card.title}
         </h3>
       </div>
