@@ -270,7 +270,8 @@ async function main() {
     console.log("No existing homepage document found. Creating...");
   }
 
-  const result = await client.createOrReplace(homepageDoc);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const result = await client.createOrReplace(homepageDoc as any);
   console.log(`Homepage document seeded successfully! (id: ${result._id})`);
 }
 
