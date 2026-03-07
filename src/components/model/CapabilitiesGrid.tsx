@@ -25,6 +25,7 @@ const COLOR_MAP: Record<
     checkBg: string;
     checkText: string;
     bodyText: string;
+    dimText: string;
     strokeBase: string;
     strokePeak: string;
     strokeEnd: string;
@@ -43,6 +44,7 @@ const COLOR_MAP: Record<
     checkBg: "bg-sgwx-green/25",
     checkText: "text-sgwx-green-bright",
     bodyText: "text-sgwx-text",
+    dimText: "text-sgwx-text-muted",
     strokeBase: "#4A7A58",
     strokePeak: "#9FDBB0",
     strokeEnd: "#6EA87F",
@@ -60,6 +62,7 @@ const COLOR_MAP: Record<
     checkBg: "bg-sgwx-teal/50",
     checkText: "text-sgwx-cyan",
     bodyText: "text-sgwx-text-muted",
+    dimText: "text-sgwx-text-dim",
     strokeBase: "#1E3540",
     strokePeak: "#799BA9",
     strokeEnd: "#1E3540",
@@ -77,6 +80,7 @@ const COLOR_MAP: Record<
     checkBg: "bg-sgwx-yellow/15",
     checkText: "text-sgwx-yellow",
     bodyText: "text-sgwx-text-muted",
+    dimText: "text-sgwx-text-dim",
     strokeBase: "#5c5520",
     strokePeak: "#d4c94a",
     strokeEnd: "#5c5520",
@@ -94,6 +98,7 @@ const COLOR_MAP: Record<
     checkBg: "bg-purple-500/20",
     checkText: "text-purple-300",
     bodyText: "text-sgwx-text-muted",
+    dimText: "text-sgwx-text-dim",
     strokeBase: "#4a2d6e",
     strokePeak: "#b388f5",
     strokeEnd: "#6b3fa0",
@@ -319,6 +324,15 @@ const CATEGORY_ICONS: {
 ];
 
 /* ═══════════════════════════════════════════════════════════════════════════
+ *  Capability item type (title + description)
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+interface CapabilityItem {
+  title: string;
+  description: string;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
  *  Capability Card — styled like the comparison table cards
  * ═══════════════════════════════════════════════════════════════════════ */
 
@@ -329,7 +343,7 @@ function CapabilityCard({
   iconIndex,
 }: {
   label: string;
-  items: string[];
+  items: CapabilityItem[];
   scheme: ColorScheme;
   iconIndex: number;
 }) {
@@ -388,7 +402,7 @@ function CapabilityCard({
       >
         {items.map((item, i) => (
           <motion.div
-            key={item}
+            key={item.title}
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{
@@ -404,9 +418,14 @@ function CapabilityCard({
               >
                 &#10003;
               </span>
-              <span className={`text-sm leading-snug ${c.bodyText}`}>
-                {item}
-              </span>
+              <div className="min-w-0">
+                <p className={`text-sm font-semibold leading-snug ${c.bodyText}`}>
+                  {item.title}
+                </p>
+                <p className={`mt-1 text-xs leading-relaxed ${c.dimText}`}>
+                  {item.description}
+                </p>
+              </div>
             </div>
           </motion.div>
         ))}
@@ -416,54 +435,148 @@ function CapabilityCard({
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
- *  Default data
+ *  Default data — with descriptions
  * ═══════════════════════════════════════════════════════════════════════ */
 
-const defaultTabs = [
+interface TabData {
+  id: string;
+  label: string;
+  items: CapabilityItem[];
+}
+
+const defaultTabs: TabData[] = [
   {
     id: "launch",
     label: "Launch",
     items: [
-      "Brand Strategy & Architecture",
-      "Brand Identity & Visual Design",
-      "Brand Positioning & Messaging",
-      "Marketing Strategy & Planning",
-      "Brand Messaging & Copywriting",
-      "Product Launch & MVP Development",
+      {
+        title: "Brand Strategy & Architecture",
+        description:
+          "Define your brand's DNA — positioning, architecture, and competitive moat — so every touchpoint tells the same story.",
+      },
+      {
+        title: "Brand Identity & Visual Design",
+        description:
+          "Craft a visual system — logo, color, type, and motion — that's instantly recognizable and built to scale.",
+      },
+      {
+        title: "Brand Positioning & Messaging",
+        description:
+          "Distill what makes you different into sharp, ownable language that cuts through category noise.",
+      },
+      {
+        title: "Marketing Strategy & Planning",
+        description:
+          "Map the channels, cadence, and KPIs that turn budget into measurable growth from day one.",
+      },
+      {
+        title: "Brand Messaging & Copywriting",
+        description:
+          "Write the headlines, taglines, and narrative frameworks that make audiences lean in.",
+      },
+      {
+        title: "Product Launch & MVP Development",
+        description:
+          "Ship a focused first version fast — validated by real users, not assumptions — so you learn before you scale.",
+      },
     ],
   },
   {
     id: "engage",
     label: "Engage",
     items: [
-      "Marketing Campaigns & Activation",
-      "Content Marketing & Strategy",
-      "Gamification & Interactive Experiences",
-      "Experiential Marketing & Events",
-      "Brand Activations",
-      "Audience Engagement Strategies",
+      {
+        title: "Marketing Campaigns & Activation",
+        description:
+          "Orchestrate multi-channel campaigns that move from awareness to action with clear conversion paths.",
+      },
+      {
+        title: "Content Marketing & Strategy",
+        description:
+          "Build an editorial engine — blogs, video, social — that earns attention and compounds organic reach over time.",
+      },
+      {
+        title: "Gamification & Interactive Experiences",
+        description:
+          "Design reward loops, challenges, and interactive moments that turn passive viewers into active participants.",
+      },
+      {
+        title: "Experiential Marketing & Events",
+        description:
+          "Create immersive in-person and virtual experiences that forge emotional connections at scale.",
+      },
+      {
+        title: "Brand Activations",
+        description:
+          "Launch bold, moment-driven activations — pop-ups, stunts, partnerships — that generate buzz and earned media.",
+      },
+      {
+        title: "Audience Engagement Strategies",
+        description:
+          "Develop personalized engagement playbooks that deepen relationships across every stage of the funnel.",
+      },
     ],
   },
   {
     id: "mobilize",
     label: "Mobilize",
     items: [
-      "Community Building & Management",
-      "Loyalty Programs & Membership Strategy",
-      "Brand Ambassador Programs",
-      "Influencer Marketing & Partnerships",
-      "Creator & Content Partnerships",
-      "Social Media & Digital Amplification",
+      {
+        title: "Community Building & Management",
+        description:
+          "Stand up owned communities — forums, Discord, private groups — where your most loyal customers become advocates.",
+      },
+      {
+        title: "Loyalty Programs & Membership Strategy",
+        description:
+          "Design tiered reward systems that increase retention, lifetime value, and genuine brand affinity.",
+      },
+      {
+        title: "Brand Ambassador Programs",
+        description:
+          "Recruit, equip, and activate real customers as credible brand voices who amplify your message organically.",
+      },
+      {
+        title: "Influencer Marketing & Partnerships",
+        description:
+          "Identify and partner with creators who authentically align with your brand for measurable reach and trust.",
+      },
+      {
+        title: "Creator & Content Partnerships",
+        description:
+          "Co-create content with established creators, blending their audience trust with your brand narrative.",
+      },
+      {
+        title: "Social Media & Digital Amplification",
+        description:
+          "Execute platform-native social strategies — paid, organic, and viral — that expand your digital footprint.",
+      },
     ],
   },
   {
     id: "transform",
     label: "Transform",
     items: [
-      "Organizational Change & Alignment",
-      "Sales Training & Sales Enablement",
-      "Employee Engagement, Internal Events & Training Workshops",
-      "AI Strategy & Marketing Automation",
+      {
+        title: "Organizational Change & Alignment",
+        description:
+          "Align leadership, teams, and culture around a shared vision so strategic pivots stick, not stall.",
+      },
+      {
+        title: "Sales Training & Sales Enablement",
+        description:
+          "Arm your sales team with messaging, decks, and playbooks that shorten cycles and increase win rates.",
+      },
+      {
+        title: "Employee Engagement & Training Workshops",
+        description:
+          "Run hands-on workshops and internal events that upskill teams and turn employees into brand champions.",
+      },
+      {
+        title: "AI Strategy & Marketing Automation",
+        description:
+          "Integrate AI tools and automation workflows that multiply output without multiplying headcount.",
+      },
     ],
   },
 ];
@@ -479,6 +592,17 @@ interface CapabilitiesGridProps {
   overlayColor?: string;
 }
 
+/** Convert legacy string[] items to CapabilityItem[] */
+function normalizeTabs(
+  tabs: { id: string; label: string; items: string[] }[]
+): TabData[] {
+  return tabs.map((t) => ({
+    id: t.id,
+    label: t.label,
+    items: t.items.map((item) => ({ title: item, description: "" })),
+  }));
+}
+
 export default function CapabilitiesGrid({
   eyebrow,
   tabs,
@@ -486,10 +610,19 @@ export default function CapabilitiesGrid({
   overlayColor,
 }: CapabilitiesGridProps) {
   const [activeTab, setActiveTab] = useState(0);
+  const [slideDirection, setSlideDirection] = useState(0); // -1 = left, 1 = right
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const capTabs = tabs ?? defaultTabs;
+  const capTabs = tabs ? normalizeTabs(tabs) : defaultTabs;
   const activeScheme = TAB_SCHEMES[activeTab % TAB_SCHEMES.length];
   const activeColors = COLOR_MAP[activeScheme];
+
+  const handleTabChange = (newIndex: number) => {
+    setSlideDirection(newIndex > activeTab ? 1 : -1);
+    setActiveTab(newIndex);
+  };
+
+  // Horizontal slide distance (in vw for a viewport-crossing feel)
+  const slideOffset = 300;
 
   return (
     <section className="relative overflow-hidden py-16 md:py-24">
@@ -586,7 +719,7 @@ export default function CapabilitiesGrid({
                   aria-selected={isActive}
                   aria-controls={`tabpanel-${tab.id}`}
                   tabIndex={isActive ? 0 : -1}
-                  onClick={() => setActiveTab(i)}
+                  onClick={() => handleTabChange(i)}
                   onKeyDown={(e) => {
                     let next = i;
                     if (e.key === "ArrowRight") {
@@ -597,7 +730,7 @@ export default function CapabilitiesGrid({
                       return;
                     }
                     e.preventDefault();
-                    setActiveTab(next);
+                    handleTabChange(next);
                     tabRefs.current[next]?.focus();
                   }}
                   className={`rounded-full border px-5 py-2 font-mono text-[10px] tracking-widest uppercase transition-all duration-300 ${
@@ -620,18 +753,30 @@ export default function CapabilitiesGrid({
           </nav>
         </AnimatedSection>
 
-        {/* Card panel — shows active category as a featured card */}
-        <div className="mt-10">
-          <AnimatePresence mode="wait">
+        {/* Card panel — slides horizontally based on tab direction */}
+        <div className="mt-10 overflow-hidden">
+          <AnimatePresence mode="wait" custom={slideDirection}>
             <motion.div
               key={capTabs[activeTab].id}
+              custom={slideDirection}
               role="tabpanel"
               id={`tabpanel-${capTabs[activeTab].id}`}
               aria-labelledby={`tab-${capTabs[activeTab].id}`}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.35, ease: drawEase }}
+              variants={{
+                enter: (dir: number) => ({
+                  x: dir * slideOffset,
+                  opacity: 0,
+                }),
+                center: { x: 0, opacity: 1 },
+                exit: (dir: number) => ({
+                  x: dir * -slideOffset,
+                  opacity: 0,
+                }),
+              }}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.45, ease: drawEase }}
               className="mx-auto max-w-2xl"
             >
               {/* Glow behind the card */}
