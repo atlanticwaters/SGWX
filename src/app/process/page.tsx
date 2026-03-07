@@ -129,15 +129,7 @@ export default async function ProcessPage() {
     getProcessPage(),
   ]);
 
-  // Sanity stores services as {_key, _type, value} objects; normalize to plain strings
-  const stages: StageData[] = data?.stages
-    ? (data.stages as any[]).map((s) => ({
-        ...s,
-        services: Array.isArray(s.services)
-          ? s.services.map((svc: any) => (typeof svc === "string" ? svc : svc.value))
-          : s.services,
-      }))
-    : defaultStages;
+  const stages = (data?.stages as StageData[]) ?? defaultStages;
 
   return (
     <>

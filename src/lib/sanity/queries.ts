@@ -2,6 +2,7 @@ import { client } from "./client";
 
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { urlFor } from "./image";
+import { normalizeSanityData } from "./normalize";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -547,7 +548,7 @@ export interface ModelPageData {
 
 export async function getModelPage(): Promise<ModelPageData | null> {
   if (!client) return null;
-  return client.fetch<ModelPageData | null>(
+  const raw = await client.fetch<ModelPageData | null>(
     `*[_type == "modelPage" && _id == "modelPage"][0] {
       heroEyebrow, heroHeading, heroBody,
       heroPrimaryCta { label, href, variant },
@@ -566,6 +567,7 @@ export async function getModelPage(): Promise<ModelPageData | null> {
       seo { title, description, noIndex }
     }`
   );
+  return raw ? normalizeSanityData(raw) as ModelPageData : null;
 }
 
 // ─── Work Page Types & Query ────────────────────────────────────────────────
@@ -637,7 +639,7 @@ export interface MembersPageData {
 
 export async function getMembersPage(): Promise<MembersPageData | null> {
   if (!client) return null;
-  return client.fetch<MembersPageData | null>(
+  const raw = await client.fetch<MembersPageData | null>(
     `*[_type == "membersPage" && _id == "membersPage"][0] {
       heroHeading, heroBody,
       originEyebrow, originHeading, originParagraphs,
@@ -649,6 +651,7 @@ export async function getMembersPage(): Promise<MembersPageData | null> {
       seo { title, description, noIndex }
     }`
   );
+  return raw ? normalizeSanityData(raw) as MembersPageData : null;
 }
 
 // ─── Process Page Types & Query ─────────────────────────────────────────────
@@ -710,7 +713,7 @@ export interface ProcessPageData {
 
 export async function getProcessPage(): Promise<ProcessPageData | null> {
   if (!client) return null;
-  return client.fetch<ProcessPageData | null>(
+  const raw = await client.fetch<ProcessPageData | null>(
     `*[_type == "processPage" && _id == "processPage"][0] {
       heroEyebrow, heroHeading, heroBody,
       stages[] { id, number, name, accent, focus, services, proof { client, description, result }, glowPosition, deepFieldVariant },
@@ -728,6 +731,7 @@ export async function getProcessPage(): Promise<ProcessPageData | null> {
       seo { title, description, noIndex }
     }`
   );
+  return raw ? normalizeSanityData(raw) as ProcessPageData : null;
 }
 
 // ─── Style Guide Page Types & Query ─────────────────────────────────────────
@@ -747,13 +751,14 @@ export interface StyleGuidePageData {
 
 export async function getStyleGuidePage(): Promise<StyleGuidePageData | null> {
   if (!client) return null;
-  return client.fetch<StyleGuidePageData | null>(
+  const raw = await client.fetch<StyleGuidePageData | null>(
     `*[_type == "styleGuidePage" && _id == "styleGuidePage"][0] {
       headerHeading, headerSubheading,
       sectionDescriptions[] { sectionId, heading, description },
       seo { title, description, noIndex }
     }`
   );
+  return raw ? normalizeSanityData(raw) as StyleGuidePageData : null;
 }
 
 // ─── Animations Page Types & Query ──────────────────────────────────────────
@@ -783,7 +788,7 @@ export interface AnimationsPageData {
 
 export async function getAnimationsPage(): Promise<AnimationsPageData | null> {
   if (!client) return null;
-  return client.fetch<AnimationsPageData | null>(
+  const raw = await client.fetch<AnimationsPageData | null>(
     `*[_type == "animationsPage" && _id == "animationsPage"][0] {
       headerHeading, headerSubheading,
       threeAnimations[] { name, description, fileName },
@@ -791,6 +796,7 @@ export async function getAnimationsPage(): Promise<AnimationsPageData | null> {
       seo { title, description, noIndex }
     }`
   );
+  return raw ? normalizeSanityData(raw) as AnimationsPageData : null;
 }
 
 // ─── Homepage Types & Query ─────────────────────────────────────────────────
@@ -891,9 +897,10 @@ export async function getHomepage(): Promise<HomepageData | null> {
     }`
   );
   if (!raw) return null;
+  const normalized = normalizeSanityData(raw) as typeof raw;
   return {
-    ...raw,
-    featuredCaseStudies: raw.featuredCaseStudies
+    ...normalized,
+    featuredCaseStudies: normalized.featuredCaseStudies
       ?.filter((cs) => cs != null)
       .map((cs) => ({
         _id: cs._id,
