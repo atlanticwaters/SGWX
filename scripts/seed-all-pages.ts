@@ -802,7 +802,8 @@ async function main() {
     if (existing) {
       console.log(`  [skip] ${doc._type} already exists (rev: ${existing._rev})`);
     } else {
-      const result = await client.createIfNotExists(doc);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result = await client.createIfNotExists(doc as any);
       console.log(`  [created] ${doc._type} (id: ${result._id})`);
     }
   }
