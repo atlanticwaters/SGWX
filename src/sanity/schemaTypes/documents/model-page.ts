@@ -26,6 +26,14 @@ export const modelPage = defineType({
   fields: [
     // ── Hero ──────────────────────────────────────────────────
     defineField({
+      name: 'heroBackground',
+      type: 'reference',
+      title: 'Hero Background',
+      description: 'Background image for the hero section',
+      to: [{ type: 'sectionBackground' }],
+      group: 'hero',
+    }),
+    defineField({
       name: 'heroEyebrow',
       type: 'string',
       title: 'Eyebrow',

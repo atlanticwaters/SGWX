@@ -21,6 +21,14 @@ export const membersPage = defineType({
   ],
   fields: [
     // ── Hero ──────────────────────────────────────────────────
+    defineField({
+      name: 'heroBackground',
+      type: 'reference',
+      title: 'Hero Background',
+      description: 'Background image for the hero section',
+      to: [{ type: 'sectionBackground' }],
+      group: 'hero',
+    }),
     defineField({ name: 'heroHeading', type: 'string', title: 'Heading', group: 'hero' }),
     defineField({ name: 'heroBody', type: 'text', title: 'Body', rows: 4, group: 'hero' }),
 

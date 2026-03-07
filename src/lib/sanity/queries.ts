@@ -503,9 +503,14 @@ export async function getSiteSettings(): Promise<SiteSettingsData | null> {
   );
 }
 
+// ─── Shared: resolved hero background from reference ────────────────────────
+
+const HERO_BG_PROJECTION = `heroBackground-> { "imageUrl": image.asset->url + "?w=1920&q=75&auto=format", overlayColor }`;
+
 // ─── Model Page Types & Query ───────────────────────────────────────────────
 
 export interface ModelPageData {
+  heroBackground?: { imageUrl: string; overlayColor?: string };
   heroEyebrow?: string;
   heroHeading?: string;
   heroBody?: string;
@@ -550,6 +555,7 @@ export async function getModelPage(): Promise<ModelPageData | null> {
   if (!client) return null;
   const raw = await client.fetch<ModelPageData | null>(
     `*[_type == "modelPage" && _id == "modelPage"][0] {
+      ${HERO_BG_PROJECTION},
       heroEyebrow, heroHeading, heroBody,
       heroPrimaryCta { label, href, variant },
       heroSecondaryCta { label, href, variant },
@@ -573,6 +579,7 @@ export async function getModelPage(): Promise<ModelPageData | null> {
 // ─── Work Page Types & Query ────────────────────────────────────────────────
 
 export interface WorkPageData {
+  heroBackground?: { imageUrl: string; overlayColor?: string };
   heroHeading?: string;
   heroSubheading?: string;
   heroProjectsLabel?: string;
@@ -585,6 +592,7 @@ export async function getWorkPage(): Promise<WorkPageData | null> {
   if (!client) return null;
   return client.fetch<WorkPageData | null>(
     `*[_type == "workPage" && _id == "workPage"][0] {
+      ${HERO_BG_PROJECTION},
       heroHeading, heroSubheading, heroProjectsLabel, heroStatusLabel, heroStatusValue,
       seo { title, description, noIndex }
     }`
@@ -594,6 +602,7 @@ export async function getWorkPage(): Promise<WorkPageData | null> {
 // ─── Spotlights Page Types & Query ──────────────────────────────────────────
 
 export interface SpotlightsPageData {
+  heroBackground?: { imageUrl: string; overlayColor?: string };
   heroHeading?: string;
   heroSubheading?: string;
   seo?: { title?: string; description?: string; noIndex?: boolean };
@@ -603,6 +612,7 @@ export async function getSpotlightsPage(): Promise<SpotlightsPageData | null> {
   if (!client) return null;
   return client.fetch<SpotlightsPageData | null>(
     `*[_type == "spotlightsPage" && _id == "spotlightsPage"][0] {
+      ${HERO_BG_PROJECTION},
       heroHeading, heroSubheading,
       seo { title, description, noIndex }
     }`
@@ -618,6 +628,7 @@ export interface MembersStatItem {
 }
 
 export interface MembersPageData {
+  heroBackground?: { imageUrl: string; overlayColor?: string };
   heroHeading?: string;
   heroBody?: string;
   originEyebrow?: string;
@@ -641,6 +652,7 @@ export async function getMembersPage(): Promise<MembersPageData | null> {
   if (!client) return null;
   const raw = await client.fetch<MembersPageData | null>(
     `*[_type == "membersPage" && _id == "membersPage"][0] {
+      ${HERO_BG_PROJECTION},
       heroHeading, heroBody,
       originEyebrow, originHeading, originParagraphs,
       growthEyebrow, growthHeading, growthParagraphs,
@@ -683,6 +695,7 @@ export interface ProcessPrincipleCard {
 }
 
 export interface ProcessPageData {
+  heroBackground?: { imageUrl: string; overlayColor?: string };
   heroEyebrow?: string;
   heroHeading?: string;
   heroBody?: string;
@@ -715,6 +728,7 @@ export async function getProcessPage(): Promise<ProcessPageData | null> {
   if (!client) return null;
   const raw = await client.fetch<ProcessPageData | null>(
     `*[_type == "processPage" && _id == "processPage"][0] {
+      ${HERO_BG_PROJECTION},
       heroEyebrow, heroHeading, heroBody,
       stages[] { id, number, name, accent, focus, services, proof { client, description, result }, glowPosition, deepFieldVariant },
       sixStepsEyebrow, sixStepsHeading,
@@ -809,6 +823,7 @@ export interface HomepageCta {
 
 export interface HomepageData {
   // Hero
+  heroBackground?: { imageUrl: string; overlayColor?: string };
   heroHeading: string;
   heroParagraph1: string;
   heroParagraph2: string;
@@ -865,6 +880,7 @@ export async function getHomepage(): Promise<HomepageData | null> {
     }) | null
   >(
     `*[_type == "homepage" && _id == "homepage"][0] {
+      ${HERO_BG_PROJECTION},
       heroHeading, heroParagraph1, heroParagraph2,
       heroPrimaryCta { label, href, variant },
       heroSecondaryCta { label, href, variant },

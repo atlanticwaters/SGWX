@@ -124,11 +124,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ProcessPage() {
-  const [heroBg, data] = await Promise.all([
+  const [fallbackBg, data] = await Promise.all([
     getSectionBackgroundBySlug("fluid-waves"),
     getProcessPage(),
   ]);
-
+  const heroBg = data?.heroBackground ?? fallbackBg;
   const stages = (data?.stages as StageData[]) ?? defaultStages;
 
   return (

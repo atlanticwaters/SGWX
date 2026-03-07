@@ -27,10 +27,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ModelPage() {
-  const [heroBg, data] = await Promise.all([
+  const [fallbackBg, data] = await Promise.all([
     getSectionBackgroundBySlug("spiral-geometry"),
     getModelPage(),
   ]);
+  const heroBg = data?.heroBackground ?? fallbackBg;
 
   return (
     <>

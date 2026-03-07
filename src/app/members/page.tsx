@@ -25,12 +25,13 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function MembersPage() {
-  const [featuredMembers, allMembers, heroBg, data] = await Promise.all([
+  const [featuredMembers, allMembers, fallbackBg, data] = await Promise.all([
     getFeaturedMembers(),
     getAllMembers(),
     getSectionBackgroundBySlug("dark-mountain"),
     getMembersPage(),
   ]);
+  const heroBg = data?.heroBackground ?? fallbackBg;
 
   return (
     <>

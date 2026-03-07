@@ -20,11 +20,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function SpotlightsPage() {
-  const [blogPosts, heroBg, data] = await Promise.all([
+  const [blogPosts, fallbackBg, data] = await Promise.all([
     getAllBlogPosts(),
     getSectionBackgroundBySlug("layered-terrain"),
     getSpotlightsPage(),
   ]);
+  const heroBg = data?.heroBackground ?? fallbackBg;
 
   return (
     <>

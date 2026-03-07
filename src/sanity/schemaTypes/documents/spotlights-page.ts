@@ -16,6 +16,14 @@ export const spotlightsPage = defineType({
     { name: 'seo', title: 'SEO' },
   ],
   fields: [
+    defineField({
+      name: 'heroBackground',
+      type: 'reference',
+      title: 'Hero Background',
+      description: 'Background image for the hero section',
+      to: [{ type: 'sectionBackground' }],
+      group: 'hero',
+    }),
     defineField({ name: 'heroHeading', type: 'string', title: 'Heading', group: 'hero' }),
     defineField({ name: 'heroSubheading', type: 'text', title: 'Subheading', rows: 3, group: 'hero' }),
     defineField({ name: 'seo', type: 'seo', title: 'SEO', group: 'seo' }),

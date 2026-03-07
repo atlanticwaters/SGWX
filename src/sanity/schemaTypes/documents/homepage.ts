@@ -29,6 +29,14 @@ export const homepage = defineType({
 
     // ── Hero ───────────────────────────────────────────────
     defineField({
+      name: 'heroBackground',
+      type: 'reference',
+      title: 'Hero Background',
+      description: 'Background image for the hero section',
+      to: [{ type: 'sectionBackground' }],
+      group: 'hero',
+    }),
+    defineField({
       name: 'heroHeading',
       type: 'string',
       title: 'Heading',

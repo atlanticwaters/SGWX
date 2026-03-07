@@ -20,11 +20,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function WorkPage() {
-  const [caseStudies, heroBg, data] = await Promise.all([
+  const [caseStudies, fallbackBg, data] = await Promise.all([
     getAllCaseStudies(),
     getSectionBackgroundBySlug("geometric-architecture"),
     getWorkPage(),
   ]);
+  const heroBg = data?.heroBackground ?? fallbackBg;
 
   return (
     <>
