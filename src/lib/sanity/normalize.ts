@@ -26,17 +26,18 @@ export function normalizeStringArray(arr: unknown[] | undefined): string[] | und
  * Deep-normalize an object: any array property whose items look like
  * Sanity string-wrappers gets flattened to plain strings.
  */
-export function normalizeSanityData<T extends Record<string, unknown>>(data: T): T {
-  const result = { ...data };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function normalizeSanityData<T>(data: T): T {
+  const result = { ...data } as Record<string, unknown>;
   for (const key of Object.keys(result)) {
     const val = result[key];
     if (Array.isArray(val) && val.length > 0) {
       if (val.every((item) => typeof item === "string" || isStringArrayItem(item))) {
         // Flat string array
-        (result as Record<string, unknown>)[key] = normalizeStringArray(val);
+        result[key] = normalizeStringArray(val);
       } else if (val.every((item) => typeof item === "object" && item !== null && !isStringArrayItem(item))) {
         // Array of objects — recurse into each
-        (result as Record<string, unknown>)[key] = val.map((item) =>
+        result[key] = val.map((item) =>
           typeof item === "object" && item !== null && !Array.isArray(item)
             ? normalizeSanityData(item as Record<string, unknown>)
             : item
@@ -44,5 +45,5 @@ export function normalizeSanityData<T extends Record<string, unknown>>(data: T):
       }
     }
   }
-  return result;
+  return result as T;
 }
