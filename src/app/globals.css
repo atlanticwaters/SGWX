@@ -241,3 +241,18 @@
     margin-left: 1.125rem;
   }
 }
+
+/* ─── Capabilities Grid Background ────────────────────────────────────── */
+
+.capabilities-bg-grid {
+  background-image:
+    linear-gradient(rgba(110, 168, 127, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(110, 168, 127, 0.03) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 10%, transparent 65%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 10%, transparent 65%);
+}
+
+.capabilities-card {
+  transition: box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}

@@ -27,8 +27,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ModelPage() {
-  const [fallbackBg, data] = await Promise.all([
+  const [fallbackBg, capBg, data] = await Promise.all([
     getSectionBackgroundBySlug("spiral-geometry"),
+    getSectionBackgroundBySlug("abstract-curves"),
     getModelPage(),
   ]);
   const heroBg = data?.heroBackground ?? fallbackBg;
@@ -52,6 +53,8 @@ export default async function ModelPage() {
       <CapabilitiesGrid
         eyebrow={data?.capabilitiesEyebrow}
         tabs={data?.capabilitiesTabs}
+        backgroundUrl={capBg?.imageUrl}
+        overlayColor={capBg?.overlayColor}
       />
       <MicroteamSection
         eyebrow={data?.microteamsEyebrow}
