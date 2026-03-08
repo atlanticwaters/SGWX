@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Container from "@/components/ui/Container";
 import AnimatedSection from "@/components/ui/AnimatedSection";
@@ -127,13 +127,13 @@ function AnimatedIcon({
   fills,
   strokes,
   scheme,
+  isActive,
 }: {
   fills: FillDef[];
   strokes: StrokeDef[];
   scheme: ColorScheme;
+  isActive: boolean;
 }) {
-  const ref = useRef<SVGSVGElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
   const c = COLOR_MAP[scheme];
 
   const fillColors = {
@@ -144,7 +144,6 @@ function AnimatedIcon({
 
   return (
     <motion.svg
-      ref={ref}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
@@ -152,8 +151,7 @@ function AnimatedIcon({
       height="44"
       className="shrink-0"
       aria-hidden="true"
-      initial={{ opacity: 0, scale: 0.88 }}
-      animate={inView ? { opacity: 1, scale: 1 } : {}}
+      animate={isActive ? { opacity: 1, scale: 1 } : { opacity: 0.5, scale: 0.88 }}
       transition={{ duration: 0.35, delay: 0.05, ease: drawEase }}
     >
       {fills.map((f, i) => (
@@ -161,11 +159,10 @@ function AnimatedIcon({
           key={`f${i}`}
           d={f.d}
           fill={fillColors[f.colorKey]}
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
+          animate={isActive ? { opacity: 1 } : { opacity: 0.3 }}
           transition={{
             duration: 0.25,
-            delay: 0.5 + i * 0.04,
+            delay: isActive ? 0.15 + i * 0.04 : 0,
             ease: "easeOut",
           }}
         />
@@ -179,24 +176,23 @@ function AnimatedIcon({
           strokeWidth="1"
           strokeLinecap="round"
           strokeLinejoin="round"
-          initial={{ pathLength: 0 }}
           animate={
-            inView
+            isActive
               ? {
                   pathLength: 1,
                   stroke: [c.strokeBase, c.strokePeak, c.strokeEnd],
                 }
-              : {}
+              : { pathLength: 1, stroke: c.strokeBase }
           }
           transition={{
             pathLength: {
               duration: 0.5,
-              delay: 0.12 + i * 0.04,
+              delay: isActive ? 0.12 + i * 0.04 : 0,
               ease: drawEase,
             },
             stroke: {
               duration: 0.6,
-              delay: 0.12 + i * 0.04,
+              delay: isActive ? 0.12 + i * 0.04 : 0,
               ease: "easeOut",
             },
           }}
@@ -209,17 +205,20 @@ function AnimatedIcon({
           fill="none"
           stroke={c.glowColor}
           strokeWidth="2.5"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={inView ? { pathLength: 1, opacity: [0, 0.5, 0] } : {}}
+          animate={
+            isActive
+              ? { pathLength: 1, opacity: [0, 0.5, 0] }
+              : { pathLength: 0, opacity: 0 }
+          }
           transition={{
             pathLength: {
               duration: 0.5,
-              delay: 0.12 + i * 0.04,
+              delay: isActive ? 0.12 + i * 0.04 : 0,
               ease: drawEase,
             },
             opacity: {
               duration: 0.55,
-              delay: 0.12 + i * 0.04,
+              delay: isActive ? 0.12 + i * 0.04 : 0,
               ease: "easeInOut",
             },
           }}
@@ -341,25 +340,27 @@ function CapabilityCard({
   items,
   scheme,
   iconIndex,
+  isActive,
 }: {
   label: string;
   items: CapabilityItem[];
   scheme: ColorScheme;
   iconIndex: number;
+  isActive: boolean;
 }) {
   const c = COLOR_MAP[scheme];
   const icon = CATEGORY_ICONS[iconIndex % CATEGORY_ICONS.length];
 
   return (
     <div
-      className={`capabilities-card relative h-full overflow-hidden rounded-2xl border ${c.borderActive} bg-sgwx-surface/80 backdrop-blur-sm`}
+      className={`capabilities-card relative overflow-hidden rounded-2xl border ${c.borderActive} bg-sgwx-surface/80 backdrop-blur-sm`}
       style={{
         boxShadow: `0 0 30px ${c.glowRgba}, 0 4px 24px rgba(0,0,0,0.3)`,
       }}
     >
       {/* Top glow line */}
       <div
-        className="absolute inset-x-0 top-0 h-[2px]"
+        className="absolute inset-x-0 top-0 h-0.5"
         style={{
           background: `linear-gradient(to right, transparent, ${c.glowColor}50, transparent)`,
         }}
@@ -380,11 +381,12 @@ function CapabilityCard({
 
       {/* Header with icon and title */}
       {label && (
-        <div className="flex items-center gap-3.5 px-5 pt-6 pb-2 sm:px-6 sm:pt-7">
+        <div className="flex items-center gap-3.5 px-5 pt-5 pb-2 sm:px-6 sm:pt-6">
           <AnimatedIcon
             fills={icon.fills}
             strokes={icon.strokes}
             scheme={scheme}
+            isActive={isActive}
           />
           <h3
             className={`text-xl font-thin tracking-tight sm:text-2xl ${c.titleText}`}
@@ -394,25 +396,18 @@ function CapabilityCard({
         </div>
       )}
 
-      {/* Item rows */}
+      {/* Item rows — 3-column grid for landscape layout */}
       <div
-        className={`flex flex-col gap-2 px-4 pb-5 sm:gap-2.5 sm:px-5 sm:pb-6 ${
+        className={`grid grid-cols-3 gap-2 px-4 pb-5 sm:gap-2.5 sm:px-5 sm:pb-6 ${
           label ? "pt-1" : "pt-5"
         }`}
       >
-        {items.map((item, i) => (
-          <motion.div
+        {items.map((item) => (
+          <div
             key={item.title}
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{
-              duration: 0.35,
-              ease: drawEase,
-              delay: 0.06 + i * 0.05,
-            }}
-            className={`rounded-xl border px-3.5 py-3 sm:px-4 sm:py-3.5 ${c.rowBorder} ${c.rowBg}`}
+            className={`rounded-xl border px-3.5 py-3 sm:px-4 sm:py-3 ${c.rowBorder} ${c.rowBg}`}
           >
-            <div className="flex items-start gap-2.5">
+            <div className="flex items-start gap-2">
               <span
                 className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-bold ${c.checkBg} ${c.checkText}`}
               >
@@ -422,12 +417,14 @@ function CapabilityCard({
                 <p className={`text-sm font-semibold leading-snug ${c.bodyText}`}>
                   {item.title}
                 </p>
-                <p className={`mt-1 text-xs leading-relaxed ${c.dimText}`}>
-                  {item.description}
-                </p>
+                {item.description && (
+                  <p className={`mt-1 text-xs leading-relaxed ${c.dimText}`}>
+                    {item.description}
+                  </p>
+                )}
               </div>
             </div>
-          </motion.div>
+          </div>
         ))}
       </div>
     </div>
@@ -610,19 +607,27 @@ export default function CapabilitiesGrid({
   overlayColor,
 }: CapabilitiesGridProps) {
   const [activeTab, setActiveTab] = useState(0);
-  const [slideDirection, setSlideDirection] = useState(0); // -1 = left, 1 = right
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const capTabs = tabs ? normalizeTabs(tabs) : defaultTabs;
-  const activeScheme = TAB_SCHEMES[activeTab % TAB_SCHEMES.length];
-  const activeColors = COLOR_MAP[activeScheme];
+  // Always use defaultTabs (which include descriptions) until Sanity schema is updated
+  // with the new { title, description } item format.
+  const capTabs = defaultTabs;
 
   const handleTabChange = (newIndex: number) => {
-    setSlideDirection(newIndex > activeTab ? 1 : -1);
     setActiveTab(newIndex);
   };
 
-  // Horizontal slide distance (in vw for a viewport-crossing feel)
-  const slideOffset = 300;
+  // Each card is 820px wide (landscape) with 28px gap.
+  // We translate the track so the active card centers in the viewport.
+  const cardWidth = 820;
+  const gap = 28;
+  const trackWidth = capTabs.length * cardWidth + (capTabs.length - 1) * gap;
+
+  // Center offset: we want the center of the active card at 50% of the container.
+  // Card center = activeTab * (cardWidth + gap) + cardWidth / 2
+  // We want that at trackContainer / 2, but since we use % based on the track,
+  // we just translate in px.
+  const activeCardCenter =
+    activeTab * (cardWidth + gap) + cardWidth / 2;
 
   return (
     <section className="relative overflow-hidden py-16 md:py-24">
@@ -690,9 +695,9 @@ export default function CapabilitiesGrid({
       )}
 
       {/* Subtle grid pattern */}
-      <div className="capabilities-bg-grid pointer-events-none absolute inset-0 z-[1] overflow-hidden" />
+      <div className="capabilities-bg-grid pointer-events-none absolute inset-0 z-1 overflow-hidden" />
 
-      <Container className="relative z-[2]">
+      <Container className="relative z-2">
         <AnimatedSection>
           <p className="mb-6 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
             {eyebrow ?? "Capabilities"}
@@ -753,52 +758,68 @@ export default function CapabilitiesGrid({
           </nav>
         </AnimatedSection>
 
-        {/* Card panel — slides horizontally based on tab direction */}
-        <div className="mt-10 overflow-hidden">
-          <AnimatePresence mode="wait" custom={slideDirection}>
-            <motion.div
-              key={capTabs[activeTab].id}
-              custom={slideDirection}
-              role="tabpanel"
-              id={`tabpanel-${capTabs[activeTab].id}`}
-              aria-labelledby={`tab-${capTabs[activeTab].id}`}
-              variants={{
-                enter: (dir: number) => ({
-                  x: dir * slideOffset,
-                  opacity: 0,
-                }),
-                center: { x: 0, opacity: 1 },
-                exit: (dir: number) => ({
-                  x: dir * -slideOffset,
-                  opacity: 0,
-                }),
-              }}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.45, ease: drawEase }}
-              className="mx-auto max-w-2xl"
-            >
-              {/* Glow behind the card */}
-              <div className="relative">
-                <div
-                  className="pointer-events-none absolute -inset-6 -z-10 rounded-3xl"
-                  style={{
-                    background: `radial-gradient(ellipse at center, ${activeColors.glowRgba} 0%, ${activeColors.glowRgba.replace(/[\d.]+\)$/, "0.04)")} 50%, transparent 70%)`,
-                    filter: "blur(24px)",
-                  }}
-                />
-                <CapabilityCard
-                  label={capTabs[activeTab].label}
-                  items={capTabs[activeTab].items}
-                  scheme={activeScheme}
-                  iconIndex={activeTab}
-                />
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
       </Container>
+
+        {/* All cards in a horizontal track — full viewport width, slides to center active */}
+        <div className="relative z-2 mt-10 overflow-hidden py-6">
+          <motion.div
+            className="flex items-start"
+            style={{ gap, width: trackWidth }}
+            animate={{
+              x: `calc(50vw - ${activeCardCenter}px)`,
+            }}
+            transition={{ duration: 0.6, ease: drawEase }}
+          >
+            {capTabs.map((tab, i) => {
+              const scheme = TAB_SCHEMES[i % TAB_SCHEMES.length];
+              const colors = COLOR_MAP[scheme];
+              const isActive = activeTab === i;
+
+              return (
+                <motion.div
+                  key={tab.id}
+                  className="shrink-0 cursor-pointer"
+                  style={{ width: cardWidth }}
+                  animate={{
+                    scale: isActive ? 1.02 : 0.92,
+                    opacity: isActive ? 1 : 0.45,
+                    filter: isActive
+                      ? "brightness(1) contrast(1)"
+                      : "brightness(0.65) contrast(0.9)",
+                  }}
+                  transition={{ duration: 0.5, ease: drawEase }}
+                  onClick={() => handleTabChange(i)}
+                  role="tabpanel"
+                  id={`tabpanel-${tab.id}`}
+                  aria-labelledby={`tab-${tab.id}`}
+                >
+                  {/* Glow behind active card */}
+                  <div className="relative">
+                    {isActive && (
+                      <motion.div
+                        className="pointer-events-none absolute -inset-6 -z-10 rounded-3xl"
+                        style={{
+                          background: `radial-gradient(ellipse at center, ${colors.glowRgba} 0%, transparent 70%)`,
+                          filter: "blur(24px)",
+                        }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.4 }}
+                      />
+                    )}
+                    <CapabilityCard
+                      label={tab.label}
+                      items={tab.items}
+                      scheme={scheme}
+                      iconIndex={i}
+                      isActive={isActive}
+                    />
+                  </div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
+        </div>
     </section>
   );
 }
