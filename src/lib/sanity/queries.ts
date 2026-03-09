@@ -314,7 +314,7 @@ export async function getMemberBySlug(slug: string): Promise<MemberItem | null> 
 export async function getMemberSlugs(): Promise<string[]> {
   if (!client) return [];
   return client.fetch<string[]>(
-    `*[_type == "member" && isFeatured == true && defined(slug.current)].slug.current`
+    `*[_type == "member" && defined(slug.current)].slug.current`
   );
 }
 

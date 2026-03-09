@@ -1,4 +1,6 @@
 import { createClient } from "@sanity/client";
+import { readFileSync, existsSync } from "fs";
+import path from "path";
 import dotenv from "dotenv";
 dotenv.config({ path: ".env.local" });
 
@@ -10,330 +12,263 @@ const client = createClient({
   useCdn: false,
 });
 
-async function uploadImageFromUrl(url, filename) {
-  console.log(`  Fetching portrait: ${filename}...`);
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Failed: ${res.status} - ${url}`);
-  const buffer = Buffer.from(await res.arrayBuffer());
+/* ─── Upload a local image file ─── */
+
+async function uploadImage(filePath) {
+  if (!existsSync(filePath)) {
+    console.warn(`  ⚠ Photo not found: ${filePath}`);
+    return null;
+  }
+  const buffer = readFileSync(filePath);
+  const filename = path.basename(filePath);
   const asset = await client.assets.upload("image", buffer, {
-    contentType: res.headers.get("content-type") || "image/jpeg",
-    filename: `${filename}.jpg`,
+    filename,
+    contentType: "image/webp",
   });
+  console.log(`  ✓ Uploaded ${filename} → ${asset._id}`);
   return { _type: "image", asset: { _type: "reference", _ref: asset._id } };
 }
 
-// ─── Featured Members (full profiles + photos) ──────────────────────────────
+/* ─── Featured Members (10) — from featured-member-bios.md ─── */
 
 const featuredMembers = [
   {
-    _id: "member-marcus-reid",
-    name: "Marcus Reid",
-    slug: "marcus-reid",
-    title: "Founder & Chief Strategist",
-    mantra: "Strategy without execution is a daydream. Execution without strategy is a nightmare.",
-    characterMetaphor: "The Architect — sees the whole blueprint before the first nail is driven, but isn't afraid to pick up a hammer.",
-    bio: "Marcus founded Sageworx after 15 years leading brand and growth strategy at agencies in New York and Los Angeles. He saw the same problem everywhere: brilliant creative work that died on the vine because nobody connected it to business outcomes. Sageworx was built to close that gap — a collective of specialists who think in systems, not silos. Marcus holds an MBA from Columbia and a BFA from RISD, which he says makes him 'dangerously bilingual' between boardrooms and studios.",
-    favoriteTools: "Miro, Notion, Arc Browser, a Moleskine notebook",
-    link: { label: "LinkedIn", url: "https://linkedin.com" },
-    photoUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
-    isFeatured: true,
+    _id: "member-andrew-waters",
+    name: "Andrew Waters",
+    slug: "andrew-waters",
+    title: "Executive Producer",
+    mantra: "Great work happens when you stop managing and start enabling.",
+    characterMetaphor: "The Conductor — orchestrates dozens of moving parts into a single, seamless performance.",
+    bio: "Andrew is a seasoned executive producer with a knack for aligning creative vision with operational reality. He's spent over a decade guiding cross-functional teams through high-stakes launches, always keeping one eye on the big picture and the other on the details that matter.",
+    favoriteTools: "Asana, Frame.io, Slack, Google Sheets",
+    link: { label: "LinkedIn", url: "https://linkedin.com/in/andrewwaters" },
+    photoFile: "featured_photos/andrew_waters_1.webp",
     order: 1,
   },
   {
-    _id: "member-elena-vasquez",
-    name: "Elena Vasquez",
-    slug: "elena-vasquez",
-    title: "Creative Director",
-    mantra: "Good design is invisible. Great design is unforgettable.",
-    characterMetaphor: "The Conductor — she doesn't play every instrument, but the orchestra wouldn't sound right without her.",
-    bio: "Elena leads creative across every Sageworx engagement, from identity systems to immersive digital experiences. Before joining the collective, she was a senior designer at Pentagram and art directed campaigns for Nike, Spotify, and The New York Times. Her work has been recognized by D&AD, Communication Arts, and the Type Directors Club. She believes constraints are gifts and that the best creative work comes from understanding people, not just pixels.",
-    favoriteTools: "Figma, After Effects, Procreate, Pen & Ink",
-    link: { label: "Portfolio", url: "https://dribbble.com" },
-    photoUrl: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80",
-    isFeatured: true,
+    _id: "member-ann-marie-almariei",
+    name: "Ann Marie Almariei",
+    slug: "ann-marie-almariei",
+    title: "Brand Strategist",
+    mantra: "A brand isn't what you say it is — it's what they feel it is.",
+    characterMetaphor: "The Translator — turns abstract business goals into stories people actually care about.",
+    bio: "Ann Marie is a brand strategist who thrives at the intersection of culture and commerce. With a background spanning luxury, wellness, and tech, she brings a rare ability to distill complex brand ecosystems into clear, compelling narratives that resonate across channels.",
+    favoriteTools: "Notion, Miro, Figma, ChatGPT",
+    link: { label: "LinkedIn", url: "https://linkedin.com/in/annmariealmariei" },
+    photoFile: "featured_photos/ann_marie_almariei_1.webp",
     order: 2,
   },
   {
-    _id: "member-james-okafor",
-    name: "James Okafor",
-    slug: "james-okafor",
-    title: "Head of Engineering",
-    mantra: "Ship it, measure it, improve it. Perfection is the enemy of progress.",
-    characterMetaphor: "The Bridge Builder — connects the island of design intent to the mainland of production reality.",
-    bio: "James oversees all technical execution at Sageworx, from performant web applications to complex CMS architectures and data pipelines. He spent a decade at Google and Vercel before going independent, drawn to the challenge of making beautifully designed things actually work at scale. He's a core contributor to several open-source projects and speaks regularly at Next.js Conf and Jamstack Conf. His teams consistently ship on time because he plans for what can go wrong, not just what should go right.",
-    favoriteTools: "Next.js, TypeScript, Vercel, Linear, Neovim",
-    link: { label: "GitHub", url: "https://github.com" },
-    photoUrl: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
-    isFeatured: true,
+    _id: "member-harris-davis",
+    name: "Harris Davis",
+    slug: "harris-davis",
+    title: "Creative Director",
+    mantra: "Bold ideas need bold execution — everything else is decoration.",
+    characterMetaphor: "The Spark — ignites creative energy in every room and keeps it burning until the work is done.",
+    bio: "Harris is a creative director with a sharp eye for visual storytelling and a portfolio that spans editorial, experiential, and digital. He's known for pushing teams past safe choices and into work that actually moves people.",
+    favoriteTools: "Adobe Creative Suite, Figma, Midjourney, Keynote",
+    link: { label: "LinkedIn", url: "https://linkedin.com/in/harrisdavis" },
+    photoFile: "featured_photos/harris_davis_1.webp",
     order: 3,
   },
   {
-    _id: "member-sofia-chen",
-    name: "Sofia Chen",
-    slug: "sofia-chen",
-    title: "Director of Experience Design",
-    mantra: "Every interaction is a conversation. Make sure you're saying something worth hearing.",
-    characterMetaphor: "The Translator — turns complex business logic into experiences that feel effortless.",
-    bio: "Sofia designs the end-to-end experience layer for Sageworx clients, from research and journey mapping to interaction design and usability testing. She previously led UX at Airbnb's Luxe division and ran her own consultancy focused on healthcare and fintech. She holds a Master's in Human-Computer Interaction from Carnegie Mellon and is a certified accessibility specialist. Sofia is relentless about user research — she says you can't design for people you haven't listened to.",
-    favoriteTools: "Figma, Maze, Dovetail, Optimal Workshop",
-    link: { label: "LinkedIn", url: "https://linkedin.com" },
-    photoUrl: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=800&q=80",
-    isFeatured: true,
+    _id: "member-james-petrossi",
+    name: "James Petrossi",
+    slug: "james-petrossi",
+    title: "Director of Photography",
+    mantra: "Light tells the truth — you just have to know where to point it.",
+    characterMetaphor: "The Eye — sees the frame before anyone else and knows exactly when to press the shutter.",
+    bio: "James is a director of photography whose work blends cinematic sensibility with commercial precision. From studio portraiture to on-location brand campaigns, he brings a calm, deliberate energy that puts subjects at ease and elevates every shoot.",
+    favoriteTools: "Capture One, Canon EOS R5, Profoto, Lightroom",
+    link: { label: "LinkedIn", url: "https://linkedin.com/in/jamespetrossi" },
+    photoFile: "featured_photos/james_petrossi_1.webp",
     order: 4,
   },
   {
-    _id: "member-david-kim",
-    name: "David Kim",
-    slug: "david-kim",
-    title: "Growth & Analytics Lead",
-    mantra: "Data tells you what happened. Insight tells you what to do next.",
-    characterMetaphor: "The Cartographer — maps the terrain so the expedition knows where it's going.",
-    bio: "David runs growth strategy and analytics for the collective, turning raw data into actionable roadmaps. He built and sold a marketing analytics startup before joining Sageworx, and spent time at HubSpot leading their enterprise analytics team. He's obsessed with attribution modeling, cohort analysis, and finding the one metric that actually matters for each client. David holds a PhD in Applied Mathematics from MIT, which he insists is 'just pattern recognition with extra steps.'",
-    favoriteTools: "Mixpanel, Looker, Python, dbt, Google Sheets",
-    link: { label: "LinkedIn", url: "https://linkedin.com" },
-    photoUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=800&q=80",
-    isFeatured: true,
+    _id: "member-kathryn-jones",
+    name: "Kathryn Jones",
+    slug: "kathryn-jones",
+    title: "Content Strategist",
+    mantra: "Strategy without empathy is just a spreadsheet.",
+    characterMetaphor: "The Cartographer — maps the terrain between what a brand wants to say and what an audience needs to hear.",
+    bio: "Kathryn is a content strategist who brings analytical rigor and editorial instinct in equal measure. She's built content programs from the ground up for startups and enterprise brands alike, always grounding her work in real audience insight.",
+    favoriteTools: "Airtable, Google Analytics, Hemingway, Figma",
+    link: { label: "LinkedIn", url: "https://linkedin.com/in/kathrynjones" },
+    photoFile: null,
     order: 5,
   },
   {
-    _id: "member-aria-thompson",
-    name: "Aria Thompson",
-    slug: "aria-thompson",
-    title: "Content & Brand Strategist",
-    mantra: "Words are the cheapest and most powerful tool in your arsenal. Use them wisely.",
-    characterMetaphor: "The Storyteller — finds the narrative thread that ties everything together and makes people care.",
-    bio: "Aria shapes voice, messaging, and narrative strategy for Sageworx clients. She spent years as a journalist at The Atlantic and Wired before moving into brand strategy at Ogilvy. She's written brand platforms for startups and Fortune 500s alike, and she approaches every project the same way: by listening first. Aria believes the best brand strategy doesn't sound like marketing — it sounds like truth. She's also a published novelist and teaches a masterclass on storytelling for business.",
-    favoriteTools: "iA Writer, Notion, ChatGPT, Hemingway Editor",
-    link: { label: "Writing", url: "https://medium.com" },
-    photoUrl: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&q=80",
-    isFeatured: true,
+    _id: "member-kelli-upshur",
+    name: "Kelli Upshur",
+    slug: "kelli-upshur",
+    title: "Art Director",
+    mantra: "Design should feel inevitable — like it couldn't have been done any other way.",
+    characterMetaphor: "The Alchemist — transforms rough concepts into polished visual systems that feel effortless.",
+    bio: "Kelli is an art director with deep roots in editorial design and brand identity. She brings a meticulous craft sensibility to every project, whether she's building a design system from scratch or refining a single hero image to perfection.",
+    favoriteTools: "Figma, InDesign, After Effects, Coolors",
+    link: { label: "LinkedIn", url: "https://linkedin.com/in/kelliupshur" },
+    photoFile: "featured_photos/kelli_upshur_2.webp",
     order: 6,
   },
   {
-    _id: "member-rafael-santos",
-    name: "Rafael Santos",
-    slug: "rafael-santos",
-    title: "Motion & 3D Director",
-    mantra: "Movement is meaning. Every animation should earn its place.",
-    characterMetaphor: "The Choreographer — every element knows its entrance, its moment, and its exit.",
-    bio: "Rafael brings interfaces and brand experiences to life through motion design, 3D visualization, and interactive storytelling. He trained as an architect in São Paulo before pivoting to motion design, working on campaigns for Apple, Mercedes-Benz, and Netflix. At Sageworx, he bridges the gap between static design and living, breathing digital experiences. His work has won multiple Awwwards and FWA awards. Rafael believes that animation isn't decoration — it's communication.",
-    favoriteTools: "After Effects, Blender, Three.js, GSAP, Framer Motion",
-    link: { label: "Showreel", url: "https://vimeo.com" },
-    photoUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
-    isFeatured: true,
+    _id: "member-marc-calamia",
+    name: "Marc Calamia",
+    slug: "marc-calamia",
+    title: "Head of Partnerships",
+    mantra: "The best partnerships aren't transactional — they're transformational.",
+    characterMetaphor: "The Bridge — connects people, brands, and ideas that wouldn't have found each other otherwise.",
+    bio: "Marc leads partnership development with a relationship-first approach that's taken him across industries from media to hospitality. He has a talent for spotting alignment where others see difference, and for building deals that create lasting value on both sides.",
+    favoriteTools: "HubSpot, LinkedIn Sales Navigator, Notion, Loom",
+    link: { label: "LinkedIn", url: "https://linkedin.com/in/marccalamia" },
+    photoFile: "featured_photos/marc_calamia_2.webp",
     order: 7,
   },
   {
-    _id: "member-maya-patel",
-    name: "Maya Patel",
-    slug: "maya-patel",
-    title: "Operations & Client Success",
-    mantra: "The best process is the one nobody notices because everything just works.",
-    characterMetaphor: "The Air Traffic Controller — keeps every project on course, on time, and incident-free.",
-    bio: "Maya runs operations and client relationships for the collective, making sure the right people are on the right projects and everything ships when it should. She spent a decade in management consulting at McKinsey before deciding she'd rather build things than advise on them. She designed Sageworx's project methodology from scratch — a hybrid of agile and traditional delivery that adapts to each client's pace. Maya holds a PMP certification and an MBA from Wharton, but says her real superpower is a spreadsheet.",
-    favoriteTools: "Linear, Notion, Slack, Loom, Google Sheets",
-    link: { label: "LinkedIn", url: "https://linkedin.com" },
-    photoUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&q=80",
-    isFeatured: true,
+    _id: "member-michael-galam",
+    name: "Michael Galam",
+    slug: "michael-galam",
+    title: "Technical Director",
+    mantra: "The best technology is the kind nobody notices.",
+    characterMetaphor: "The Engine — keeps everything running smoothly beneath the surface so the creative work can shine.",
+    bio: "Michael is a technical director who bridges the gap between creative ambition and technical feasibility. With a background in full-stack development and systems architecture, he builds the infrastructure that makes ambitious projects not just possible but reliable.",
+    favoriteTools: "VS Code, Docker, AWS, Vercel",
+    link: { label: "LinkedIn", url: "https://linkedin.com/in/michaelgalam" },
+    photoFile: null,
     order: 8,
   },
-];
-
-// ─── Gallery Members (lighter profiles, still with photos) ──────────────────
-
-const galleryMembers = [
   {
-    _id: "member-alex-rivera",
-    name: "Alex Rivera",
-    slug: "alex-rivera",
-    title: "Senior Developer",
-    mantra: "Clean code is kind code.",
-    bio: "Full-stack engineer specializing in React, Node, and cloud infrastructure. Previously at Stripe.",
-    favoriteTools: "VS Code, TypeScript, AWS, Docker",
-    photoUrl: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80",
-    isFeatured: false,
+    _id: "member-patrick-conreaux",
+    name: "Patrick Conreaux",
+    slug: "patrick-conreaux",
+    title: "Copywriter & Storyteller",
+    mantra: "Words are cheap — the right words are priceless.",
+    characterMetaphor: "The Weaver — threads voice, tone, and narrative into everything until the brand speaks for itself.",
+    bio: "Patrick is a copywriter and storyteller whose work spans brand voice development, long-form editorial, and campaign concepting. He writes with a filmmaker's sense of rhythm and a strategist's sense of purpose, always in service of a story worth telling.",
+    favoriteTools: "iA Writer, Notion, Hemingway, Google Docs",
+    link: { label: "LinkedIn", url: "https://linkedin.com/in/patrickconreaux" },
+    photoFile: "featured_photos/patrick_conreaux_1.webp",
     order: 9,
   },
   {
-    _id: "member-priya-sharma",
-    name: "Priya Sharma",
-    slug: "priya-sharma",
-    title: "Visual Designer",
-    mantra: "Details are not details — they make the design.",
-    bio: "Multidisciplinary designer with a focus on identity systems and editorial design. RISD alum.",
-    favoriteTools: "Figma, Illustrator, Blender",
-    photoUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
-    isFeatured: false,
+    _id: "member-sara-macfarlane",
+    name: "Sara Macfarlane",
+    slug: "sara-macfarlane",
+    title: "Producer & Operations Lead",
+    mantra: "Creativity thrives inside constraints — someone just has to build them well.",
+    characterMetaphor: "The Backbone — holds every project together with calm precision, even when everything is moving fast.",
+    bio: "Sara is a producer and operations lead who keeps complex creative projects on track without killing the magic. She's managed everything from multi-city photo shoots to product launches, bringing a rare blend of logistical precision and creative empathy to every engagement.",
+    favoriteTools: "Monday.com, Google Sheets, Slack, Harvest",
+    link: { label: "LinkedIn", url: "https://linkedin.com/in/saramacfarlane" },
+    photoFile: "featured_photos/sara_macfarlane_1.webp",
     order: 10,
-  },
-  {
-    _id: "member-connor-wright",
-    name: "Connor Wright",
-    slug: "connor-wright",
-    title: "SEO & Performance Lead",
-    mantra: "If they can't find it, it doesn't exist.",
-    bio: "Technical SEO specialist who's grown organic traffic 10x for multiple SaaS companies.",
-    favoriteTools: "Ahrefs, Screaming Frog, Google Search Console",
-    photoUrl: "https://images.unsplash.com/photo-1463453091185-61582044d556?w=800&q=80",
-    isFeatured: false,
-    order: 11,
-  },
-  {
-    _id: "member-zara-mitchell",
-    name: "Zara Mitchell",
-    slug: "zara-mitchell",
-    title: "Copywriter",
-    mantra: "Say it once. Say it right.",
-    bio: "Brand copywriter and naming specialist. Former journalist turned creative, with clients including Patagonia and Mailchimp.",
-    favoriteTools: "iA Writer, Grammarly, Thesaurus.com",
-    photoUrl: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
-    isFeatured: false,
-    order: 12,
-  },
-  {
-    _id: "member-omar-hassan",
-    name: "Omar Hassan",
-    slug: "omar-hassan",
-    title: "DevOps Engineer",
-    mantra: "Automate everything you do more than twice.",
-    bio: "Cloud infrastructure and CI/CD specialist. Keeps the lights on and the deploys smooth.",
-    favoriteTools: "Terraform, GitHub Actions, Datadog, Kubernetes",
-    photoUrl: "https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=800&q=80",
-    isFeatured: false,
-    order: 13,
-  },
-  {
-    _id: "member-lily-nguyen",
-    name: "Lily Nguyen",
-    slug: "lily-nguyen",
-    title: "UX Researcher",
-    mantra: "Listen harder than you talk.",
-    bio: "Mixed-methods researcher who turns user insights into product direction. Previously at Meta and IDEO.",
-    favoriteTools: "Dovetail, Maze, UserTesting, Miro",
-    photoUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
-    isFeatured: false,
-    order: 14,
-  },
-  {
-    _id: "member-ethan-cole",
-    name: "Ethan Cole",
-    slug: "ethan-cole",
-    title: "Illustrator & Visual Artist",
-    mantra: "Every brand deserves a face, not just a logo.",
-    bio: "Editorial and brand illustrator whose work has appeared in The New Yorker and Bloomberg Businessweek.",
-    favoriteTools: "Procreate, Photoshop, Pen & Ink",
-    photoUrl: "https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=800&q=80",
-    isFeatured: false,
-    order: 15,
-  },
-  {
-    _id: "member-nadia-cruz",
-    name: "Nadia Cruz",
-    slug: "nadia-cruz",
-    title: "Social & Community Strategist",
-    mantra: "Brands don't build communities. People do.",
-    bio: "Social media strategist who builds engaged audiences from scratch. Grew three brands past 1M followers.",
-    favoriteTools: "Sprout Social, Canva, CapCut, Buffer",
-    photoUrl: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=800&q=80",
-    isFeatured: false,
-    order: 16,
-  },
-  {
-    _id: "member-theo-park",
-    name: "Theo Park",
-    slug: "theo-park",
-    title: "Frontend Engineer",
-    mantra: "Performance is a feature.",
-    bio: "Specializes in animation-heavy, accessible React applications. Next.js enthusiast and open-source contributor.",
-    favoriteTools: "Next.js, Framer Motion, Tailwind, Storybook",
-    photoUrl: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=800&q=80",
-    isFeatured: false,
-    order: 17,
-  },
-  {
-    _id: "member-isabella-reed",
-    name: "Isabella Reed",
-    slug: "isabella-reed",
-    title: "Video Producer",
-    mantra: "The first three seconds decide everything.",
-    bio: "Video producer and director specializing in brand films, product launches, and documentary-style content.",
-    favoriteTools: "Premiere Pro, DaVinci Resolve, Frame.io",
-    photoUrl: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
-    isFeatured: false,
-    order: 18,
-  },
-  {
-    _id: "member-kai-tanaka",
-    name: "Kai Tanaka",
-    slug: "kai-tanaka",
-    title: "Sound Designer",
-    mantra: "Sound is the invisible layer that makes everything feel real.",
-    bio: "Audio branding and sound design specialist. Creates sonic identities, UI sounds, and immersive audio experiences.",
-    favoriteTools: "Ableton Live, Pro Tools, Logic Pro",
-    photoUrl: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=800&q=80",
-    isFeatured: false,
-    order: 19,
-  },
-  {
-    _id: "member-sarah-blake",
-    name: "Sarah Blake",
-    slug: "sarah-blake",
-    title: "Project Manager",
-    mantra: "A good plan today beats a perfect plan tomorrow.",
-    bio: "Agile project manager who keeps complex, multi-team engagements running smoothly. Certified Scrum Master.",
-    favoriteTools: "Linear, Notion, Slack, Loom",
-    photoUrl: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80",
-    isFeatured: false,
-    order: 20,
   },
 ];
 
-const allMembers = [...featuredMembers, ...galleryMembers];
+/* ─── Non-featured "others" — name from filename, photo only ─── */
 
-async function seed() {
-  console.log(`=== Seeding ${allMembers.length} members ===\n`);
+const othersFiles = [
+  "abby_beaudin_1.webp",
+  "adam_swan_1.webp",
+  "damisi_rosemond_3.webp",
+  "jeremy_gilbertson_3.webp",
+  "joey_o_driscoll_1.webp",
+  "lukas_ersil_1.webp",
+  "mark_henneges_1.webp",
+  "sophie_lawson_1.webp",
+  "susie_chow_2.webp",
+  "terence_raines_1.webp",
+  "tim_suggs_3.webp",
+  "tunisia_seda_3.webp",
+];
 
-  for (const member of allMembers) {
-    console.log(`[${member.name}] (${member.isFeatured ? "FEATURED" : "gallery"})`);
-    try {
-      // Upload portrait
-      let photo = undefined;
-      if (member.photoUrl) {
-        photo = await uploadImageFromUrl(
-          member.photoUrl,
-          member.slug + "-portrait"
-        );
-      }
-
-      // Build document
-      const doc = {
-        _id: member._id,
-        _type: "member",
-        name: member.name,
-        slug: { _type: "slug", current: member.slug },
-        title: member.title,
-        isFeatured: member.isFeatured,
-        order: member.order,
-      };
-
-      if (member.mantra) doc.mantra = member.mantra;
-      if (member.characterMetaphor) doc.characterMetaphor = member.characterMetaphor;
-      if (member.bio) doc.bio = member.bio;
-      if (member.favoriteTools) doc.favoriteTools = member.favoriteTools;
-      if (member.link) doc.link = member.link;
-      if (photo) doc.photo = photo;
-
-      await client.createOrReplace(doc);
-      console.log(`  -> Done\n`);
-    } catch (err) {
-      console.error(`  -> FAILED: ${err.message}\n`);
+function nameFromFilename(filename) {
+  const base = filename.replace(/\.webp$/, "").replace(/_\d+$/, "");
+  const parts = base.split("_");
+  const capitalized = [];
+  for (let i = 0; i < parts.length; i++) {
+    if (parts[i] === "o" && i < parts.length - 1) {
+      capitalized.push("O'" + parts[i + 1].charAt(0).toUpperCase() + parts[i + 1].slice(1));
+      i++;
+    } else {
+      capitalized.push(parts[i].charAt(0).toUpperCase() + parts[i].slice(1));
     }
   }
+  return capitalized.join(" ");
+}
 
-  console.log("=== Member seed complete! ===");
+function slugFromFilename(filename) {
+  const base = filename.replace(/\.webp$/, "").replace(/_\d+$/, "");
+  return base.replace(/_/g, "-");
+}
+
+const otherMembers = othersFiles.map((file, i) => ({
+  _id: `member-${slugFromFilename(file)}`,
+  name: nameFromFilename(file),
+  slug: slugFromFilename(file),
+  photoFile: `others/${file}`,
+  order: 20 + i,
+  isFeatured: false,
+}));
+
+/* ─── Seed ─── */
+
+async function seed() {
+  console.log(`\n=== Seeding members into ${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/production ===\n`);
+
+  // Featured members
+  console.log("--- Featured Members (10) ---\n");
+  for (const m of featuredMembers) {
+    console.log(`[${m.name}]`);
+    let photo = null;
+    if (m.photoFile) {
+      photo = await uploadImage(path.resolve("docs", m.photoFile));
+    }
+
+    const doc = {
+      _id: m._id,
+      _type: "member",
+      name: m.name,
+      slug: { _type: "slug", current: m.slug },
+      title: m.title,
+      mantra: m.mantra,
+      characterMetaphor: m.characterMetaphor,
+      bio: m.bio,
+      favoriteTools: m.favoriteTools,
+      link: m.link,
+      isFeatured: true,
+      order: m.order,
+    };
+    if (photo) doc.photo = photo;
+
+    await client.createOrReplace(doc);
+    console.log(`  ✓ Created ${m.name}\n`);
+  }
+
+  // Non-featured others
+  console.log("\n--- Non-Featured Members (12) ---\n");
+  for (const m of otherMembers) {
+    console.log(`[${m.name}]`);
+    const photo = await uploadImage(path.resolve("docs", m.photoFile));
+
+    const doc = {
+      _id: m._id,
+      _type: "member",
+      name: m.name,
+      slug: { _type: "slug", current: m.slug },
+      isFeatured: false,
+      order: m.order,
+    };
+    if (photo) doc.photo = photo;
+
+    await client.createOrReplace(doc);
+    console.log(`  ✓ Created ${m.name}\n`);
+  }
+
+  const count = await client.fetch('count(*[_type == "member"])');
+  console.log(`\n✅ Done! ${count} members in Sanity.\n`);
 }
 
 seed().catch((err) => {
-  console.error("Seed failed:", err.message);
+  console.error("Fatal:", err.message);
   process.exit(1);
 });
