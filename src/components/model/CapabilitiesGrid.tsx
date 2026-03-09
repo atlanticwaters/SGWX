@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Container from "@/components/ui/Container";
@@ -26,6 +26,8 @@ const COLOR_MAP: Record<
     checkText: string;
     bodyText: string;
     dimText: string;
+    itemTitle: string;
+    itemDesc: string;
     strokeBase: string;
     strokePeak: string;
     strokeEnd: string;
@@ -45,6 +47,8 @@ const COLOR_MAP: Record<
     checkText: "text-sgwx-green-bright",
     bodyText: "text-sgwx-text",
     dimText: "text-sgwx-text-muted",
+    itemTitle: "text-sgwx-green-bright",
+    itemDesc: "text-sgwx-green-bright/60",
     strokeBase: "#4A7A58",
     strokePeak: "#9FDBB0",
     strokeEnd: "#6EA87F",
@@ -63,6 +67,8 @@ const COLOR_MAP: Record<
     checkText: "text-sgwx-cyan",
     bodyText: "text-sgwx-text-muted",
     dimText: "text-sgwx-text-dim",
+    itemTitle: "text-sgwx-cyan",
+    itemDesc: "text-sgwx-cyan/60",
     strokeBase: "#1E3540",
     strokePeak: "#799BA9",
     strokeEnd: "#1E3540",
@@ -81,6 +87,8 @@ const COLOR_MAP: Record<
     checkText: "text-sgwx-yellow",
     bodyText: "text-sgwx-text-muted",
     dimText: "text-sgwx-text-dim",
+    itemTitle: "text-sgwx-yellow",
+    itemDesc: "text-sgwx-yellow/60",
     strokeBase: "#5c5520",
     strokePeak: "#d4c94a",
     strokeEnd: "#5c5520",
@@ -99,6 +107,8 @@ const COLOR_MAP: Record<
     checkText: "text-purple-300",
     bodyText: "text-sgwx-text-muted",
     dimText: "text-sgwx-text-dim",
+    itemTitle: "text-purple-300",
+    itemDesc: "text-purple-300/60",
     strokeBase: "#4a2d6e",
     strokePeak: "#b388f5",
     strokeEnd: "#6b3fa0",
@@ -407,23 +417,14 @@ function CapabilityCard({
             key={item.title}
             className={`rounded-xl border px-3.5 py-3 sm:px-4 sm:py-3 ${c.rowBorder} ${c.rowBg}`}
           >
-            <div className="flex items-start gap-2">
-              <span
-                className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-bold ${c.checkBg} ${c.checkText}`}
-              >
-                &#10003;
-              </span>
-              <div className="min-w-0">
-                <p className={`text-sm font-semibold leading-snug ${c.bodyText}`}>
-                  {item.title}
-                </p>
-                {item.description && (
-                  <p className={`mt-1 text-xs leading-relaxed ${c.dimText}`}>
-                    {item.description}
-                  </p>
-                )}
-              </div>
-            </div>
+            <p className={`text-sm font-semibold leading-snug ${c.itemTitle}`}>
+              {item.title}
+            </p>
+            {item.description && (
+              <p className={`mt-1 text-xs leading-relaxed ${c.itemDesc}`}>
+                {item.description}
+              </p>
+            )}
           </div>
         ))}
       </div>
@@ -616,11 +617,17 @@ export default function CapabilitiesGrid({
     setActiveTab(newIndex);
   };
 
-  // Each card is 820px wide (landscape) with 28px gap.
-  // We translate the track so the active card centers in the viewport.
-  const cardWidth = 820;
+  // Each card is 80vw wide with 28px gap.
+  const [cardWidth, setCardWidth] = useState(820);
   const gap = 28;
   const trackWidth = capTabs.length * cardWidth + (capTabs.length - 1) * gap;
+
+  useEffect(() => {
+    const update = () => setCardWidth(Math.round(window.innerWidth * 0.8));
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   // Center offset: we want the center of the active card at 50% of the container.
   // Card center = activeTab * (cardWidth + gap) + cardWidth / 2
