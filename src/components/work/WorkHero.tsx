@@ -77,7 +77,7 @@ export default function WorkHero({
           {...fadeUp}
           transition={transition(0)}
         >
-          {heading ?? "Our Work"}
+          {heading ?? "Our Work."}
         </motion.h1>
 
         <motion.p
@@ -85,7 +85,7 @@ export default function WorkHero({
           {...fadeUp}
           transition={transition(0.12)}
         >
-          {subheading ?? "Real outcomes for real brands. Explore how Sageworx teams have delivered impact across industries."}
+          {subheading ?? "Real outcomes for real brands. Explore how Sageworx teams have delivered impact across multiple industries."}
         </motion.p>
 
         {/* HUD status line */}

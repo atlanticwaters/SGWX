@@ -15,6 +15,7 @@ interface Post {
 interface SpotlightsSectionProps {
   eyebrow?: string;
   heading?: string;
+  subheading?: string;
   cta?: { label: string; href: string; variant?: string };
   posts: Post[];
   backgroundUrl?: string;
@@ -22,8 +23,9 @@ interface SpotlightsSectionProps {
 }
 
 export default function SpotlightsSection({
-  eyebrow = "Spotlights",
-  heading = "Every project is an opportunity to push boundaries, challenge conventions, and make a mark.",
+  eyebrow = "People, Performance & Perspectives",
+  heading = "Every project is an opportunity to push boundaries, challenge conventions and make a mark.",
+  subheading = "Updates on our latest insights, additions to our team and top performances.",
   cta = { label: "More Spotlights", href: "/spotlights", variant: "secondary" },
   posts,
   backgroundUrl,
@@ -39,6 +41,11 @@ export default function SpotlightsSection({
             heading={heading}
             size="display"
           />
+          {subheading && (
+            <p className="mt-3 max-w-2xl text-base text-sgwx-text-muted md:text-lg">
+              {subheading}
+            </p>
+          )}
         </AnimatedSection>
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">

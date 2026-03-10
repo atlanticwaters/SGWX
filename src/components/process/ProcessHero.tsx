@@ -66,7 +66,7 @@ export default function ProcessHero({ backgroundUrl, overlayColor, eyebrow, head
           transition={transition(0)}
           aria-hidden="true"
         >
-          {eyebrow ?? "The Growth Sequence"}
+          {eyebrow ?? "The Process"}
         </motion.p>
 
         <motion.h1
@@ -74,7 +74,7 @@ export default function ProcessHero({ backgroundUrl, overlayColor, eyebrow, head
           {...fadeUp}
           transition={transition(0.1)}
         >
-          {heading ?? "Smart Content + Experiences"}
+          {heading ?? "The Operating System Behind the Work."}
         </motion.h1>
 
         <motion.p
@@ -82,7 +82,7 @@ export default function ProcessHero({ backgroundUrl, overlayColor, eyebrow, head
           {...fadeUp}
           transition={transition(0.22)}
         >
-          {body ?? "The ultimate growth partner \u2014 built for every stage of your brand\u2019s evolution."}
+          {body ?? "A clear, six-step process designed to move senior teams from strategic clarity to creative execution, without the usual drag."}
         </motion.p>
       </motion.div>
     </section>

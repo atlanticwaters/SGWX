@@ -22,8 +22,8 @@ export default function GrowthSection({ eyebrow, heading, paragraphs }: GrowthSe
       <Container>
         <AnimatedSection>
           <SectionHeading
-            eyebrow={eyebrow ?? "How We Grow"}
-            heading={heading ?? "Growth Fueled by Independent Masters of Their Craft."}
+            eyebrow={eyebrow ?? "How We've Grown"}
+            heading={heading ?? "Growth Fueled by M-Shaped Makers and Marketers."}
             size="medium"
             align="right"
           />

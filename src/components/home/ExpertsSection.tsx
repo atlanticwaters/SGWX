@@ -97,7 +97,7 @@ function MemberCard({ member }: { member: StripMember }) {
 
 export default function ExpertsSection({
   eyebrow = "The Collective",
-  heading = "Hand-Picked Experts",
+  heading = "Hand-Picked Experts.",
   subheading = "We assemble expert teams for the challenge at hand.",
   members,
   backgroundUrl,

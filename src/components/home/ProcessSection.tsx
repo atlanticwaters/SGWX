@@ -225,8 +225,8 @@ interface ProcessSectionProps {
 
 export default function ProcessSection({
   eyebrow = "Our Process",
-  heading = "The Growth Sequence",
-  subheading = "Smart content + experiences built for every stage of your brand\u2019s evolution.",
+  heading = "How The Work Gets Done.",
+  subheading = "A clear, flexible process built for speed and follow-through.",
   stages = DEFAULT_STAGES,
   footerLink = { label: "Explore the full sequence", href: "/process" },
   backgroundUrl,

@@ -18,9 +18,9 @@ const defaultNotFit = [
 ];
 
 const defaultCtas = [
-  { label: "Ready to Take Action?", href: "/contact", variant: "primary" as const },
   { label: "Check Out Our Work", href: "/work", variant: "secondary" as const },
   { label: "Meet Our Members", href: "/members", variant: "ghost" as const },
+  { label: "Take Action", href: "/contact", variant: "primary" as const },
 ];
 
 interface FitSectionProps {
@@ -121,7 +121,7 @@ export default function FitSection({ eyebrow, heading, subheading, goodItems, no
         <AnimatedSection delay={0.28}>
           <div className="mt-12 text-center">
             <p className="mx-auto max-w-2xl text-base leading-relaxed text-sgwx-text-muted md:text-lg">
-              {closing ?? "If you\u2019re looking for alignment, intentionality, and outcomes that last, we\u2019ll work extremely well together."}
+              {closing ?? "Net:Net \u2013 If you\u2019re looking for alignment, intentionality, and outcomes that last, we\u2019ll work extremely well together."}
             </p>
 
             <div className="mt-10 flex flex-col flex-wrap items-center justify-center gap-4 sm:flex-row">

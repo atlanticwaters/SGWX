@@ -3,7 +3,7 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 
 const defaultParagraphs = [
-  "Sageworx started in 2020 with a simple idea between two founders, Marc and Pat. One from the world of creative and marketing, the other from production and advertising, they both saw the same cracks in the traditional agency model. They wanted to build something different, with people who thought differently.",
+  "Sageworx started in 2020 with a simple idea between two founders, Marc Calamia and Patrick Conreaux. One from the world of creative and marketing, the other from production and advertising, they both saw the same cracks in the traditional agency model. They wanted to build something different, with people who thought differently.",
   "They began by bringing together a small band of their most trusted former colleagues\u2014all senior specialists who had also left the agency and corporate worlds behind. This was the start of the collective. During a time when the world was going remote, they built a new kind of machine, fueled not by winning awards, but by delivering real outcomes for clients.",
   "They created a system built around independent lifestyles and collaborative, agile interactions. Information was engrained, not handed off. The result was a seamless workflow that proved you didn\u2019t need to be in the same room to be on the same page.",
 ];

@@ -18,8 +18,20 @@ export default function Footer({ links, copyright }: FooterProps) {
   const footerLinks = links ?? defaultFooterLinks;
 
   return (
-    <footer className="border-t border-sgwx-border-subtle bg-sgwx-bg">
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 py-12 md:flex-row">
+    <footer className="relative overflow-hidden border-t border-sgwx-border-subtle">
+      {/* Background image */}
+      <div className="absolute inset-0 -z-10">
+        <Image
+          src="/images/SGWX-Spaceman.jpg"
+          alt=""
+          fill
+          className="object-cover"
+          style={{ filter: "brightness(0.2) saturate(0.6)" }}
+          quality={80}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-sgwx-bg/90 via-sgwx-bg/60 to-sgwx-bg/80" />
+      </div>
+      <div className="relative mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 py-12 md:flex-row">
         <div className="flex items-center gap-4">
           <Image
             src="/sgwx-white.svg"

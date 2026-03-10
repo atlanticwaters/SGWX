@@ -1,97 +1,268 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Container from "@/components/ui/Container";
-import SectionHeading from "@/components/ui/SectionHeading";
-import AnimatedSection from "@/components/ui/AnimatedSection";
+import Link from "next/link";
 
 interface GalleryMember {
   name: string;
+  slug?: string;
   title: string;
   photoUrl?: string;
+  isFeatured?: boolean;
 }
 
 interface MemberGalleryProps {
   members: GalleryMember[];
+  heading?: string;
+  subheading?: string;
 }
 
-function getInitials(name: string): string {
-  return name
-    .split(" ")
-    .filter((w) => w.length > 0)
-    .map((w) => w[0])
-    .join("")
-    .toUpperCase()
-    .slice(0, 3);
-}
+/* ─── Constants ─── */
 
-function AvatarCard({ member, index }: { member: GalleryMember; index: number }) {
-  const [hovered, setHovered] = useState(false);
+const COLS = 5;
+const ROWS = 3;
+const TOTAL_CELLS = COLS * ROWS;
+// The center cell holds the message block
+const MESSAGE_CELL = Math.floor(ROWS / 2) * COLS + (COLS - 1); // row 1, col 4 (right-aligned)
+const SWAP_INTERVAL = 2800; // ms between swaps
+const FADE_DURATION = 600; // ms for crossfade
 
-  return (
-    <AnimatedSection delay={0.1 + index * 0.08}>
+/* ─── Cell component — crossfading member photos ─── */
+
+function PhotoCell({
+  members,
+  startIndex,
+  swapTick,
+  frozen,
+  onHover,
+  onLeave,
+}: {
+  members: GalleryMember[];
+  startIndex: number;
+  swapTick: number;
+  frozen: boolean;
+  onHover: () => void;
+  onLeave: () => void;
+}) {
+  // Track current and previous member for crossfade
+  const [current, setCurrent] = useState(startIndex % members.length);
+  const [prev, setPrev] = useState<number | null>(null);
+  const [fading, setFading] = useState(false);
+  const frozenRef = useRef(frozen);
+  frozenRef.current = frozen;
+
+  useEffect(() => {
+    if (frozenRef.current || swapTick === 0) return;
+    // Pick a random member different from current
+    let next: number;
+    do {
+      next = Math.floor(Math.random() * members.length);
+    } while (next === current && members.length > 1);
+
+    setPrev(current);
+    setCurrent(next);
+    setFading(true);
+
+    const timer = setTimeout(() => {
+      setFading(false);
+      setPrev(null);
+    }, FADE_DURATION);
+
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [swapTick]);
+
+  const member = members[current];
+  const prevMember = prev !== null ? members[prev] : null;
+
+  if (!member) return null;
+
+  const photoStyle = {
+    filter: frozen
+      ? "brightness(0.9) contrast(1.05) saturate(1)"
+      : "brightness(0.85) contrast(1.1) grayscale(1)",
+    transition: `filter ${FADE_DURATION}ms ease`,
+  };
+
+  const card = (
+    <div
+      className="group relative aspect-square w-full cursor-pointer overflow-hidden bg-sgwx-surface"
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+      role="figure"
+      aria-label={`${member.name}, ${member.title}`}
+    >
+      {/* Previous image (fading out) */}
+      {prevMember?.photoUrl && fading && (
+        <Image
+          src={prevMember.photoUrl}
+          alt=""
+          fill
+          className="object-cover transition-opacity duration-[600ms]"
+          style={{ ...photoStyle, opacity: 0 }}
+          sizes="(max-width: 640px) 50vw, 20vw"
+        />
+      )}
+
+      {/* Current image (fading in) */}
+      {member.photoUrl ? (
+        <Image
+          src={member.photoUrl}
+          alt={member.name}
+          fill
+          className={`object-cover transition-opacity duration-[600ms] ${fading ? "opacity-0 animate-[fadeIn_600ms_ease_forwards]" : "opacity-100"}`}
+          style={photoStyle}
+          sizes="(max-width: 640px) 50vw, 20vw"
+        />
+      ) : (
+        <div className="flex h-full items-center justify-center">
+          <span className="text-2xl font-bold text-sgwx-text-dim">
+            {member.name
+              .split(" ")
+              .map((w) => w[0])
+              .join("")
+              .toUpperCase()
+              .slice(0, 3)}
+          </span>
+        </div>
+      )}
+
+      {/* Hover overlay */}
       <div
-        className="group relative aspect-square cursor-pointer overflow-hidden rounded-xl bg-sgwx-surface transition-all duration-300 hover:border-sgwx-green/30 hover:shadow-[0_0_30px_rgba(110,168,127,0.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-sgwx-green"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        onFocus={() => setHovered(true)}
-        onBlur={() => setHovered(false)}
-        tabIndex={0}
-        role="figure"
-        aria-label={`${member.name}, ${member.title}`}
+        className={`absolute inset-0 flex flex-col items-center justify-end bg-gradient-to-t from-sgwx-bg/90 via-sgwx-bg/40 to-transparent px-3 pb-4 text-center transition-opacity duration-300 ${
+          frozen ? "opacity-100" : "opacity-0"
+        }`}
       >
-        {/* Photo or Initials */}
-        {member.photoUrl ? (
-          <Image
-            src={member.photoUrl}
-            alt={member.name}
-            fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-            style={{ filter: "brightness(0.85) contrast(1.05) saturate(0.8)" }}
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center">
-            <span className="text-3xl font-bold text-sgwx-text-dim transition-opacity duration-300 group-hover:opacity-30 md:text-4xl">
-              {getInitials(member.name)}
-            </span>
-          </div>
-        )}
-
-        {/* Hover overlay */}
-        <div
-          className={`absolute inset-0 flex flex-col items-center justify-center bg-sgwx-bg/85 px-3 text-center transition-opacity duration-300 ${
-            hovered ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <p className="text-sm font-semibold text-sgwx-text">{member.name}</p>
-          <p className="mt-1 font-mono text-[9px] tracking-widest uppercase text-sgwx-green">
+        <p className="text-sm font-semibold text-sgwx-text">{member.name}</p>
+        {member.title && (
+          <p className="mt-0.5 font-mono text-[9px] tracking-widest uppercase text-sgwx-green">
             {member.title}
           </p>
-        </div>
+        )}
       </div>
-    </AnimatedSection>
+    </div>
   );
+
+  if (member.isFeatured && member.slug) {
+    return (
+      <Link href={`/members/${member.slug}`} className="block">
+        {card}
+      </Link>
+    );
+  }
+
+  return card;
 }
 
-export default function MemberGallery({ members }: MemberGalleryProps) {
-  return (
-    <section className="bg-sgwx-bg-alt py-16 md:py-24">
-      <Container>
-        <AnimatedSection>
-          <SectionHeading
-            eyebrow="The Collective"
-            heading="The Minds Behind Our Mission."
-            align="right"
-          />
-        </AnimatedSection>
+/* ─── Main Gallery ─── */
 
-        <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 lg:gap-6">
-          {members.map((member, i) => (
-            <AvatarCard key={member.name} member={member} index={i} />
-          ))}
+export default function MemberGallery({
+  members,
+  heading = "Fueled by independent masters of their craft",
+  subheading = "We curate specialized teams tailored to your industry, your audiences, and your evolving mission.",
+}: MemberGalleryProps) {
+  // Only use members with photos
+  const photoMembers = members.filter((m) => m.photoUrl);
+
+  // Each cell gets a stable starting index
+  const cellStarts = useRef<number[]>([]);
+  if (cellStarts.current.length === 0) {
+    const indices: number[] = [];
+    for (let i = 0; i < TOTAL_CELLS; i++) {
+      indices.push(i % Math.max(photoMembers.length, 1));
+    }
+    // Shuffle so it's not just sequential
+    for (let i = indices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [indices[i], indices[j]] = [indices[j], indices[i]];
+    }
+    cellStarts.current = indices;
+  }
+
+  // Staggered swap ticks — one random cell swaps per interval
+  const [swapTicks, setSwapTicks] = useState<number[]>(
+    new Array(TOTAL_CELLS).fill(0)
+  );
+  const [frozenCell, setFrozenCell] = useState<number | null>(null);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSwapTicks((prev) => {
+        const next = [...prev];
+        // Pick a random non-message, non-frozen cell to swap
+        let cell: number;
+        let attempts = 0;
+        do {
+          cell = Math.floor(Math.random() * TOTAL_CELLS);
+          attempts++;
+        } while ((cell === MESSAGE_CELL || cell === frozenCell) && attempts < 20);
+
+        if (cell !== MESSAGE_CELL && cell !== frozenCell) {
+          next[cell] = prev[cell] + 1;
+        }
+        return next;
+      });
+    }, SWAP_INTERVAL);
+
+    return () => clearInterval(interval);
+  }, [frozenCell]);
+
+  const handleHover = useCallback((i: number) => setFrozenCell(i), []);
+  const handleLeave = useCallback(() => setFrozenCell(null), []);
+
+  // Build cells: photo slots + one message block
+  const photoCellIndices: number[] = [];
+  for (let i = 0; i < TOTAL_CELLS; i++) {
+    if (i !== MESSAGE_CELL) photoCellIndices.push(i);
+  }
+
+  return (
+    <section className="bg-sgwx-bg py-16 md:py-24">
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+      `}</style>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        {/* Grid: 5 cols x 3 rows on desktop, 3 cols on tablet, 2 cols on mobile */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+          {Array.from({ length: TOTAL_CELLS }, (_, i) => {
+            if (i === MESSAGE_CELL) {
+              // Center message block
+              return (
+                <div
+                  key="message"
+                  className="relative flex aspect-square flex-col justify-center bg-sgwx-green/90 px-5 sm:px-6"
+                >
+                  <h2 className="text-lg font-semibold leading-snug text-white sm:text-xl lg:text-2xl">
+                    Fueled by{" "}
+                    <span className="font-bold">
+                      independent masters of their craft
+                    </span>
+                  </h2>
+                  <p className="mt-2 text-xs leading-relaxed text-white/80 sm:text-sm">
+                    {subheading}
+                  </p>
+                </div>
+              );
+            }
+
+            return (
+              <PhotoCell
+                key={i}
+                members={photoMembers}
+                startIndex={cellStarts.current[i]}
+                swapTick={swapTicks[i]}
+                frozen={frozenCell === i}
+                onHover={() => handleHover(i)}
+                onLeave={handleLeave}
+              />
+            );
+          })}
         </div>
-      </Container>
+      </div>
     </section>
   );
 }

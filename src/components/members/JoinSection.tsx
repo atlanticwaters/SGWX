@@ -4,7 +4,7 @@ import Button from "@/components/ui/Button";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 
 const defaultParagraphs = [
-  "While our network has traditionally been built on trust and personal endorsements, we are always looking to team with senior, independent, M-shaped leaders who are exceptional at their craft and believe in the power of collaboration.",
+  "While our network has traditionally been built upon personal endorsements, we are always open to team with seasoned leaders who are exceptional at their craft and believe in the power of collaboration.",
   "If you believe your work and mindset align with our mission, we\u2019d love to connect.",
 ];
 

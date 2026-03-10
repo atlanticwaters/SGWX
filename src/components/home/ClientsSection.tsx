@@ -21,12 +21,12 @@ const DEFAULT_SEGMENTS = [
   {
     type: "Niche Agencies",
     painPoint: "A client needs something outside your wheelhouse. You either scramble or say no.",
-    solution: "Expand your capabilities with fractional specialists, not added overhead.",
+    solution: "We expand your capabilities with fractional specialists, not added overhead.",
   },
   {
     type: "Startups",
     painPoint: "Burn rate matters. Big hires come with big risks.",
-    solution: "Senior leadership that scales as needed.",
+    solution: "We provide senior leadership that scales as needed.",
   },
 ];
 
@@ -159,7 +159,7 @@ interface ClientsSectionProps {
 
 export default function ClientsSection({
   eyebrow = "Who We Serve",
-  heading = "Curated Partners For Your Business",
+  heading = "The Right Partner For Businesses On The Move.",
   segments = DEFAULT_SEGMENTS,
   backgroundUrl,
   overlayColor,

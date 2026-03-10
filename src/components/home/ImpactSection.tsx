@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
@@ -21,8 +22,8 @@ interface ImpactSectionProps {
 }
 
 export default function ImpactSection({
-  eyebrow = "Case Studies",
-  heading = "Making An Impact",
+  eyebrow = "Featured Work",
+  heading = "Making An Impact.",
   logoWallHeading,
   logos,
   caseStudies,
@@ -32,6 +33,9 @@ export default function ImpactSection({
       <Container>
         <AnimatedSection>
           <SectionHeading eyebrow={eyebrow} heading={heading} size="medium" align="right" />
+          <p className="mt-3 max-w-2xl text-base text-sgwx-text-muted md:text-lg">
+            Trusted by ambitious brands and global leaders to help them move forward faster.
+          </p>
         </AnimatedSection>
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -47,6 +51,18 @@ export default function ImpactSection({
             </AnimatedSection>
           ))}
         </div>
+
+        <AnimatedSection delay={0.25}>
+          <div className="mt-10 text-center">
+            <Link
+              href="/work"
+              className="inline-flex items-center gap-2 rounded-full border border-sgwx-green/40 px-6 py-3 font-mono text-[10px] tracking-widest uppercase text-sgwx-green transition-all hover:border-sgwx-green/70 hover:bg-sgwx-green/10 hover:text-sgwx-green-bright"
+            >
+              View More Work
+              <span aria-hidden="true">&rarr;</span>
+            </Link>
+          </div>
+        </AnimatedSection>
 
         <AnimatedSection delay={0.3}>
           <LogoWall heading={logoWallHeading} logos={logos} />

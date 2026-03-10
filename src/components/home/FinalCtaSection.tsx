@@ -6,15 +6,13 @@ import SectionBackground from "@/components/ui/SectionBackground";
 interface FinalCtaSectionProps {
   heading?: string;
   primaryCta?: { label: string; href: string };
-  secondaryCta?: { label: string; href: string };
   backgroundUrl?: string;
   overlayColor?: string;
 }
 
 export default function FinalCtaSection({
   heading = "Ready to move forward faster?",
-  primaryCta = { label: "Activate Your Team", href: "/contact" },
-  secondaryCta = { label: "Meet Our Members", href: "/members" },
+  primaryCta = { label: "Let\u2019s Chat", href: "/contact" },
   backgroundUrl,
   overlayColor,
 }: FinalCtaSectionProps) {
@@ -29,9 +27,6 @@ export default function FinalCtaSection({
             </h2>
             <div className="mt-10 flex items-center justify-end gap-4">
               <Button href={primaryCta.href}>{primaryCta.label}</Button>
-              <Button href={secondaryCta.href} variant="secondary">
-                {secondaryCta.label}
-              </Button>
             </div>
           </div>
         </AnimatedSection>

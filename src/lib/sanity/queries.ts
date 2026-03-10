@@ -875,7 +875,7 @@ export async function getHomepage(): Promise<HomepageData | null> {
   if (!client) return null;
   const raw = await client.fetch<
     (Omit<HomepageData, "logos" | "featuredCaseStudies"> & {
-      logos?: { image: SanityImageSource; alt: string }[];
+      logos?: { asset: SanityImageSource; alt: string }[];
       featuredCaseStudies?: (Omit<CaseStudyListItem, "thumbnailUrl"> & { thumbnail?: SanityImageSource })[];
     }) | null
   >(
@@ -903,7 +903,7 @@ export async function getHomepage(): Promise<HomepageData | null> {
       },
       caseStudyDisplayCount,
       logoWallHeading,
-      logos[] { image, alt },
+      logos[] { asset, alt },
       spotlightsEyebrow, spotlightsHeading,
       spotlightsCta { label, href, variant },
       finalCtaHeading,
@@ -933,9 +933,9 @@ export async function getHomepage(): Promise<HomepageData | null> {
         order: cs.order,
       })),
     logos: (raw.logos ?? [])
-      .filter((logo) => logo?.image)
+      .filter((logo) => logo?.asset)
       .map((logo) => ({
-        imageUrl: urlFor(logo.image).height(40).auto("format").url(),
+        imageUrl: urlFor(logo as SanityImageSource).height(40).auto("format").url(),
         alt: logo.alt ?? "",
       })),
   };

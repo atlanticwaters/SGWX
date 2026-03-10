@@ -67,7 +67,7 @@ export default function ModelHero({
           {...fadeUp}
           transition={transition(0.1)}
         >
-          {heading ?? "Stop Resetting. Start Building."}
+          {heading ?? "Stop Resetting. Start Accelerating."}
         </motion.h1>
 
         <motion.p
@@ -76,7 +76,7 @@ export default function ModelHero({
           transition={transition(0.22)}
         >
           {body ??
-            "The Sageworx model brings together senior, bespoke teams who already know how to work together. We skip the learning curve and get right to the work, delivering continuity and momentum without the overhead of a traditional agency."}
+            "The Sageworx model brings together seasoned teams who already know how to work together, and understand your industry and audience. We skip the learning curve and get right to the work, delivering continuity and momentum without the overhead of a traditional agency."}
         </motion.p>
 
         <motion.div

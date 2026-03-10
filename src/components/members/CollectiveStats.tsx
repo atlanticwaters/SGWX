@@ -95,7 +95,7 @@ export default function CollectiveStats({ eyebrow, heading, paragraphs, stats }:
       <Container>
         <AnimatedSection>
           <SectionHeading
-            eyebrow={eyebrow ?? "By the Numbers"}
+            eyebrow={eyebrow ?? "The Collective Today"}
             heading={heading ?? "A Network of Multi-disciplined Powerhouses."}
             size="display"
           />
