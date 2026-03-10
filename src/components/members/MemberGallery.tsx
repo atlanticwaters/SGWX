@@ -26,43 +26,44 @@ const ROWS = 3;
 const TOTAL_CELLS = COLS * ROWS - 1;
 // The message block starts at row 1, col 3 (right-aligned, spans cols 3-4)
 const MESSAGE_CELL = Math.floor(ROWS / 2) * COLS + (COLS - 2); // row 1, col 3
-const SWAP_INTERVAL = 2800; // ms between swaps
-const FADE_DURATION = 600; // ms for crossfade
+const SWAP_INTERVAL = 1800; // ms between swaps
+const FADE_DURATION = 700; // ms for crossfade + scale
 
 /* ─── Cell component — crossfading member photos ─── */
 
 function PhotoCell({
   members,
-  startIndex,
+  memberIndex,
   swapTick,
   frozen,
   onHover,
   onLeave,
+  onSwap,
 }: {
   members: GalleryMember[];
-  startIndex: number;
+  memberIndex: number;
   swapTick: number;
   frozen: boolean;
   onHover: () => void;
   onLeave: () => void;
+  onSwap: (oldIdx: number) => number;
 }) {
-  // Track current and previous member for crossfade
-  const [current, setCurrent] = useState(startIndex % members.length);
+  const [current, setCurrent] = useState(memberIndex);
   const [prev, setPrev] = useState<number | null>(null);
   const [fading, setFading] = useState(false);
   const frozenRef = useRef(frozen);
   frozenRef.current = frozen;
+  const currentRef = useRef(current);
+  currentRef.current = current;
 
   useEffect(() => {
     if (frozenRef.current || swapTick === 0) return;
-    // Pick a random member different from current
-    let next: number;
-    do {
-      next = Math.floor(Math.random() * members.length);
-    } while (next === current && members.length > 1);
+    const next = onSwap(currentRef.current);
+    if (next === currentRef.current) return;
 
-    setPrev(current);
+    setPrev(currentRef.current);
     setCurrent(next);
+    currentRef.current = next;
     setFading(true);
 
     const timer = setTimeout(() => {
@@ -79,12 +80,9 @@ function PhotoCell({
 
   if (!member) return null;
 
-  const photoStyle = {
-    filter: frozen
-      ? "brightness(0.9) contrast(1.05) saturate(1)"
-      : "brightness(0.85) contrast(1.1) grayscale(1)",
-    transition: `filter ${FADE_DURATION}ms ease`,
-  };
+  const baseFilter = frozen
+    ? "brightness(0.9) contrast(1.05) saturate(1)"
+    : "brightness(0.85) contrast(1.1) grayscale(1)";
 
   const card = (
     <div
@@ -94,26 +92,35 @@ function PhotoCell({
       role="figure"
       aria-label={`${member.name}, ${member.title}`}
     >
-      {/* Previous image (fading out) */}
+      {/* Previous image — scales down + fades out */}
       {prevMember?.photoUrl && fading && (
         <Image
           src={prevMember.photoUrl}
           alt=""
           fill
-          className="object-cover transition-opacity duration-[600ms]"
-          style={{ ...photoStyle, opacity: 0 }}
+          className="object-cover"
+          style={{
+            filter: baseFilter,
+            animation: `cellFadeOut ${FADE_DURATION}ms ease forwards`,
+          }}
           sizes="(max-width: 640px) 50vw, 20vw"
         />
       )}
 
-      {/* Current image (fading in) */}
+      {/* Current image — scales from 120% down to 100% + fades in */}
       {member.photoUrl ? (
         <Image
           src={member.photoUrl}
           alt={member.name}
           fill
-          className={`object-cover transition-opacity duration-[600ms] ${fading ? "opacity-0 animate-[fadeIn_600ms_ease_forwards]" : "opacity-100"}`}
-          style={photoStyle}
+          className="object-cover"
+          style={{
+            filter: baseFilter,
+            transition: `filter ${FADE_DURATION}ms ease`,
+            ...(fading
+              ? { animation: `cellFadeIn ${FADE_DURATION}ms ease forwards` }
+              : { opacity: 1, transform: "scale(1)" }),
+          }}
           sizes="(max-width: 640px) 50vw, 20vw"
         />
       ) : (
@@ -166,19 +173,21 @@ export default function MemberGallery({
   // Only use members with photos
   const photoMembers = members.filter((m) => m.photoUrl);
 
-  // Each cell gets a stable starting index
-  const cellStarts = useRef<number[]>([]);
-  if (cellStarts.current.length === 0) {
+  // Track which member index is displayed in each cell to prevent duplicates
+  const cellMembersRef = useRef<number[]>([]);
+  if (cellMembersRef.current.length === 0) {
+    // Assign unique starting members to each cell (no duplicates)
     const indices: number[] = [];
-    for (let i = 0; i < TOTAL_CELLS; i++) {
-      indices.push(i % Math.max(photoMembers.length, 1));
-    }
-    // Shuffle so it's not just sequential
-    for (let i = indices.length - 1; i > 0; i--) {
+    const pool = Array.from({ length: photoMembers.length }, (_, i) => i);
+    // Shuffle pool
+    for (let i = pool.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [indices[i], indices[j]] = [indices[j], indices[i]];
+      [pool[i], pool[j]] = [pool[j], pool[i]];
     }
-    cellStarts.current = indices;
+    for (let i = 0; i < TOTAL_CELLS; i++) {
+      indices.push(pool[i % pool.length]);
+    }
+    cellMembersRef.current = indices;
   }
 
   // Staggered swap ticks — one random cell swaps per interval
@@ -186,6 +195,36 @@ export default function MemberGallery({
     new Array(TOTAL_CELLS).fill(0)
   );
   const [frozenCell, setFrozenCell] = useState<number | null>(null);
+
+  // Callback for a cell to get a new member index that isn't shown anywhere else
+  const handleSwap = useCallback(
+    (cellIndex: number, oldMemberIdx: number): number => {
+      const inUse = new Set(cellMembersRef.current);
+      // Build candidates: members not currently displayed
+      const candidates: number[] = [];
+      for (let i = 0; i < photoMembers.length; i++) {
+        if (!inUse.has(i) || (i === oldMemberIdx && inUse.has(i))) {
+          // Allow members not in use; exclude the current one for this cell
+          if (i !== oldMemberIdx && !inUse.has(i)) {
+            candidates.push(i);
+          }
+        }
+      }
+      // If no unique candidates (fewer members than cells), fall back to any different member
+      let next: number;
+      if (candidates.length > 0) {
+        next = candidates[Math.floor(Math.random() * candidates.length)];
+      } else {
+        do {
+          next = Math.floor(Math.random() * photoMembers.length);
+        } while (next === oldMemberIdx && photoMembers.length > 1);
+      }
+      // Update tracking
+      cellMembersRef.current[cellIndex] = next;
+      return next;
+    },
+    [photoMembers.length]
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -212,18 +251,16 @@ export default function MemberGallery({
   const handleHover = useCallback((i: number) => setFrozenCell(i), []);
   const handleLeave = useCallback(() => setFrozenCell(null), []);
 
-  // Build cells: photo slots + one message block
-  const photoCellIndices: number[] = [];
-  for (let i = 0; i < TOTAL_CELLS; i++) {
-    if (i !== MESSAGE_CELL) photoCellIndices.push(i);
-  }
-
   return (
     <section className="bg-sgwx-bg py-16 md:py-24">
       <style jsx global>{`
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+        @keyframes cellFadeIn {
+          from { opacity: 0; transform: scale(1.2); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes cellFadeOut {
+          from { opacity: 1; transform: scale(1); }
+          to { opacity: 0; transform: scale(0.95); }
         }
       `}</style>
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -254,11 +291,12 @@ export default function MemberGallery({
               <PhotoCell
                 key={i}
                 members={photoMembers}
-                startIndex={cellStarts.current[i]}
+                memberIndex={cellMembersRef.current[i]}
                 swapTick={swapTicks[i]}
                 frozen={frozenCell === i}
                 onHover={() => handleHover(i)}
                 onLeave={handleLeave}
+                onSwap={(oldIdx) => handleSwap(i, oldIdx)}
               />
             );
           })}
