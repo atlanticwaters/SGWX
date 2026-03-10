@@ -27,7 +27,9 @@ const TOTAL_CELLS = COLS * ROWS - 1;
 // The message block starts at row 1, col 3 (right-aligned, spans cols 3-4)
 const MESSAGE_CELL = Math.floor(ROWS / 2) * COLS + (COLS - 2); // row 1, col 3
 const SWAP_INTERVAL = 1800; // ms between swaps
-const FADE_DURATION = 700; // ms for crossfade + scale
+const FADE_DURATION = 800; // ms for exit animation
+const FADE_IN_DELAY = 300; // ms delay before new image fades in
+const FADE_IN_DURATION = 600; // ms for enter animation
 
 /* ─── Cell component — crossfading member photos ─── */
 
@@ -50,7 +52,7 @@ function PhotoCell({
 }) {
   const [current, setCurrent] = useState(memberIndex);
   const [prev, setPrev] = useState<number | null>(null);
-  const [fading, setFading] = useState(false);
+  const [phase, setPhase] = useState<"idle" | "exiting" | "entering">("idle");
   const frozenRef = useRef(frozen);
   frozenRef.current = frozen;
   const currentRef = useRef(current);
@@ -61,17 +63,27 @@ function PhotoCell({
     const next = onSwap(currentRef.current);
     if (next === currentRef.current) return;
 
+    // Phase 1: exit — old image scales up to 120% and fades out
     setPrev(currentRef.current);
-    setCurrent(next);
-    currentRef.current = next;
-    setFading(true);
+    setPhase("exiting");
 
-    const timer = setTimeout(() => {
-      setFading(false);
+    // Phase 2: after delay, swap in new image
+    const enterTimer = setTimeout(() => {
+      setCurrent(next);
+      currentRef.current = next;
+      setPhase("entering");
+    }, FADE_IN_DELAY);
+
+    // Phase 3: clean up
+    const doneTimer = setTimeout(() => {
+      setPhase("idle");
       setPrev(null);
-    }, FADE_DURATION);
+    }, FADE_IN_DELAY + FADE_IN_DURATION);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(enterTimer);
+      clearTimeout(doneTimer);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [swapTick]);
 
@@ -92,8 +104,8 @@ function PhotoCell({
       role="figure"
       aria-label={`${member.name}, ${member.title}`}
     >
-      {/* Previous image — scales down + fades out */}
-      {prevMember?.photoUrl && fading && (
+      {/* Exiting image — scales up to 120% and fades out */}
+      {prevMember?.photoUrl && (phase === "exiting" || phase === "entering") && (
         <Image
           src={prevMember.photoUrl}
           alt=""
@@ -107,7 +119,7 @@ function PhotoCell({
         />
       )}
 
-      {/* Current image — scales from 120% down to 100% + fades in */}
+      {/* Current image — fades in at normal scale */}
       {member.photoUrl ? (
         <Image
           src={member.photoUrl}
@@ -117,9 +129,11 @@ function PhotoCell({
           style={{
             filter: baseFilter,
             transition: `filter ${FADE_DURATION}ms ease`,
-            ...(fading
-              ? { animation: `cellFadeIn ${FADE_DURATION}ms ease forwards` }
-              : { opacity: 1, transform: "scale(1)" }),
+            ...(phase === "entering"
+              ? { animation: `cellFadeIn ${FADE_IN_DURATION}ms ease forwards` }
+              : phase === "exiting"
+                ? { opacity: 1, transform: "scale(1)" }
+                : { opacity: 1, transform: "scale(1)" }),
           }}
           sizes="(max-width: 640px) 50vw, 20vw"
         />
@@ -255,12 +269,12 @@ export default function MemberGallery({
     <section className="bg-sgwx-bg py-16 md:py-24">
       <style jsx global>{`
         @keyframes cellFadeIn {
-          from { opacity: 0; transform: scale(1.2); }
+          from { opacity: 0; transform: scale(1); }
           to { opacity: 1; transform: scale(1); }
         }
         @keyframes cellFadeOut {
           from { opacity: 1; transform: scale(1); }
-          to { opacity: 0; transform: scale(0.95); }
+          to { opacity: 0; transform: scale(1.2); }
         }
       `}</style>
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
