@@ -26,10 +26,10 @@ export default function Footer({ links, copyright }: FooterProps) {
           alt=""
           fill
           className="object-cover"
-          style={{ filter: "brightness(0.2) saturate(0.6)" }}
+          style={{ filter: "brightness(0.35) saturate(0.7)" }}
           quality={80}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-sgwx-bg/90 via-sgwx-bg/60 to-sgwx-bg/80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-sgwx-bg/80 via-sgwx-bg/40 to-sgwx-bg/50" />
       </div>
       <div className="relative mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 py-12 md:flex-row">
         <div className="flex items-center gap-4">

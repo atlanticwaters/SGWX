@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Container from "@/components/ui/Container";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import Button from "@/components/ui/Button";
@@ -17,7 +18,19 @@ export default function FinalCtaSection({
   overlayColor,
 }: FinalCtaSectionProps) {
   return (
-    <section className="relative py-24 md:py-32">
+    <section className="relative overflow-hidden py-24 md:py-32">
+      {/* Spaceman background */}
+      <div className="absolute inset-0 -z-10">
+        <Image
+          src="/images/SGWX-Spaceman.jpg"
+          alt=""
+          fill
+          className="object-cover"
+          style={{ filter: "brightness(0.3) saturate(0.7)" }}
+          quality={80}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-sgwx-bg/80 via-sgwx-bg/40 to-sgwx-bg/60" />
+      </div>
       {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as "sage" | "steel" | "teal" | "amber" | "carbon"} />}
       <Container>
         <AnimatedSection>

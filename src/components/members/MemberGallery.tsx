@@ -22,9 +22,10 @@ interface MemberGalleryProps {
 
 const COLS = 5;
 const ROWS = 3;
-const TOTAL_CELLS = COLS * ROWS;
-// The center cell holds the message block
-const MESSAGE_CELL = Math.floor(ROWS / 2) * COLS + (COLS - 1); // row 1, col 4 (right-aligned)
+// Message block spans 2 cols, so total grid items = COLS * ROWS - 1
+const TOTAL_CELLS = COLS * ROWS - 1;
+// The message block starts at row 1, col 3 (right-aligned, spans cols 3-4)
+const MESSAGE_CELL = Math.floor(ROWS / 2) * COLS + (COLS - 2); // row 1, col 3
 const SWAP_INTERVAL = 2800; // ms between swaps
 const FADE_DURATION = 600; // ms for crossfade
 
@@ -87,7 +88,7 @@ function PhotoCell({
 
   const card = (
     <div
-      className="group relative aspect-square w-full cursor-pointer overflow-hidden bg-sgwx-surface"
+      className="group relative aspect-square w-full cursor-pointer overflow-hidden rounded-2xl bg-sgwx-surface"
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
       role="figure"
@@ -227,22 +228,22 @@ export default function MemberGallery({
       `}</style>
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         {/* Grid: 5 cols x 3 rows on desktop, 3 cols on tablet, 2 cols on mobile */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-5 lg:gap-4">
           {Array.from({ length: TOTAL_CELLS }, (_, i) => {
             if (i === MESSAGE_CELL) {
-              // Center message block
+              // Message block — spans 2 columns
               return (
                 <div
                   key="message"
-                  className="relative flex aspect-square flex-col justify-center bg-sgwx-green/90 px-5 sm:px-6"
+                  className="relative col-span-2 flex aspect-[2/1] flex-col justify-center rounded-2xl bg-sgwx-green/90 px-6 sm:px-8 lg:aspect-auto"
                 >
-                  <h2 className="text-lg font-semibold leading-snug text-white sm:text-xl lg:text-2xl">
-                    Fueled by{" "}
-                    <span className="font-bold">
-                      independent masters of their craft
-                    </span>
+                  <p className="font-mono text-[10px] tracking-widest uppercase text-white/70">
+                    The Collective
+                  </p>
+                  <h2 className="mt-2 text-xl font-thin leading-snug tracking-tight text-white sm:text-2xl lg:text-3xl">
+                    {heading}
                   </h2>
-                  <p className="mt-2 text-xs leading-relaxed text-white/80 sm:text-sm">
+                  <p className="mt-3 text-sm leading-relaxed text-white/80">
                     {subheading}
                   </p>
                 </div>
