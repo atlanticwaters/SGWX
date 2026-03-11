@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Card from "@/components/ui/Card";
@@ -20,7 +21,8 @@ export default function GovernanceSection({ eyebrow, heading, bullets }: Governa
   const items = bullets ?? defaultBullets;
 
   return (
-    <section className="bg-sgwx-bg-alt py-16 md:py-24">
+    <section id="governance" className="relative bg-sgwx-bg-alt py-20 md:py-28">
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sgwx-border to-transparent" />
       <Container>
         <AnimatedSection>
           <SectionHeading
@@ -64,6 +66,18 @@ export default function GovernanceSection({ eyebrow, heading, bullets }: Governa
               </Card>
             </AnimatedSection>
           ))}
+
+          <AnimatedSection delay={0.1 + items.length * 0.08}>
+            <div className="mt-4 text-right">
+              <Link
+                href="/ai-policy"
+                className="inline-flex items-center gap-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-green transition-colors hover:text-sgwx-green-bright"
+              >
+                AI Policy for More
+                <span aria-hidden="true">&rarr;</span>
+              </Link>
+            </div>
+          </AnimatedSection>
         </div>
       </Container>
     </section>

@@ -2,38 +2,37 @@
 
 import { useEffect, useState } from "react";
 
-const stages = [
-  { id: "launch", label: "launch" },
-  { id: "engage", label: "engage" },
-  { id: "mobilize", label: "mobilize" },
-  { id: "transform", label: "transform" },
+const sections = [
+  { id: "principles", label: "principles" },
+  { id: "steps", label: "the six steps" },
+  { id: "governance", label: "governance" },
 ];
 
 export default function StageNav() {
-  const [activeStage, setActiveStage] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      const firstStage = document.getElementById("launch");
-      const closing = document.getElementById("process-closing");
+      const firstSection = document.getElementById("principles");
+      const lastSection = document.getElementById("governance");
 
-      if (!firstStage || !closing) return;
+      if (!firstSection || !lastSection) return;
 
       const vh = window.innerHeight;
-      const firstStageTop = firstStage.getBoundingClientRect().top;
-      const closingTop = closing.getBoundingClientRect().top;
+      const firstTop = firstSection.getBoundingClientRect().top;
+      const lastBottom = lastSection.getBoundingClientRect().bottom;
 
-      setVisible(firstStageTop < vh * 0.8 && closingTop > vh * 0.5);
+      setVisible(firstTop < vh * 0.8 && lastBottom > vh * 0.3);
 
-      for (let i = stages.length - 1; i >= 0; i--) {
-        const el = document.getElementById(stages[i].id);
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i].id);
         if (el && el.getBoundingClientRect().top < vh * 0.5) {
-          setActiveStage(stages[i].id);
+          setActiveSection(sections[i].id);
           return;
         }
       }
-      setActiveStage(null);
+      setActiveSection(null);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -52,19 +51,19 @@ export default function StageNav() {
         visible ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
     >
-      {stages.map((stage) => (
+      {sections.map((section) => (
         <button
-          key={stage.id}
-          onClick={() => scrollTo(stage.id)}
+          key={section.id}
+          onClick={() => scrollTo(section.id)}
           className={`group relative h-2 w-2 rounded-full border transition-all duration-300 ${
-            activeStage === stage.id
+            activeSection === section.id
               ? "scale-[1.3] border-sgwx-green bg-sgwx-green"
               : "border-sgwx-text-dim bg-transparent hover:border-sgwx-text-muted"
           }`}
-          aria-label={`Scroll to ${stage.label}`}
+          aria-label={`Scroll to ${section.label}`}
         >
           <span className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 whitespace-nowrap font-mono text-[14px] tracking-[0.2em] uppercase text-sgwx-text-dim opacity-0 transition-opacity group-hover:opacity-100 max-md:hidden">
-            {stage.label}
+            {section.label}
           </span>
         </button>
       ))}

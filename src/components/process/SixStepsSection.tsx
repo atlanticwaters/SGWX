@@ -97,11 +97,12 @@ export default function SixStepsSection({ eyebrow, heading, steps }: SixStepsSec
   };
 
   return (
-    <section className="bg-sgwx-bg py-16 md:py-24">
+    <section id="steps" className="relative bg-sgwx-bg py-20 md:py-28">
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-sgwx-border to-transparent" />
       <Container>
         <AnimatedSection>
           <SectionHeading
-            eyebrow={eyebrow ?? "The Process"}
+            eyebrow={eyebrow ?? "The Six Steps"}
             heading={heading ?? "Six Steps. No Wasted Motion."}
             align="right"
           />
