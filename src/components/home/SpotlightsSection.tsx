@@ -40,6 +40,7 @@ export default function SpotlightsSection({
             eyebrow={eyebrow}
             heading={heading}
             size="display"
+            className="!max-w-none"
           />
           {subheading && (
             <p className="mt-3 max-w-2xl text-base text-sgwx-text-muted md:text-lg">

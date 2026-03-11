@@ -75,7 +75,7 @@ export default function HeroSection({
         </motion.h1>
 
         <motion.p
-          className="ml-auto mt-6 max-w-2xl text-lg leading-relaxed text-sgwx-text-muted md:text-xl"
+          className="ml-auto mt-6 max-w-2xl text-xl leading-relaxed text-white md:text-2xl"
           {...fadeUp}
           transition={transition(0.12)}
         >
@@ -83,7 +83,7 @@ export default function HeroSection({
         </motion.p>
 
         <motion.p
-          className="ml-auto mt-4 max-w-xl text-base text-sgwx-text-dim"
+          className="ml-auto mt-4 max-w-xl text-base text-white"
           {...fadeUp}
           transition={transition(0.24)}
         >

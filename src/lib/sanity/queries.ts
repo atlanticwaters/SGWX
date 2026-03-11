@@ -880,7 +880,7 @@ export interface HomepageData {
   featuredCaseStudies?: CaseStudyListItem[];
   caseStudyDisplayCount?: number;
   logoWallHeading: string;
-  logos: { imageUrl: string; alt: string }[];
+  logos: { imageUrl?: string; alt: string }[];
   // Spotlights
   spotlightsEyebrow: string;
   spotlightsHeading: string;
@@ -955,9 +955,11 @@ export async function getHomepage(): Promise<HomepageData | null> {
         order: cs.order,
       })),
     logos: (raw.logos ?? [])
-      .filter((logo) => logo?.asset)
+      .filter((logo) => logo?.asset || logo?.alt)
       .map((logo) => ({
-        imageUrl: urlFor(logo as SanityImageSource).height(40).auto("format").url(),
+        imageUrl: logo.asset
+          ? urlFor(logo.asset).height(40).auto("format").url()
+          : undefined,
         alt: logo.alt ?? "",
       })),
   };
