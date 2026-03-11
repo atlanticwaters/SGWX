@@ -3,6 +3,8 @@ import SectionHeading from "@/components/ui/SectionHeading";
 import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import AnimatedSection from "@/components/ui/AnimatedSection";
+import SectionBackground from "@/components/ui/SectionBackground";
+import type { OverlayColor } from "@/components/ui/SectionBackground";
 
 const defaultGoodFit = [
   "Tired of managing a roster of disconnected freelancers",
@@ -31,15 +33,18 @@ interface FitSectionProps {
   notItems?: string[];
   closing?: string;
   ctas?: { label: string; href: string; variant?: string }[];
+  backgroundUrl?: string;
+  overlayColor?: string;
 }
 
-export default function FitSection({ eyebrow, heading, subheading, goodItems, notItems, closing, ctas }: FitSectionProps) {
+export default function FitSection({ eyebrow, heading, subheading, goodItems, notItems, closing, ctas, backgroundUrl, overlayColor }: FitSectionProps) {
   const goodFit = goodItems ?? defaultGoodFit;
   const notFit = notItems ?? defaultNotFit;
   const fitCtas = ctas ?? defaultCtas;
 
   return (
-    <section className="bg-sgwx-bg py-24 md:py-32">
+    <section className="relative overflow-hidden bg-sgwx-bg py-24 md:py-32">
+      {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />}
       <Container>
         <AnimatedSection>
           <SectionHeading

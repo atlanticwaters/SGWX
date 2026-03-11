@@ -2,6 +2,8 @@ import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Card from "@/components/ui/Card";
 import AnimatedSection from "@/components/ui/AnimatedSection";
+import SectionBackground from "@/components/ui/SectionBackground";
+import type { OverlayColor } from "@/components/ui/SectionBackground";
 
 interface IcpCard {
   badge: string;
@@ -43,13 +45,16 @@ interface IcpSectionProps {
   heading?: string;
   subheading?: string;
   cards?: IcpCard[];
+  backgroundUrl?: string;
+  overlayColor?: string;
 }
 
-export default function IcpSection({ eyebrow, heading, subheading, cards }: IcpSectionProps) {
+export default function IcpSection({ eyebrow, heading, subheading, cards, backgroundUrl, overlayColor }: IcpSectionProps) {
   const icpCards = cards ?? defaultCards;
 
   return (
-    <section className="bg-sgwx-bg-alt py-16 md:py-24">
+    <section className="relative overflow-hidden bg-sgwx-bg-alt py-16 md:py-24">
+      {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />}
       <Container>
         <AnimatedSection>
           <SectionHeading

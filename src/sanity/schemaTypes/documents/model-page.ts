@@ -67,6 +67,14 @@ export const modelPage = defineType({
 
     // ── Right Team ───────────────────────────────────────────
     defineField({
+      name: 'rightTeamBackground',
+      type: 'reference',
+      title: 'Background',
+      description: 'Optional background image for this section',
+      to: [{ type: 'sectionBackground' }],
+      group: 'rightTeam',
+    }),
+    defineField({
       name: 'rightTeamEyebrow',
       type: 'string',
       title: 'Eyebrow',
@@ -87,6 +95,14 @@ export const modelPage = defineType({
     }),
 
     // ── Capabilities ─────────────────────────────────────────
+    defineField({
+      name: 'capabilitiesBackground',
+      type: 'reference',
+      title: 'Background',
+      description: 'Optional background image for this section',
+      to: [{ type: 'sectionBackground' }],
+      group: 'capabilities',
+    }),
     defineField({
       name: 'capabilitiesEyebrow',
       type: 'string',
@@ -119,6 +135,14 @@ export const modelPage = defineType({
     }),
 
     // ── Microteams ───────────────────────────────────────────
+    defineField({
+      name: 'microteamsBackground',
+      type: 'reference',
+      title: 'Background',
+      description: 'Optional background image for this section',
+      to: [{ type: 'sectionBackground' }],
+      group: 'microteams',
+    }),
     defineField({
       name: 'microteamsEyebrow',
       type: 'string',
@@ -155,6 +179,14 @@ export const modelPage = defineType({
 
     // ── Momentum ─────────────────────────────────────────────
     defineField({
+      name: 'momentumBackground',
+      type: 'reference',
+      title: 'Background',
+      description: 'Optional background image for this section',
+      to: [{ type: 'sectionBackground' }],
+      group: 'momentum',
+    }),
+    defineField({
       name: 'momentumEyebrow',
       type: 'string',
       title: 'Eyebrow',
@@ -189,6 +221,14 @@ export const modelPage = defineType({
     }),
 
     // ── ICP ──────────────────────────────────────────────────
+    defineField({
+      name: 'icpBackground',
+      type: 'reference',
+      title: 'Background',
+      description: 'Optional background image for this section',
+      to: [{ type: 'sectionBackground' }],
+      group: 'icp',
+    }),
     defineField({
       name: 'icpEyebrow',
       type: 'string',
@@ -232,6 +272,14 @@ export const modelPage = defineType({
 
     // ── Continuity ───────────────────────────────────────────
     defineField({
+      name: 'continuityBackground',
+      type: 'reference',
+      title: 'Background',
+      description: 'Optional background image for this section',
+      to: [{ type: 'sectionBackground' }],
+      group: 'continuity',
+    }),
+    defineField({
       name: 'continuityEyebrow',
       type: 'string',
       title: 'Eyebrow',
@@ -253,6 +301,14 @@ export const modelPage = defineType({
 
     // ── Technology ───────────────────────────────────────────
     defineField({
+      name: 'technologyBackground',
+      type: 'reference',
+      title: 'Background',
+      description: 'Optional background image for this section',
+      to: [{ type: 'sectionBackground' }],
+      group: 'technology',
+    }),
+    defineField({
       name: 'technologyEyebrow',
       type: 'string',
       title: 'Eyebrow',
@@ -273,6 +329,14 @@ export const modelPage = defineType({
     }),
 
     // ── Fit ──────────────────────────────────────────────────
+    defineField({
+      name: 'fitBackground',
+      type: 'reference',
+      title: 'Background',
+      description: 'Optional background image for this section',
+      to: [{ type: 'sectionBackground' }],
+      group: 'fit',
+    }),
     defineField({
       name: 'fitEyebrow',
       type: 'string',

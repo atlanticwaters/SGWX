@@ -406,9 +406,9 @@ function CapabilityCard({
         </div>
       )}
 
-      {/* Item rows — 3-column grid for landscape layout */}
+      {/* Item rows — stack on mobile, 2-col on sm, 3-col on md+ */}
       <div
-        className={`grid grid-cols-3 gap-2 px-4 pb-5 sm:gap-2.5 sm:px-5 sm:pb-6 ${
+        className={`grid grid-cols-1 gap-2 px-4 pb-5 sm:grid-cols-2 sm:gap-2.5 sm:px-5 sm:pb-6 md:grid-cols-3 ${
           label ? "pt-1" : "pt-5"
         }`}
       >

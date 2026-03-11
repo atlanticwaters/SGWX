@@ -1,6 +1,8 @@
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
+import SectionBackground from "@/components/ui/SectionBackground";
+import type { OverlayColor } from "@/components/ui/SectionBackground";
 
 const defaultBullets = [
   "Strategic decisions stick",
@@ -14,13 +16,16 @@ interface MomentumSectionProps {
   body?: string;
   bullets?: string[];
   closing?: string;
+  backgroundUrl?: string;
+  overlayColor?: string;
 }
 
-export default function MomentumSection({ eyebrow, heading, body, bullets, closing }: MomentumSectionProps) {
+export default function MomentumSection({ eyebrow, heading, body, bullets, closing, backgroundUrl, overlayColor }: MomentumSectionProps) {
   const items = bullets ?? defaultBullets;
 
   return (
-    <section className="bg-sgwx-bg py-16 md:py-24">
+    <section className="relative overflow-hidden bg-sgwx-bg py-16 md:py-24">
+      {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />}
       <Container>
         <AnimatedSection>
           <SectionHeading

@@ -507,40 +507,54 @@ export async function getSiteSettings(): Promise<SiteSettingsData | null> {
 
 const HERO_BG_PROJECTION = `heroBackground-> { "imageUrl": image.asset->url + "?w=1920&q=75&auto=format", overlayColor }`;
 
+/** Reusable projection for any sectionBackground reference field */
+const SECTION_BG = (field: string) =>
+  `${field}-> { "imageUrl": image.asset->url + "?w=1920&q=75&auto=format", overlayColor }`;
+
 // ─── Model Page Types & Query ───────────────────────────────────────────────
 
+type SectionBg = { imageUrl: string; overlayColor?: string };
+
 export interface ModelPageData {
-  heroBackground?: { imageUrl: string; overlayColor?: string };
+  heroBackground?: SectionBg;
   heroEyebrow?: string;
   heroHeading?: string;
   heroBody?: string;
   heroPrimaryCta?: HomepageCta;
   heroSecondaryCta?: HomepageCta;
+  rightTeamBackground?: SectionBg;
   rightTeamEyebrow?: string;
   rightTeamHeading?: string;
   rightTeamParagraphs?: string[];
+  capabilitiesBackground?: SectionBg;
   capabilitiesEyebrow?: string;
   capabilitiesTabs?: { id: string; label: string; items: string[] }[];
+  microteamsBackground?: SectionBg;
   microteamsEyebrow?: string;
   microteamsHeading?: string;
   microteamsBody?: string;
   microteamsBullets?: string[];
   microteamsClosing?: string;
+  momentumBackground?: SectionBg;
   momentumEyebrow?: string;
   momentumHeading?: string;
   momentumBody?: string;
   momentumBullets?: string[];
   momentumClosing?: string;
+  icpBackground?: SectionBg;
   icpEyebrow?: string;
   icpHeading?: string;
   icpSubheading?: string;
   icpCards?: { badge: string; headline: string; body: string; testimonialQuote?: string; testimonialAttribution?: string }[];
+  continuityBackground?: SectionBg;
   continuityEyebrow?: string;
   continuityHeading?: string;
   continuityParagraphs?: string[];
+  technologyBackground?: SectionBg;
   technologyEyebrow?: string;
   technologyHeading?: string;
   technologyParagraphs?: string[];
+  fitBackground?: SectionBg;
   fitEyebrow?: string;
   fitHeading?: string;
   fitSubheading?: string;
@@ -559,15 +573,23 @@ export async function getModelPage(): Promise<ModelPageData | null> {
       heroEyebrow, heroHeading, heroBody,
       heroPrimaryCta { label, href, variant },
       heroSecondaryCta { label, href, variant },
+      ${SECTION_BG("rightTeamBackground")},
       rightTeamEyebrow, rightTeamHeading, rightTeamParagraphs,
+      ${SECTION_BG("capabilitiesBackground")},
       capabilitiesEyebrow,
       capabilitiesTabs[] { id, label, items },
+      ${SECTION_BG("microteamsBackground")},
       microteamsEyebrow, microteamsHeading, microteamsBody, microteamsBullets, microteamsClosing,
+      ${SECTION_BG("momentumBackground")},
       momentumEyebrow, momentumHeading, momentumBody, momentumBullets, momentumClosing,
+      ${SECTION_BG("icpBackground")},
       icpEyebrow, icpHeading, icpSubheading,
       icpCards[] { badge, headline, body, testimonialQuote, testimonialAttribution },
+      ${SECTION_BG("continuityBackground")},
       continuityEyebrow, continuityHeading, continuityParagraphs,
+      ${SECTION_BG("technologyBackground")},
       technologyEyebrow, technologyHeading, technologyParagraphs,
+      ${SECTION_BG("fitBackground")},
       fitEyebrow, fitHeading, fitSubheading, fitGoodItems, fitNotItems, fitClosing,
       fitCtas[] { label, href, variant },
       seo { title, description, noIndex }

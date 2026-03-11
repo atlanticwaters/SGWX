@@ -27,12 +27,13 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ModelPage() {
-  const [fallbackBg, capBg, data] = await Promise.all([
+  const [fallbackBg, capFallbackBg, data] = await Promise.all([
     getSectionBackgroundBySlug("spiral-geometry"),
     getSectionBackgroundBySlug("abstract-curves"),
     getModelPage(),
   ]);
   const heroBg = data?.heroBackground ?? fallbackBg;
+  const capBg = data?.capabilitiesBackground ?? capFallbackBg;
 
   return (
     <>
@@ -49,6 +50,8 @@ export default async function ModelPage() {
         eyebrow={data?.rightTeamEyebrow}
         heading={data?.rightTeamHeading}
         paragraphs={data?.rightTeamParagraphs}
+        backgroundUrl={data?.rightTeamBackground?.imageUrl}
+        overlayColor={data?.rightTeamBackground?.overlayColor}
       />
       <CapabilitiesGrid
         eyebrow={data?.capabilitiesEyebrow}
@@ -62,6 +65,8 @@ export default async function ModelPage() {
         body={data?.microteamsBody}
         bullets={data?.microteamsBullets}
         closing={data?.microteamsClosing}
+        backgroundUrl={data?.microteamsBackground?.imageUrl}
+        overlayColor={data?.microteamsBackground?.overlayColor}
       />
       <MomentumSection
         eyebrow={data?.momentumEyebrow}
@@ -69,22 +74,30 @@ export default async function ModelPage() {
         body={data?.momentumBody}
         bullets={data?.momentumBullets}
         closing={data?.momentumClosing}
+        backgroundUrl={data?.momentumBackground?.imageUrl}
+        overlayColor={data?.momentumBackground?.overlayColor}
       />
       <IcpSection
         eyebrow={data?.icpEyebrow}
         heading={data?.icpHeading}
         subheading={data?.icpSubheading}
         cards={data?.icpCards}
+        backgroundUrl={data?.icpBackground?.imageUrl}
+        overlayColor={data?.icpBackground?.overlayColor}
       />
       <ContinuitySection
         eyebrow={data?.continuityEyebrow}
         heading={data?.continuityHeading}
         paragraphs={data?.continuityParagraphs}
+        backgroundUrl={data?.continuityBackground?.imageUrl}
+        overlayColor={data?.continuityBackground?.overlayColor}
       />
       <TechnologySection
         eyebrow={data?.technologyEyebrow}
         heading={data?.technologyHeading}
         paragraphs={data?.technologyParagraphs}
+        backgroundUrl={data?.technologyBackground?.imageUrl}
+        overlayColor={data?.technologyBackground?.overlayColor}
       />
       <FitSection
         eyebrow={data?.fitEyebrow}
@@ -94,6 +107,8 @@ export default async function ModelPage() {
         notItems={data?.fitNotItems}
         closing={data?.fitClosing}
         ctas={data?.fitCtas}
+        backgroundUrl={data?.fitBackground?.imageUrl}
+        overlayColor={data?.fitBackground?.overlayColor}
       />
     </>
   );

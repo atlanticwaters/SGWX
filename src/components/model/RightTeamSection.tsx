@@ -1,6 +1,8 @@
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
+import SectionBackground from "@/components/ui/SectionBackground";
+import type { OverlayColor } from "@/components/ui/SectionBackground";
 
 const defaultParagraphs = [
   "You\u2019ve felt the friction of a team that isn\u2019t on the same page. The hit-or-miss results from a freelance marketplace. The junior-heavy agency that learns on your dime. Sageworx was built to fix that.",
@@ -12,13 +14,16 @@ interface RightTeamSectionProps {
   eyebrow?: string;
   heading?: string;
   paragraphs?: string[];
+  backgroundUrl?: string;
+  overlayColor?: string;
 }
 
-export default function RightTeamSection({ eyebrow, heading, paragraphs }: RightTeamSectionProps) {
+export default function RightTeamSection({ eyebrow, heading, paragraphs, backgroundUrl, overlayColor }: RightTeamSectionProps) {
   const paras = paragraphs ?? defaultParagraphs;
 
   return (
-    <section className="bg-sgwx-bg-alt py-16 md:py-24">
+    <section className="relative overflow-hidden bg-sgwx-bg-alt py-16 md:py-24">
+      {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />}
       <Container>
         <AnimatedSection>
           <SectionHeading

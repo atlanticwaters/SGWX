@@ -1,6 +1,8 @@
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
+import SectionBackground from "@/components/ui/SectionBackground";
+import type { OverlayColor } from "@/components/ui/SectionBackground";
 
 const defaultParagraphs = [
   "Great talent uses the best tools. Our teams are fluent in the technology that matters, from AI-enhanced strategy, analytics and production to immersive experiential platforms.",
@@ -11,13 +13,16 @@ interface TechnologySectionProps {
   eyebrow?: string;
   heading?: string;
   paragraphs?: string[];
+  backgroundUrl?: string;
+  overlayColor?: string;
 }
 
-export default function TechnologySection({ eyebrow, heading, paragraphs }: TechnologySectionProps) {
+export default function TechnologySection({ eyebrow, heading, paragraphs, backgroundUrl, overlayColor }: TechnologySectionProps) {
   const paras = paragraphs ?? defaultParagraphs;
 
   return (
-    <section className="bg-sgwx-bg-alt py-16 md:py-24">
+    <section className="relative overflow-hidden bg-sgwx-bg-alt py-16 md:py-24">
+      {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />}
       <Container>
         <AnimatedSection>
           <SectionHeading
