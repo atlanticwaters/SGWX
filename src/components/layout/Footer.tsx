@@ -18,8 +18,8 @@ export default function Footer({ links, copyright }: FooterProps) {
   const footerLinks = links ?? defaultFooterLinks;
 
   return (
-    <footer className="relative overflow-hidden border-t border-sgwx-border-subtle">
-      {/* Background image */}
+    <footer className="relative overflow-hidden">
+      {/* Spaceman background */}
       <div className="absolute inset-0 -z-10">
         <Image
           src="/images/SGWX-Spaceman.jpg"
@@ -29,17 +29,17 @@ export default function Footer({ links, copyright }: FooterProps) {
           style={{ filter: "brightness(0.35) saturate(0.7)" }}
           quality={80}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-sgwx-bg/80 via-sgwx-bg/40 to-sgwx-bg/50" />
+        <div className="absolute inset-0 bg-gradient-to-t from-sgwx-bg/70 via-sgwx-bg/40 to-sgwx-bg/50" />
       </div>
-      <div className="relative mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-6 py-12 md:flex-row">
-        <div className="flex items-center gap-4">
+      <div className="relative mx-auto flex max-w-7xl flex-col items-end gap-4 px-6 py-10 md:flex-row md:items-center md:justify-between">
+        <div className="flex items-center gap-4 md:order-first">
           <Image
             src="/sgwx-white.svg"
             alt="Sageworx"
             width={100}
             height={33}
           />
-          <p className="text-sm text-sgwx-text-dim">
+          <p className="text-sm text-sgwx-text-muted">
             {copyright ?? `\u00A9 ${new Date().getFullYear()} Sageworx, LLC.`}
           </p>
         </div>
@@ -48,15 +48,12 @@ export default function Footer({ links, copyright }: FooterProps) {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm text-sgwx-text-dim transition-colors hover:text-sgwx-text-muted"
+              className="text-sm text-sgwx-text-muted transition-colors hover:text-sgwx-text"
             >
               {link.label}
             </Link>
           ))}
         </nav>
-        <div className="flex gap-4 text-sgwx-text-dim">
-          {/* Social icons - placeholder for now */}
-        </div>
       </div>
     </footer>
   );

@@ -2,20 +2,15 @@ import Image from "next/image";
 import Container from "@/components/ui/Container";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import Button from "@/components/ui/Button";
-import SectionBackground from "@/components/ui/SectionBackground";
 
 interface FinalCtaSectionProps {
   heading?: string;
   primaryCta?: { label: string; href: string };
-  backgroundUrl?: string;
-  overlayColor?: string;
 }
 
 export default function FinalCtaSection({
   heading = "Ready to move forward faster?",
   primaryCta = { label: "Let\u2019s Chat", href: "/contact" },
-  backgroundUrl,
-  overlayColor,
 }: FinalCtaSectionProps) {
   return (
     <section className="relative overflow-hidden py-24 md:py-32">
@@ -29,9 +24,8 @@ export default function FinalCtaSection({
           style={{ filter: "brightness(0.3) saturate(0.7)" }}
           quality={80}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-sgwx-bg/80 via-sgwx-bg/40 to-sgwx-bg/60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-sgwx-bg/60 via-sgwx-bg/30 to-sgwx-bg/50" />
       </div>
-      {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as "sage" | "steel" | "teal" | "amber" | "carbon"} />}
       <Container>
         <AnimatedSection>
           <div className="ml-auto max-w-3xl text-right">

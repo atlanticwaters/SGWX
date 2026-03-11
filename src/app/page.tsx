@@ -114,8 +114,6 @@ export default async function Home() {
       <FinalCtaSection
         heading={homepage?.finalCtaHeading}
         primaryCta={homepage?.finalCtaPrimaryCta}
-        backgroundUrl={bg["abstract-curves"]?.imageUrl}
-        overlayColor={bg["abstract-curves"]?.overlayColor}
       />
     </>
   );
