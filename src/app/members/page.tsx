@@ -32,7 +32,7 @@ export default async function MembersPage() {
     getMembersPage(),
     getMemberBySlug("patrick-conreaux"),
     getMemberBySlug("marc-calamia"),
-    getSectionBackgroundBySlug("warm-collaboration"),
+    getSectionBackgroundBySlug("collaborative-workspace"),
     getSectionBackgroundBySlug("creative-workshop"),
     getSectionBackgroundBySlug("sage-leaves"),
     getSectionBackgroundBySlug("digital-mesh"),
