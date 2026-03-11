@@ -1,7 +1,18 @@
-import Image from "next/image";
+"use client";
+
+import dynamic from "next/dynamic";
 import Container from "@/components/ui/Container";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import Button from "@/components/ui/Button";
+
+const AnimationCanvas = dynamic(
+  () => import("@/components/animations/AnimationCanvas"),
+  { ssr: false }
+);
+const NetworkBackground = dynamic(
+  () => import("@/components/animations/NetworkBackground"),
+  { ssr: false }
+);
 
 interface FinalCtaSectionProps {
   heading?: string;
@@ -14,21 +25,16 @@ export default function FinalCtaSection({
 }: FinalCtaSectionProps) {
   return (
     <section className="relative overflow-hidden py-24 md:py-32">
-      {/* Spaceman background */}
-      <div className="absolute inset-0 -z-10">
-        <Image
-          src="/images/SGWX-Spaceman.jpg"
-          alt=""
-          fill
-          className="object-cover"
-          style={{ filter: "brightness(0.3) saturate(0.7)" }}
-          quality={80}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-sgwx-bg/60 via-sgwx-bg/30 to-sgwx-bg/50" />
-      </div>
+      <AnimationCanvas
+        cameraPosition={[0, 0, 90]}
+        cameraFov={58}
+        fogDensity={0.015}
+      >
+        <NetworkBackground />
+      </AnimationCanvas>
       <Container>
         <AnimatedSection>
-          <div className="ml-auto max-w-3xl text-right">
+          <div className="relative z-10 ml-auto max-w-3xl text-right">
             <h2 className="text-3xl font-normal tracking-tight text-sgwx-text md:text-4xl lg:text-5xl">
               {heading}
             </h2>
