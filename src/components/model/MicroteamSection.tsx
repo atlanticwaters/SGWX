@@ -31,7 +31,7 @@ export default function MicroteamSection({ eyebrow, heading, body, bullets, clos
           <SectionHeading
             eyebrow={eyebrow ?? "Microteams"}
             heading={heading ?? "Small by Design. Senior by Default."}
-            size="medium"
+            size="large"
             align="right"
           />
         </AnimatedSection>

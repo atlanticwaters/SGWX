@@ -545,7 +545,7 @@ export interface ModelPageData {
   icpEyebrow?: string;
   icpHeading?: string;
   icpSubheading?: string;
-  icpCards?: { badge: string; headline: string; body: string; testimonialQuote?: string; testimonialAttribution?: string }[];
+  icpCards?: { badge: string; headline: string; body: string; testimonialQuote?: string; testimonialAttribution?: string; testimonialPhotoUrl?: string }[];
   continuityBackground?: SectionBg;
   continuityEyebrow?: string;
   continuityHeading?: string;
@@ -584,7 +584,7 @@ export async function getModelPage(): Promise<ModelPageData | null> {
       momentumEyebrow, momentumHeading, momentumBody, momentumBullets, momentumClosing,
       ${SECTION_BG("icpBackground")},
       icpEyebrow, icpHeading, icpSubheading,
-      icpCards[] { badge, headline, body, testimonialQuote, testimonialAttribution },
+      icpCards[] { badge, headline, body, testimonialQuote, testimonialAttribution, "testimonialPhotoUrl": testimonialPhoto.asset->url + "?w=200&h=200&fit=crop&auto=format" },
       ${SECTION_BG("continuityBackground")},
       continuityEyebrow, continuityHeading, continuityParagraphs,
       ${SECTION_BG("technologyBackground")},

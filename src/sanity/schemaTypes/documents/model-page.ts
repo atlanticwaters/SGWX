@@ -262,6 +262,7 @@ export const modelPage = defineType({
             defineField({ name: 'body', type: 'text', title: 'Body', rows: 4 }),
             defineField({ name: 'testimonialQuote', type: 'text', title: 'Testimonial Quote', rows: 4 }),
             defineField({ name: 'testimonialAttribution', type: 'string', title: 'Testimonial Attribution' }),
+            defineField({ name: 'testimonialPhoto', type: 'image', title: 'Testimonial Photo', options: { hotspot: true } }),
           ],
           preview: {
             select: { title: 'badge', subtitle: 'headline' },
