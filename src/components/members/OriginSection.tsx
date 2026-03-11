@@ -65,13 +65,13 @@ export default function OriginSection({ eyebrow, heading, paragraphs, founders, 
 
           {/* Founder photos — stacked vertically beside the copy */}
           {founders && founders.length > 0 && (
-            <AnimatedSection delay={0.24} className="shrink-0 lg:w-[280px]">
-              <div className="flex gap-4 lg:flex-col lg:gap-5">
+            <AnimatedSection delay={0.24} className="shrink-0">
+              <div className="flex gap-4">
                 {founders.map((founder) => (
                   <Link
                     key={founder.slug}
                     href={`/members/${founder.slug}`}
-                    className="group block w-1/2 overflow-hidden rounded-2xl border border-white/[0.06] bg-sgwx-surface transition-all hover:border-sgwx-green/30 hover:shadow-lg hover:shadow-sgwx-green/5 lg:w-full"
+                    className="group block w-1/2 overflow-hidden rounded-2xl border border-white/[0.06] bg-sgwx-surface transition-all hover:border-sgwx-green/30 hover:shadow-lg hover:shadow-sgwx-green/5"
                   >
                     <div className="relative aspect-[4/3] w-full overflow-hidden bg-sgwx-bg">
                       {founder.photoUrl ? (
