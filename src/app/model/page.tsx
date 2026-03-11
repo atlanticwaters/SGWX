@@ -105,8 +105,6 @@ export default async function ModelPage() {
         subheading={data?.fitSubheading}
         goodItems={data?.fitGoodItems}
         notItems={data?.fitNotItems}
-        closing={data?.fitClosing}
-        ctas={data?.fitCtas}
         backgroundUrl={data?.fitBackground?.imageUrl}
         overlayColor={data?.fitBackground?.overlayColor}
       />

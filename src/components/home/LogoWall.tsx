@@ -2,7 +2,7 @@
 
 interface LogoWallProps {
   heading?: string;
-  logos?: { imageUrl: string; alt: string }[];
+  logos?: { imageUrl?: string; alt: string }[];
   clientNames?: string[];
 }
 

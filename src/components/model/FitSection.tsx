@@ -1,7 +1,6 @@
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Card from "@/components/ui/Card";
-import Button from "@/components/ui/Button";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import SectionBackground from "@/components/ui/SectionBackground";
 import type { OverlayColor } from "@/components/ui/SectionBackground";
@@ -19,28 +18,19 @@ const defaultNotFit = [
   "Optimizing for sheer volume over strategic impact",
 ];
 
-const defaultCtas = [
-  { label: "Check Out Our Work", href: "/work", variant: "secondary" as const },
-  { label: "Meet Our Members", href: "/members", variant: "ghost" as const },
-  { label: "Take Action", href: "/contact", variant: "primary" as const },
-];
-
 interface FitSectionProps {
   eyebrow?: string;
   heading?: string;
   subheading?: string;
   goodItems?: string[];
   notItems?: string[];
-  closing?: string;
-  ctas?: { label: string; href: string; variant?: string }[];
   backgroundUrl?: string;
   overlayColor?: string;
 }
 
-export default function FitSection({ eyebrow, heading, subheading, goodItems, notItems, closing, ctas, backgroundUrl, overlayColor }: FitSectionProps) {
+export default function FitSection({ eyebrow, heading, subheading, goodItems, notItems, backgroundUrl, overlayColor }: FitSectionProps) {
   const goodFit = goodItems ?? defaultGoodFit;
   const notFit = notItems ?? defaultNotFit;
-  const fitCtas = ctas ?? defaultCtas;
 
   return (
     <section className="relative overflow-hidden bg-sgwx-bg py-24 md:py-32">
@@ -122,26 +112,6 @@ export default function FitSection({ eyebrow, heading, subheading, goodItems, no
           </AnimatedSection>
         </div>
 
-        {/* Closing + CTAs — inline layout */}
-        <AnimatedSection delay={0.28}>
-          <div className="mt-12 flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
-            <p className="max-w-2xl text-base leading-relaxed text-sgwx-text-muted md:text-lg">
-              {closing ?? "Net:Net \u2013 If you\u2019re looking for alignment, intentionality, and outcomes that last, we\u2019ll work extremely well together."}
-            </p>
-
-            <div className="flex shrink-0 flex-wrap items-center gap-4">
-              {fitCtas.map((cta) => (
-                <Button
-                  key={cta.href}
-                  href={cta.href}
-                  variant={(cta.variant as "primary" | "secondary" | "ghost") ?? "primary"}
-                >
-                  {cta.label}
-                </Button>
-              ))}
-            </div>
-          </div>
-        </AnimatedSection>
       </Container>
     </section>
   );

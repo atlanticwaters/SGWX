@@ -560,8 +560,6 @@ export interface ModelPageData {
   fitSubheading?: string;
   fitGoodItems?: string[];
   fitNotItems?: string[];
-  fitClosing?: string;
-  fitCtas?: HomepageCta[];
   seo?: { title?: string; description?: string; noIndex?: boolean };
 }
 
@@ -590,8 +588,7 @@ export async function getModelPage(): Promise<ModelPageData | null> {
       ${SECTION_BG("technologyBackground")},
       technologyEyebrow, technologyHeading, technologyParagraphs,
       ${SECTION_BG("fitBackground")},
-      fitEyebrow, fitHeading, fitSubheading, fitGoodItems, fitNotItems, fitClosing,
-      fitCtas[] { label, href, variant },
+      fitEyebrow, fitHeading, fitSubheading, fitGoodItems, fitNotItems,
       seo { title, description, noIndex }
     }`
   );
