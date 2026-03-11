@@ -1,6 +1,8 @@
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
+import SectionBackground from "@/components/ui/SectionBackground";
+import type { OverlayColor } from "@/components/ui/SectionBackground";
 
 const defaultParagraphs = [
   "Over the past six years, that small group of 21 has grown into a network of over 100 specialists. This growth has been intentional, not accidental. From the beginning, Sageworx has actively sought out the best M-shaped professionals\u2014people who are not only deeply skilled in one discipline but also highly proficient in others. Think creative director\u2013sonic branding strategist\u2013technologist. Or art director\u2013NFT creator\u2013social content strategist.",
@@ -12,13 +14,16 @@ interface GrowthSectionProps {
   eyebrow?: string;
   heading?: string;
   paragraphs?: string[];
+  backgroundUrl?: string;
+  overlayColor?: string;
 }
 
-export default function GrowthSection({ eyebrow, heading, paragraphs }: GrowthSectionProps) {
+export default function GrowthSection({ eyebrow, heading, paragraphs, backgroundUrl, overlayColor }: GrowthSectionProps) {
   const paras = paragraphs ?? defaultParagraphs;
 
   return (
-    <section className="bg-sgwx-bg py-16 md:py-24">
+    <section className="relative overflow-hidden bg-sgwx-bg py-16 md:py-24">
+      {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />}
       <Container>
         <AnimatedSection>
           <SectionHeading

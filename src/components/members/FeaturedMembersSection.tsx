@@ -1,16 +1,21 @@
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
+import SectionBackground from "@/components/ui/SectionBackground";
+import type { OverlayColor } from "@/components/ui/SectionBackground";
 import FeaturedMemberCard from "./FeaturedMemberCard";
 import type { FeaturedMember } from "./FeaturedMemberCard";
 
 interface FeaturedMembersSectionProps {
   members: FeaturedMember[];
+  backgroundUrl?: string;
+  overlayColor?: string;
 }
 
-export default function FeaturedMembersSection({ members }: FeaturedMembersSectionProps) {
+export default function FeaturedMembersSection({ members, backgroundUrl, overlayColor }: FeaturedMembersSectionProps) {
   return (
-    <section className="bg-sgwx-bg-alt py-16 md:py-24">
+    <section className="relative overflow-hidden bg-sgwx-bg-alt py-16 md:py-24">
+      {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />}
       <Container>
         <AnimatedSection>
           <SectionHeading

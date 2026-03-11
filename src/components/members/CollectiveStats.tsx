@@ -4,6 +4,8 @@ import { useRef, useEffect, useState, useCallback } from "react";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
+import SectionBackground from "@/components/ui/SectionBackground";
+import type { OverlayColor } from "@/components/ui/SectionBackground";
 import Card from "@/components/ui/Card";
 
 interface Stat {
@@ -82,16 +84,19 @@ interface CollectiveStatsProps {
   heading?: string;
   paragraphs?: string[];
   stats?: { value: string; suffix?: string; label: string }[];
+  backgroundUrl?: string;
+  overlayColor?: string;
 }
 
-export default function CollectiveStats({ eyebrow, heading, paragraphs, stats }: CollectiveStatsProps) {
+export default function CollectiveStats({ eyebrow, heading, paragraphs, stats, backgroundUrl, overlayColor }: CollectiveStatsProps) {
   const paras = paragraphs ?? defaultParagraphs;
   const allStats: Stat[] = stats
     ? stats.map((s) => ({ value: parseInt(s.value, 10) || 0, suffix: s.suffix ?? "", label: s.label }))
     : defaultStats;
 
   return (
-    <section className="bg-sgwx-bg py-16 md:py-24">
+    <section className="relative overflow-hidden bg-sgwx-bg py-16 md:py-24">
+      {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />}
       <Container>
         <AnimatedSection>
           <SectionHeading

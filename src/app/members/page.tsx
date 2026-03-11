@@ -6,7 +6,7 @@ import FeaturedMembersSection from "@/components/members/FeaturedMembersSection"
 import CollectiveStats from "@/components/members/CollectiveStats";
 import MemberGallery from "@/components/members/MemberGallery";
 import JoinSection from "@/components/members/JoinSection";
-import { getFeaturedMembers, getAllMembers, getSectionBackgroundBySlug, getMembersPage } from "@/lib/sanity/queries";
+import { getFeaturedMembers, getAllMembers, getSectionBackgroundBySlug, getMembersPage, getMemberBySlug } from "@/lib/sanity/queries";
 
 export const revalidate = 60;
 
@@ -25,13 +25,23 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function MembersPage() {
-  const [featuredMembers, allMembers, fallbackBg, data] = await Promise.all([
+  const [featuredMembers, allMembers, fallbackBg, data, pat, marc, originBg, growthBg, featuredBg, statsBg, joinBg] = await Promise.all([
     getFeaturedMembers(),
     getAllMembers(),
     getSectionBackgroundBySlug("dark-mountain"),
     getMembersPage(),
+    getMemberBySlug("patrick-conreaux"),
+    getMemberBySlug("marc-calamia"),
+    getSectionBackgroundBySlug("warm-collaboration"),
+    getSectionBackgroundBySlug("creative-workshop"),
+    getSectionBackgroundBySlug("sage-leaves"),
+    getSectionBackgroundBySlug("digital-mesh"),
+    getSectionBackgroundBySlug("joyful-creator"),
   ]);
   const heroBg = data?.heroBackground ?? fallbackBg;
+  const founders = [pat, marc]
+    .filter(Boolean)
+    .map((m) => ({ name: m!.name, slug: m!.slug, title: m!.title, photoUrl: m!.photoUrl }));
 
   return (
     <>
@@ -45,18 +55,29 @@ export default async function MembersPage() {
         eyebrow={data?.originEyebrow}
         heading={data?.originHeading}
         paragraphs={data?.originParagraphs}
+        founders={founders}
+        backgroundUrl={originBg?.imageUrl}
+        overlayColor={originBg?.overlayColor}
       />
       <GrowthSection
         eyebrow={data?.growthEyebrow}
         heading={data?.growthHeading}
         paragraphs={data?.growthParagraphs}
+        backgroundUrl={growthBg?.imageUrl}
+        overlayColor={growthBg?.overlayColor}
       />
-      <FeaturedMembersSection members={featuredMembers} />
+      <FeaturedMembersSection
+        members={featuredMembers}
+        backgroundUrl={featuredBg?.imageUrl}
+        overlayColor={featuredBg?.overlayColor}
+      />
       <CollectiveStats
         eyebrow={data?.statsEyebrow}
         heading={data?.statsHeading}
         paragraphs={data?.statsParagraphs}
         stats={data?.statsItems}
+        backgroundUrl={statsBg?.imageUrl}
+        overlayColor={statsBg?.overlayColor}
       />
       <MemberGallery members={allMembers} />
       <JoinSection
@@ -64,6 +85,8 @@ export default async function MembersPage() {
         subheading={data?.joinSubheading}
         paragraphs={data?.joinParagraphs}
         cta={data?.joinCta}
+        backgroundUrl={joinBg?.imageUrl}
+        overlayColor={joinBg?.overlayColor}
       />
     </>
   );

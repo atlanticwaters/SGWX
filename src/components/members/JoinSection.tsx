@@ -2,6 +2,8 @@ import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import Button from "@/components/ui/Button";
 import AnimatedSection from "@/components/ui/AnimatedSection";
+import SectionBackground from "@/components/ui/SectionBackground";
+import type { OverlayColor } from "@/components/ui/SectionBackground";
 
 const defaultParagraphs = [
   "While our network has traditionally been built upon personal endorsements, we are always open to team with seasoned leaders who are exceptional at their craft and believe in the power of collaboration.",
@@ -13,13 +15,16 @@ interface JoinSectionProps {
   subheading?: string;
   paragraphs?: string[];
   cta?: { label: string; href: string };
+  backgroundUrl?: string;
+  overlayColor?: string;
 }
 
-export default function JoinSection({ heading, subheading, paragraphs, cta }: JoinSectionProps) {
+export default function JoinSection({ heading, subheading, paragraphs, cta, backgroundUrl, overlayColor }: JoinSectionProps) {
   const paras = paragraphs ?? defaultParagraphs;
 
   return (
-    <section className="bg-sgwx-bg py-24 md:py-32">
+    <section className="relative overflow-hidden bg-sgwx-bg py-24 md:py-32">
+      {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />}
       <Container>
         <AnimatedSection>
           <SectionHeading

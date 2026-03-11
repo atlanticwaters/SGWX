@@ -1,6 +1,10 @@
+import Link from "next/link";
+import Image from "next/image";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
+import SectionBackground from "@/components/ui/SectionBackground";
+import type { OverlayColor } from "@/components/ui/SectionBackground";
 
 const defaultParagraphs = [
   "Sageworx started in 2020 with a simple idea between two founders, Marc Calamia and Patrick Conreaux. One from the world of creative and marketing, the other from production and advertising, they both saw the same cracks in the traditional agency model. They wanted to build something different, with people who thought differently.",
@@ -8,17 +12,38 @@ const defaultParagraphs = [
   "They created a system built around independent lifestyles and collaborative, agile interactions. Information was engrained, not handed off. The result was a seamless workflow that proved you didn\u2019t need to be in the same room to be on the same page.",
 ];
 
+interface Founder {
+  name: string;
+  slug: string;
+  title: string;
+  photoUrl?: string;
+}
+
 interface OriginSectionProps {
   eyebrow?: string;
   heading?: string;
   paragraphs?: string[];
+  founders?: Founder[];
+  backgroundUrl?: string;
+  overlayColor?: string;
 }
 
-export default function OriginSection({ eyebrow, heading, paragraphs }: OriginSectionProps) {
+function getInitials(name: string): string {
+  return name
+    .split(" ")
+    .filter((w) => w.length > 0)
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+}
+
+export default function OriginSection({ eyebrow, heading, paragraphs, founders, backgroundUrl, overlayColor }: OriginSectionProps) {
   const paras = paragraphs ?? defaultParagraphs;
 
   return (
-    <section className="bg-sgwx-bg-alt py-16 md:py-24">
+    <section className="relative overflow-hidden bg-sgwx-bg-alt py-16 md:py-24">
+      {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />}
       <Container>
         <AnimatedSection>
           <SectionHeading
@@ -35,6 +60,51 @@ export default function OriginSection({ eyebrow, heading, paragraphs }: OriginSe
             ))}
           </div>
         </AnimatedSection>
+
+        {founders && founders.length > 0 && (
+          <AnimatedSection delay={0.24}>
+            <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 max-w-2xl">
+              {founders.map((founder) => (
+                <Link
+                  key={founder.slug}
+                  href={`/members/${founder.slug}`}
+                  className="group block overflow-hidden rounded-2xl border border-white/[0.06] bg-sgwx-surface transition-all hover:border-sgwx-green/30 hover:shadow-lg hover:shadow-sgwx-green/5"
+                >
+                  <div className="relative aspect-[3/4] w-full overflow-hidden bg-sgwx-bg">
+                    {founder.photoUrl ? (
+                      <Image
+                        src={founder.photoUrl}
+                        alt={founder.name}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        style={{ filter: "brightness(0.9) contrast(1.05) saturate(0.85)" }}
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center">
+                        <span className="text-5xl font-bold text-sgwx-text-dim">
+                          {getInitials(founder.name)}
+                        </span>
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-sgwx-bg/80 via-transparent to-transparent" />
+                  </div>
+                  <div className="p-5">
+                    <h3 className="text-lg font-semibold text-sgwx-text group-hover:text-sgwx-green-bright transition-colors">
+                      {founder.name}
+                    </h3>
+                    <p className="mt-1 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
+                      {founder.title}
+                    </p>
+                    <p className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-sgwx-green transition-colors group-hover:text-sgwx-green-bright">
+                      View Profile
+                      <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">&rarr;</span>
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </AnimatedSection>
+        )}
       </Container>
     </section>
   );
