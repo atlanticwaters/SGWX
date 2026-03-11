@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 
 interface FeaturedMember {
@@ -31,9 +32,9 @@ function getInitials(name: string): string {
 
 export default function FeaturedMemberCard({ member }: FeaturedMemberCardProps) {
   return (
-    <Card hover className="h-full">
+    <Card hover className="h-full flex flex-col">
       {/* Photo */}
-      <div className="relative mb-6 aspect-square w-full overflow-hidden rounded-xl bg-sgwx-surface">
+      <div className="relative mb-4 aspect-[3/4] w-full overflow-hidden rounded-xl bg-sgwx-surface">
         {member.photoUrl ? (
           <Image
             src={member.photoUrl}
@@ -44,7 +45,7 @@ export default function FeaturedMemberCard({ member }: FeaturedMemberCardProps) 
           />
         ) : (
           <div className="flex h-full items-center justify-center">
-            <span className="text-5xl font-bold text-sgwx-text-dim">
+            <span className="text-4xl font-bold text-sgwx-text-dim">
               {getInitials(member.name)}
             </span>
           </div>
@@ -53,50 +54,23 @@ export default function FeaturedMemberCard({ member }: FeaturedMemberCardProps) 
       </div>
 
       {/* Name */}
-      <h3 className="text-xl font-semibold text-sgwx-text">{member.name}</h3>
+      <h3 className="text-lg font-semibold text-sgwx-text">{member.name}</h3>
 
       {/* Title */}
-      <p className="mt-1 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
+      <p className="mt-1 font-mono text-[12px] tracking-widest uppercase text-sgwx-green">
         {member.title}
       </p>
 
-      {/* Mantra */}
-      <p className="mt-4 italic text-sgwx-text-muted">
+      {/* Mantra / Quote */}
+      <p className="mt-3 flex-1 text-sm italic leading-relaxed text-sgwx-text-muted">
         &ldquo;{member.mantra}&rdquo;
       </p>
 
-      {/* Bio */}
-      <p className="mt-4 text-sm leading-relaxed text-sgwx-text-muted">
-        {member.bio}
-      </p>
-
-      {/* Favorite Tools */}
+      {/* View Profile Button */}
       <div className="mt-4">
-        <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
-          Favorite Tools
-        </p>
-        <p className="mt-1 text-sm leading-relaxed text-sgwx-text-muted">
-          {member.favoriteTools}
-        </p>
-      </div>
-
-      {/* Links */}
-      <div className="mt-6 flex flex-wrap items-center gap-4">
-        <Link
-          href={`/members/${member.slug}`}
-          className="inline-flex items-center gap-2 text-sm font-medium text-sgwx-green transition-colors hover:text-sgwx-green-bright"
-        >
+        <Button href={`/members/${member.slug}`} variant="secondary" className="w-full text-center">
           View Profile
-          <span aria-hidden="true">&rarr;</span>
-        </Link>
-        {member.link?.url && (
-          <Link
-            href={member.link.url}
-            className="inline-flex items-center gap-2 text-sm text-sgwx-text-muted transition-colors hover:text-sgwx-text"
-          >
-            {member.link.label || "External"}
-          </Link>
-        )}
+        </Button>
       </div>
     </Card>
   );

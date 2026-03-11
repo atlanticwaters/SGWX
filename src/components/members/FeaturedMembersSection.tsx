@@ -25,7 +25,7 @@ export default function FeaturedMembersSection({ members, backgroundUrl, overlay
           />
         </AnimatedSection>
 
-        <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2">
+        <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {members.map((member, i) => (
             <AnimatedSection key={member.name} delay={0.1 + i * 0.08}>
               <FeaturedMemberCard member={member} />

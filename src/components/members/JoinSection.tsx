@@ -30,11 +30,12 @@ export default function JoinSection({ heading, subheading, paragraphs, cta, back
           <SectionHeading
             heading={heading ?? "Interested in Joining Sageworx?"}
             subheading={subheading ?? "Let\u2019s Take Off Together."}
+            align="left"
           />
         </AnimatedSection>
 
         <AnimatedSection delay={0.12}>
-          <div className="mx-auto mt-8 max-w-2xl space-y-6 text-center text-base leading-relaxed text-sgwx-text-muted md:text-lg">
+          <div className="mt-8 max-w-2xl space-y-6 text-left text-base leading-relaxed text-sgwx-text-muted md:text-lg">
             {paras.map((p, i) => (
               <p key={i}>{p}</p>
             ))}
@@ -42,7 +43,7 @@ export default function JoinSection({ heading, subheading, paragraphs, cta, back
         </AnimatedSection>
 
         <AnimatedSection delay={0.24}>
-          <div className="mt-10 flex justify-center">
+          <div className="mt-10 flex justify-start">
             <Button href={cta?.href ?? "/contact"}>
               {cta?.label ?? "Apply to Join"}
             </Button>
