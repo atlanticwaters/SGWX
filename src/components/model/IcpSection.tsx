@@ -13,6 +13,7 @@ interface IcpCard {
   body: string;
   testimonialQuote?: string;
   testimonialAttribution?: string;
+  testimonialPhotoUrl?: string;
 }
 
 const defaultCards: IcpCard[] = [
@@ -45,21 +46,24 @@ const defaultCards: IcpCard[] = [
 const CARD_COLORS = [
   {
     border: "border-sgwx-green/25",
-    bg: "bg-sgwx-green/[0.04]",
+    bg: "bg-sgwx-green/[0.12]",
     badge: "text-sgwx-green-bright",
     divider: "bg-sgwx-green/15",
+    avatar: "bg-sgwx-green/20 text-sgwx-green-bright",
   },
   {
     border: "border-sgwx-cyan/25",
-    bg: "bg-sgwx-cyan/[0.04]",
+    bg: "bg-sgwx-cyan/[0.12]",
     badge: "text-sgwx-cyan",
     divider: "bg-sgwx-cyan/15",
+    avatar: "bg-sgwx-cyan/20 text-sgwx-cyan",
   },
   {
     border: "border-purple-400/20",
-    bg: "bg-purple-500/[0.04]",
+    bg: "bg-purple-500/[0.12]",
     badge: "text-purple-300",
     divider: "bg-purple-400/15",
+    avatar: "bg-purple-500/20 text-purple-300",
   },
 ];
 
@@ -125,7 +129,24 @@ export default function IcpSection({ eyebrow, heading, subheading, cards, backgr
                           <p className="text-xs italic leading-relaxed text-sgwx-text-dim">
                             &ldquo;{card.testimonialQuote}&rdquo;
                           </p>
-                          <footer className="mt-3">
+                          <footer className="mt-3 flex items-center gap-3">
+                            {card.testimonialPhotoUrl ? (
+                              <img
+                                src={card.testimonialPhotoUrl}
+                                alt=""
+                                className="h-9 w-9 shrink-0 rounded-lg object-cover"
+                              />
+                            ) : (
+                              <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg font-mono text-[11px] font-semibold ${colors.avatar}`}>
+                                {card.testimonialAttribution
+                                  ?.split(/[\s,]+/)
+                                  .filter(Boolean)
+                                  .slice(0, 2)
+                                  .map((w) => w[0])
+                                  .join("")
+                                  .toUpperCase()}
+                              </span>
+                            )}
                             <cite className={`not-italic font-mono text-[14px] tracking-widest uppercase ${colors.badge}`}>
                               &mdash; {card.testimonialAttribution}
                             </cite>
