@@ -32,9 +32,9 @@ export default function Footer({ links, copyright }: FooterProps) {
   return (
     <footer className="relative overflow-hidden">
       <AnimationCanvas
-        cameraPosition={[0, 0, 90]}
+        cameraPosition={[0, 0, 50]}
         cameraFov={58}
-        fogDensity={0.015}
+        fogDensity={0.01}
       >
         <NetworkBackground />
       </AnimationCanvas>
