@@ -53,49 +53,88 @@ export default function OriginSection({ eyebrow, heading, paragraphs, founders, 
           />
         </AnimatedSection>
 
-        <div className="mt-8 flex flex-col gap-10 lg:flex-row lg:gap-16">
-          {/* Copy block */}
-          <AnimatedSection delay={0.12} className="flex-1">
-            <div className="max-w-3xl space-y-6 text-base leading-relaxed text-sgwx-text-muted md:text-lg">
+        <div className={`mt-10 grid grid-cols-1 gap-10 ${founders && founders.length > 0 ? "lg:grid-cols-[1fr_260px] lg:gap-16" : ""}`}>
+          {/* Copy block — primary content, dominates the layout */}
+          <AnimatedSection delay={0.12}>
+            <div className="space-y-6 text-base leading-relaxed text-sgwx-text-muted md:text-lg">
               {paras.map((p, i) => (
                 <p key={i}>{p}</p>
               ))}
             </div>
           </AnimatedSection>
 
-          {/* Founder photos — stacked vertically beside the copy */}
+          {/* Founder portrait cards — secondary, fixed narrow column */}
           {founders && founders.length > 0 && (
-            <AnimatedSection delay={0.24} className="shrink-0">
-              <div className="flex gap-4">
+            <AnimatedSection delay={0.24}>
+              {/* Desktop: stacked vertically in the 260px column */}
+              <div className="hidden lg:flex lg:flex-col lg:gap-4">
                 {founders.map((founder) => (
                   <Link
                     key={founder.slug}
                     href={`/members/${founder.slug}`}
-                    className="group block w-1/2 overflow-hidden rounded-2xl border border-white/[0.06] bg-sgwx-surface transition-all hover:border-sgwx-green/30 hover:shadow-lg hover:shadow-sgwx-green/5"
+                    className="group block overflow-hidden rounded-2xl border border-white/[0.06] bg-sgwx-surface transition-all duration-300 hover:border-sgwx-green/30 hover:shadow-lg hover:shadow-sgwx-green/5"
                   >
-                    <div className="relative aspect-[4/3] w-full overflow-hidden bg-sgwx-bg">
+                    <div className="relative aspect-[3/4] w-full overflow-hidden bg-sgwx-bg">
                       {founder.photoUrl ? (
                         <Image
                           src={founder.photoUrl}
                           alt={founder.name}
                           fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          style={{ filter: "brightness(0.9) contrast(1.05) saturate(0.85)" }}
+                          className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                          style={{ filter: "grayscale(0.2) brightness(0.88) contrast(1.05) saturate(0.85)" }}
                         />
                       ) : (
                         <div className="flex h-full items-center justify-center">
-                          <span className="text-3xl font-bold text-sgwx-text-dim">
+                          <span className="text-3xl font-bold text-sgwx-text-muted">
                             {getInitials(founder.name)}
                           </span>
                         </div>
                       )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-sgwx-bg/80 via-transparent to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-sgwx-bg/70 via-transparent to-transparent" />
                     </div>
-                    <div className="p-4">
+                    <div className="px-4 py-3">
                       <h3 className="text-sm font-semibold text-sgwx-text transition-colors group-hover:text-sgwx-green-bright">
                         {founder.name}
                       </h3>
                       <p className="mt-0.5 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+                        {founder.title}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              {/* Mobile/tablet: horizontal pair, constrained width */}
+              <div className="flex gap-4 lg:hidden">
+                {founders.map((founder) => (
+                  <Link
+                    key={`mobile-${founder.slug}`}
+                    href={`/members/${founder.slug}`}
+                    className="group block w-36 shrink-0 overflow-hidden rounded-2xl border border-white/[0.06] bg-sgwx-surface transition-all duration-300 hover:border-sgwx-green/30"
+                  >
+                    <div className="relative aspect-[3/4] w-full overflow-hidden bg-sgwx-bg">
+                      {founder.photoUrl ? (
+                        <Image
+                          src={founder.photoUrl}
+                          alt={founder.name}
+                          fill
+                          className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                          style={{ filter: "grayscale(0.2) brightness(0.88) contrast(1.05) saturate(0.85)" }}
+                        />
+                      ) : (
+                        <div className="flex h-full items-center justify-center">
+                          <span className="text-2xl font-bold text-sgwx-text-muted">
+                            {getInitials(founder.name)}
+                          </span>
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-sgwx-bg/70 via-transparent to-transparent" />
+                    </div>
+                    <div className="px-3 py-2">
+                      <h3 className="text-xs font-semibold text-sgwx-text transition-colors group-hover:text-sgwx-green-bright">
+                        {founder.name}
+                      </h3>
+                      <p className="mt-0.5 font-mono text-[9px] tracking-widest uppercase text-sgwx-green">
                         {founder.title}
                       </p>
                     </div>
