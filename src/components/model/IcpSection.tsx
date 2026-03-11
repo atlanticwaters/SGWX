@@ -126,7 +126,7 @@ export default function IcpSection({ eyebrow, heading, subheading, cards, backgr
                       <div className="mt-6 pt-6">
                         <div className={`h-px ${colors.divider}`} />
                         <blockquote className="mt-4">
-                          <p className="text-xs italic leading-relaxed text-sgwx-text-dim">
+                          <p className="text-sm italic leading-relaxed text-white/90">
                             &ldquo;{card.testimonialQuote}&rdquo;
                           </p>
                           <footer className="mt-3 flex items-center gap-3">

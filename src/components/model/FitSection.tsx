@@ -57,7 +57,7 @@ export default function FitSection({ eyebrow, heading, subheading, goodItems, no
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
           {/* Good fit — green-tinted panel */}
           <AnimatedSection delay={0.1}>
-            <div className="h-full rounded-2xl border border-sgwx-green/30 bg-sgwx-green/[0.06] p-6">
+            <div className="h-full rounded-2xl border border-sgwx-green/30 bg-sgwx-green/[0.14] p-6 backdrop-blur-sm">
               <p className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-green-bright">
                 You&apos;ll feel right at home if you&apos;re:
               </p>
@@ -90,7 +90,7 @@ export default function FitSection({ eyebrow, heading, subheading, goodItems, no
 
           {/* Not a fit — muted warm panel */}
           <AnimatedSection delay={0.18}>
-            <div className="h-full rounded-2xl border border-red-500/20 bg-red-950/[0.15] p-6">
+            <div className="h-full rounded-2xl border border-red-500/20 bg-red-950/[0.35] p-6 backdrop-blur-sm">
               <p className="mb-4 font-mono text-[14px] tracking-widest uppercase text-red-400/80">
                 We&apos;re probably not the right solution if you&apos;re:
               </p>
@@ -122,14 +122,14 @@ export default function FitSection({ eyebrow, heading, subheading, goodItems, no
           </AnimatedSection>
         </div>
 
-        {/* Closing + CTAs */}
+        {/* Closing + CTAs — inline layout */}
         <AnimatedSection delay={0.28}>
-          <div className="mt-12 text-center">
-            <p className="mx-auto max-w-2xl text-base leading-relaxed text-sgwx-text-muted md:text-lg">
+          <div className="mt-12 flex flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
+            <p className="max-w-2xl text-base leading-relaxed text-sgwx-text-muted md:text-lg">
               {closing ?? "Net:Net \u2013 If you\u2019re looking for alignment, intentionality, and outcomes that last, we\u2019ll work extremely well together."}
             </p>
 
-            <div className="mt-10 flex flex-col flex-wrap items-center justify-center gap-4 sm:flex-row">
+            <div className="flex shrink-0 flex-wrap items-center gap-4">
               {fitCtas.map((cta) => (
                 <Button
                   key={cta.href}
