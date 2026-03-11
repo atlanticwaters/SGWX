@@ -53,9 +53,9 @@ export default function OriginSection({ eyebrow, heading, paragraphs, founders, 
           />
         </AnimatedSection>
 
-        <div className={`mt-10 grid grid-cols-1 gap-10 ${founders && founders.length > 0 ? "lg:grid-cols-[1fr_260px] lg:gap-16" : ""}`}>
-          {/* Copy block — primary content, dominates the layout */}
-          <AnimatedSection delay={0.12}>
+        <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-4 lg:gap-6">
+          {/* Copy — left half (2 of 4 cols) */}
+          <AnimatedSection delay={0.12} className="lg:col-span-2">
             <div className="space-y-6 text-base leading-relaxed text-sgwx-text-muted md:text-lg">
               {paras.map((p, i) => (
                 <p key={i}>{p}</p>
@@ -63,86 +63,42 @@ export default function OriginSection({ eyebrow, heading, paragraphs, founders, 
             </div>
           </AnimatedSection>
 
-          {/* Founder portrait cards — secondary, fixed narrow column */}
-          {founders && founders.length > 0 && (
-            <AnimatedSection delay={0.24}>
-              {/* Desktop: stacked vertically in the 260px column */}
-              <div className="hidden lg:flex lg:flex-col lg:gap-4">
-                {founders.map((founder) => (
-                  <Link
-                    key={founder.slug}
-                    href={`/members/${founder.slug}`}
-                    className="group block overflow-hidden rounded-2xl border border-white/[0.06] bg-sgwx-surface transition-all duration-300 hover:border-sgwx-green/30 hover:shadow-lg hover:shadow-sgwx-green/5"
-                  >
-                    <div className="relative aspect-[3/4] w-full overflow-hidden bg-sgwx-bg">
-                      {founder.photoUrl ? (
-                        <Image
-                          src={founder.photoUrl}
-                          alt={founder.name}
-                          fill
-                          className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                          style={{ filter: "grayscale(0.2) brightness(0.88) contrast(1.05) saturate(0.85)" }}
-                        />
-                      ) : (
-                        <div className="flex h-full items-center justify-center">
-                          <span className="text-3xl font-bold text-sgwx-text-muted">
-                            {getInitials(founder.name)}
-                          </span>
-                        </div>
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-sgwx-bg/70 via-transparent to-transparent" />
+          {/* Founder cards — right half, 1/4 each */}
+          {founders && founders.length > 0 && founders.map((founder, i) => (
+            <AnimatedSection key={founder.slug} delay={0.24 + i * 0.1}>
+              <Link
+                href={`/members/${founder.slug}`}
+                className="group block h-full overflow-hidden rounded-2xl border border-white/6 bg-sgwx-surface transition-all duration-300 hover:border-sgwx-green/30 hover:shadow-lg hover:shadow-sgwx-green/5"
+              >
+                <div className="relative aspect-3/4 w-full overflow-hidden bg-sgwx-bg">
+                  {founder.photoUrl ? (
+                    <Image
+                      src={founder.photoUrl}
+                      alt={founder.name}
+                      fill
+                      className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                      style={{ filter: "grayscale(0.2) brightness(0.88) contrast(1.05) saturate(0.85)" }}
+                    />
+                  ) : (
+                    <div className="flex h-full items-center justify-center">
+                      <span className="text-3xl font-bold text-sgwx-text-muted">
+                        {getInitials(founder.name)}
+                      </span>
                     </div>
-                    <div className="px-4 py-3">
-                      <h3 className="text-sm font-semibold text-sgwx-text transition-colors group-hover:text-sgwx-green-bright">
-                        {founder.name}
-                      </h3>
-                      <p className="mt-0.5 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
-                        {founder.title}
-                      </p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-
-              {/* Mobile/tablet: horizontal pair, constrained width */}
-              <div className="flex gap-4 lg:hidden">
-                {founders.map((founder) => (
-                  <Link
-                    key={`mobile-${founder.slug}`}
-                    href={`/members/${founder.slug}`}
-                    className="group block w-36 shrink-0 overflow-hidden rounded-2xl border border-white/[0.06] bg-sgwx-surface transition-all duration-300 hover:border-sgwx-green/30"
-                  >
-                    <div className="relative aspect-[3/4] w-full overflow-hidden bg-sgwx-bg">
-                      {founder.photoUrl ? (
-                        <Image
-                          src={founder.photoUrl}
-                          alt={founder.name}
-                          fill
-                          className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                          style={{ filter: "grayscale(0.2) brightness(0.88) contrast(1.05) saturate(0.85)" }}
-                        />
-                      ) : (
-                        <div className="flex h-full items-center justify-center">
-                          <span className="text-2xl font-bold text-sgwx-text-muted">
-                            {getInitials(founder.name)}
-                          </span>
-                        </div>
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-sgwx-bg/70 via-transparent to-transparent" />
-                    </div>
-                    <div className="px-3 py-2">
-                      <h3 className="text-xs font-semibold text-sgwx-text transition-colors group-hover:text-sgwx-green-bright">
-                        {founder.name}
-                      </h3>
-                      <p className="mt-0.5 font-mono text-[9px] tracking-widest uppercase text-sgwx-green">
-                        {founder.title}
-                      </p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+                  )}
+                  <div className="absolute inset-0 bg-linear-to-t from-sgwx-bg/70 via-transparent to-transparent" />
+                </div>
+                <div className="px-4 py-3">
+                  <h3 className="text-sm font-semibold text-sgwx-text transition-colors group-hover:text-sgwx-green-bright">
+                    {founder.name}
+                  </h3>
+                  <p className="mt-0.5 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+                    {founder.title}
+                  </p>
+                </div>
+              </Link>
             </AnimatedSection>
-          )}
+          ))}
         </div>
       </Container>
     </section>
