@@ -106,7 +106,7 @@ function ClientCard({
               <path d="M3 8h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
             <div>
-              <p className="font-mono text-[10px] font-medium uppercase tracking-widest text-sgwx-text-dim">
+              <p className="font-mono text-[14px] font-medium uppercase tracking-widest text-sgwx-text-dim">
                 The Pain Point
               </p>
               <p
@@ -130,7 +130,7 @@ function ClientCard({
             </svg>
             <div>
               <p
-                className="font-mono text-[10px] font-medium uppercase tracking-widest transition-colors duration-500"
+                className="font-mono text-[14px] font-medium uppercase tracking-widest transition-colors duration-500"
                 style={{ color: hovered ? "#9FDBB0" : "#6EA87F" }}
               >
                 The Sageworx Solution

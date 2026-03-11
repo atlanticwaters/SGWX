@@ -116,7 +116,7 @@ export default function CollectiveStats({ eyebrow, heading, paragraphs, stats }:
                 <p className="text-3xl font-bold text-sgwx-green-bright md:text-4xl lg:text-5xl">
                   <AnimatedCounter value={stat.value} suffix={stat.suffix} />
                 </p>
-                <p className="mt-2 font-mono text-[10px] tracking-widest uppercase text-sgwx-text-muted">
+                <p className="mt-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-text-muted">
                   {stat.label}
                 </p>
               </Card>

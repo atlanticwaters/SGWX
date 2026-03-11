@@ -22,7 +22,7 @@ export default function SectionHeading({ eyebrow, heading, subheading, align = "
   return (
     <div className={`max-w-3xl ${isRight ? "ml-auto text-right" : ""} ${className}`}>
       {eyebrow && (
-        <p className="mb-3 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+        <p className="mb-3 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
           {eyebrow}
         </p>
       )}

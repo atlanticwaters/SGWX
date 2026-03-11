@@ -108,7 +108,7 @@ export default function HeroSection({
         {...fadeUp}
         transition={transition(0.48)}
       >
-        <div className="hidden items-center gap-6 font-mono text-[10px] tracking-widest uppercase sm:flex" aria-hidden="true">
+        <div className="hidden items-center gap-6 font-mono text-[14px] tracking-widest uppercase sm:flex" aria-hidden="true">
           <span className="flex items-center gap-2 text-sgwx-text-muted">
             STATUS:
             <span className="flex items-center gap-1.5 text-sgwx-green">

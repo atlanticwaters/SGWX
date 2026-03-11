@@ -100,10 +100,10 @@ const typeSamples = [
   { label: "Body Large", className: "text-lg leading-relaxed text-white md:text-xl", text: "A clear, flexible process built for speed and follow-through. Senior teams aligned from day one." },
   { label: "Body Default", className: "text-sm leading-relaxed text-white", text: "Deep expertise where it matters most, with meaningful fluency across adjacent disciplines. Our teams think beyond single roles." },
   { label: "Body Small", className: "text-xs leading-relaxed text-white", text: "Contracted, governed, and insured under a single engagement. AI tools applied in a controlled, task-specific manner." },
-  { label: "Eyebrow / Label", className: "font-mono text-[10px] tracking-widest uppercase text-sgwx-yellow-pale", text: "The Growth Sequence" },
+  { label: "Eyebrow / Label", className: "font-mono text-[14px] tracking-widest uppercase text-sgwx-yellow-pale", text: "The Growth Sequence" },
   { label: "Mono Small", className: "font-mono text-xs uppercase tracking-widest text-[#a8c4d1]", text: "Output: Sustained Momentum" },
   { label: "Link", className: "text-sm text-sgwx-green underline underline-offset-2 decoration-sgwx-green/40 hover:text-sgwx-green-bright hover:decoration-sgwx-green-bright transition-colors", text: "View Case Study \u2192" },
-  { label: "Metadata", className: "font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim", text: "Client \u00b7 2025 \u00b7 Brand Strategy" },
+  { label: "Metadata", className: "font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim", text: "Client \u00b7 2025 \u00b7 Brand Strategy" },
 ];
 
 const weightSamples = [
@@ -123,7 +123,7 @@ function GuideSection({ id, title, children }: { id: string; title: string; chil
     <section id={id} className="py-16 md:py-20">
       <Container>
         <div className="mb-10 border-b border-sgwx-border pb-4">
-          <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">{id}</p>
+          <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">{id}</p>
           <h2 className="mt-2 text-2xl font-normal tracking-tight text-sgwx-text md:text-3xl">{title}</h2>
         </div>
         {children}
@@ -184,7 +184,7 @@ export default function StyleGuideClient({ headerHeading, headerSubheading, sect
       {/* ═══ Header ═══ */}
       <div className="border-b border-sgwx-border bg-sgwx-bg-alt py-16 md:py-24">
         <Container>
-          <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Design System</p>
+          <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">Design System</p>
           <h1 className="mt-3 text-4xl font-thin tracking-tight text-sgwx-text md:text-5xl lg:text-6xl">
             {headerHeading ?? "SGWX Style Guide"}
           </h1>
@@ -208,7 +208,7 @@ export default function StyleGuideClient({ headerHeading, headerSubheading, sect
               <a
                 key={id}
                 href={`#${id}`}
-                className="rounded-full border border-sgwx-border bg-sgwx-surface px-4 py-1.5 font-mono text-[10px] tracking-widest uppercase text-sgwx-text-muted transition-colors hover:border-sgwx-green/40 hover:text-sgwx-green"
+                className="rounded-full border border-sgwx-border bg-sgwx-surface px-4 py-1.5 font-mono text-[14px] tracking-widest uppercase text-sgwx-text-muted transition-colors hover:border-sgwx-green/40 hover:text-sgwx-green"
               >
                 {label}
               </a>
@@ -283,7 +283,7 @@ export default function StyleGuideClient({ headerHeading, headerSubheading, sect
                 overlayColor={color}
               />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-sgwx-bg/80 to-transparent p-3">
-                <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">{color}</p>
+                <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">{color}</p>
                 <p className="mt-0.5 text-xs text-sgwx-text-muted">overlayColor=&quot;{color}&quot;</p>
               </div>
             </div>
@@ -314,7 +314,7 @@ export default function StyleGuideClient({ headerHeading, headerSubheading, sect
         <div className="mb-12 space-y-3">
           {weightSamples.map((w) => (
             <div key={w.weight} className="flex items-baseline gap-6">
-              <span className="w-40 shrink-0 font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">{w.label}</span>
+              <span className="w-40 shrink-0 font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">{w.label}</span>
               <span className={`text-3xl text-sgwx-text ${w.className}`}>Sageworx</span>
             </div>
           ))}
@@ -324,7 +324,7 @@ export default function StyleGuideClient({ headerHeading, headerSubheading, sect
         <div className="space-y-8">
           {typeSamples.map((t) => (
             <div key={t.label}>
-              <p className="mb-2 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">{t.label}</p>
+              <p className="mb-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">{t.label}</p>
               <p className={t.className}>{t.text}</p>
             </div>
           ))}
@@ -353,7 +353,7 @@ export default function StyleGuideClient({ headerHeading, headerSubheading, sect
             </div>
           </div>
           <div className="rounded-xl border border-sgwx-border bg-sgwx-surface p-6">
-            <h3 className="mb-2 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Specs</h3>
+            <h3 className="mb-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">Specs</h3>
             <ul className="space-y-1 text-sm text-sgwx-text-muted">
               <li><span className="text-sgwx-text">Shape:</span> rounded-full</li>
               <li><span className="text-sgwx-text">Padding:</span> px-6 py-3</li>
@@ -370,7 +370,7 @@ export default function StyleGuideClient({ headerHeading, headerSubheading, sect
       <GuideSection id="cards" title={sectionMap["cards"]?.heading ?? "Cards"}>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           <div>
-            <p className="mb-3 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Hover Card (default)</p>
+            <p className="mb-3 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">Hover Card (default)</p>
             <Card>
               <h3 className="text-lg font-semibold text-sgwx-text">Card Title</h3>
               <p className="mt-2 text-sm leading-relaxed text-sgwx-text-muted">
@@ -379,7 +379,7 @@ export default function StyleGuideClient({ headerHeading, headerSubheading, sect
             </Card>
           </div>
           <div>
-            <p className="mb-3 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Static Card (hover=false)</p>
+            <p className="mb-3 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">Static Card (hover=false)</p>
             <Card hover={false}>
               <h3 className="text-lg font-semibold text-sgwx-text">Card Title</h3>
               <p className="mt-2 text-sm leading-relaxed text-sgwx-text-muted">
@@ -388,7 +388,7 @@ export default function StyleGuideClient({ headerHeading, headerSubheading, sect
             </Card>
           </div>
           <div>
-            <p className="mb-3 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Card with Badge</p>
+            <p className="mb-3 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">Card with Badge</p>
             <Card>
               <Badge className="mb-4">M-Shaped Talent</Badge>
               <h3 className="text-lg font-semibold text-sgwx-text">Card Title</h3>
@@ -399,7 +399,7 @@ export default function StyleGuideClient({ headerHeading, headerSubheading, sect
           </div>
         </div>
         <div className="mt-6 rounded-xl border border-sgwx-border bg-sgwx-surface p-6">
-          <h3 className="mb-2 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Specs</h3>
+          <h3 className="mb-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">Specs</h3>
           <ul className="space-y-1 text-sm text-sgwx-text-muted">
             <li><span className="text-sgwx-text">Border:</span> border-sgwx-border &rarr; border-sgwx-green/30 on hover</li>
             <li><span className="text-sgwx-text">Background:</span> bg-sgwx-surface &rarr; bg-sgwx-surface-hover on hover</li>
@@ -417,15 +417,15 @@ export default function StyleGuideClient({ headerHeading, headerSubheading, sect
         <div className="flex flex-wrap items-center gap-4">
           <div className="text-center">
             <Badge>Green Badge</Badge>
-            <p className="mt-2 font-mono text-[10px] text-sgwx-text-dim">variant=&quot;green&quot;</p>
+            <p className="mt-2 font-mono text-[14px] text-sgwx-text-dim">variant=&quot;green&quot;</p>
           </div>
           <div className="text-center">
             <Badge variant="neutral">Neutral Badge</Badge>
-            <p className="mt-2 font-mono text-[10px] text-sgwx-text-dim">variant=&quot;neutral&quot;</p>
+            <p className="mt-2 font-mono text-[14px] text-sgwx-text-dim">variant=&quot;neutral&quot;</p>
           </div>
         </div>
         <div className="mt-6 rounded-xl border border-sgwx-border bg-sgwx-surface p-6">
-          <h3 className="mb-2 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Specs</h3>
+          <h3 className="mb-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">Specs</h3>
           <ul className="space-y-1 text-sm text-sgwx-text-muted">
             <li><span className="text-sgwx-text">Shape:</span> rounded-full, border</li>
             <li><span className="text-sgwx-text">Text:</span> font-mono, 10px, uppercase, tracking-widest</li>
@@ -440,7 +440,7 @@ export default function StyleGuideClient({ headerHeading, headerSubheading, sect
       <GuideSection id="headings" title={sectionMap["headings"]?.heading ?? "Section Headings"}>
         <div className="space-y-12">
           <div>
-            <p className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Display Size</p>
+            <p className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">Display Size</p>
             <SectionHeading
               eyebrow="Eyebrow Label"
               heading="Display Heading Style"
@@ -449,7 +449,7 @@ export default function StyleGuideClient({ headerHeading, headerSubheading, sect
             />
           </div>
           <div>
-            <p className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Large Size (default)</p>
+            <p className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">Large Size (default)</p>
             <SectionHeading
               eyebrow="Eyebrow Label"
               heading="Large Heading Style"
@@ -458,7 +458,7 @@ export default function StyleGuideClient({ headerHeading, headerSubheading, sect
             />
           </div>
           <div>
-            <p className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Medium Size</p>
+            <p className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">Medium Size</p>
             <SectionHeading
               eyebrow="Eyebrow Label"
               heading="Medium Heading Style"
@@ -467,7 +467,7 @@ export default function StyleGuideClient({ headerHeading, headerSubheading, sect
             />
           </div>
           <div>
-            <p className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Right-Aligned</p>
+            <p className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">Right-Aligned</p>
             <SectionHeading
               eyebrow="Right-Aligned Layout"
               heading="Headings Alternate Left and Right"
@@ -487,11 +487,11 @@ export default function StyleGuideClient({ headerHeading, headerSubheading, sect
         </p>
         <div className="space-y-8 rounded-xl border border-sgwx-border bg-sgwx-bg-alt p-8">
           <div className="h-px bg-gradient-to-r from-transparent via-sgwx-border to-transparent" />
-          <p className="text-center font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
+          <p className="text-center font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">
             from-transparent via-sgwx-border to-transparent
           </p>
           <div className="h-px bg-gradient-to-r from-transparent via-sgwx-green/30 to-transparent" />
-          <p className="text-center font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
+          <p className="text-center font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">
             from-transparent via-sgwx-green/30 to-transparent (accent variant)
           </p>
         </div>
@@ -520,19 +520,19 @@ export default function StyleGuideClient({ headerHeading, headerSubheading, sect
             <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               <AnimatedSection delay={0}>
                 <Card hover={false}>
-                  <p className="font-mono text-[10px] text-sgwx-green">delay: 0</p>
+                  <p className="font-mono text-[14px] text-sgwx-green">delay: 0</p>
                   <p className="mt-2 text-sm text-sgwx-text-muted">First element</p>
                 </Card>
               </AnimatedSection>
               <AnimatedSection delay={0.15}>
                 <Card hover={false}>
-                  <p className="font-mono text-[10px] text-sgwx-green">delay: 0.15</p>
+                  <p className="font-mono text-[14px] text-sgwx-green">delay: 0.15</p>
                   <p className="mt-2 text-sm text-sgwx-text-muted">Staggered second</p>
                 </Card>
               </AnimatedSection>
               <AnimatedSection delay={0.3}>
                 <Card hover={false}>
-                  <p className="font-mono text-[10px] text-sgwx-green">delay: 0.3</p>
+                  <p className="font-mono text-[14px] text-sgwx-green">delay: 0.3</p>
                   <p className="mt-2 text-sm text-sgwx-text-muted">Staggered third</p>
                 </Card>
               </AnimatedSection>
@@ -583,7 +583,7 @@ const transition = (delay: number) => ({
           ].map((s) => (
             <Card key={s.stage} hover={false}>
               <div className={`mb-3 h-1 w-12 rounded-full ${s.bg}`} />
-              <p className={`font-mono text-[10px] tracking-widest uppercase ${s.color}`}>
+              <p className={`font-mono text-[14px] tracking-widest uppercase ${s.color}`}>
                 {s.stage}
               </p>
               <p className="mt-2 text-xs text-sgwx-text-dim">{s.accent}</p>
@@ -622,12 +622,12 @@ const transition = (delay: number) => ({
       <section className="py-16 md:py-20">
         <Container>
           <div className="mb-10 border-b border-sgwx-border pb-4">
-            <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">spacing</p>
+            <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">spacing</p>
             <h2 className="mt-2 text-2xl font-normal tracking-tight text-sgwx-text md:text-3xl">Spacing & Layout</h2>
           </div>
           <div className="space-y-6">
             <div className="rounded-xl border border-sgwx-border bg-sgwx-surface p-6">
-              <h3 className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Container</h3>
+              <h3 className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">Container</h3>
               <ul className="space-y-1 text-sm text-sgwx-text-muted">
                 <li><span className="text-sgwx-text">Max width:</span> max-w-7xl (80rem / 1280px)</li>
                 <li><span className="text-sgwx-text">Padding:</span> px-6 (mobile) &rarr; px-8 (md) &rarr; px-12 (lg)</li>
@@ -635,7 +635,7 @@ const transition = (delay: number) => ({
               </ul>
             </div>
             <div className="rounded-xl border border-sgwx-border bg-sgwx-surface p-6">
-              <h3 className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Section Spacing</h3>
+              <h3 className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">Section Spacing</h3>
               <ul className="space-y-1 text-sm text-sgwx-text-muted">
                 <li><span className="text-sgwx-text">Default:</span> py-16 md:py-24 (4rem / 6rem)</li>
                 <li><span className="text-sgwx-text">Hero:</span> min-h-[60vh] to min-h-[80vh]</li>
@@ -643,14 +643,14 @@ const transition = (delay: number) => ({
               </ul>
             </div>
             <div className="rounded-xl border border-sgwx-border bg-sgwx-surface p-6">
-              <h3 className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Section Backgrounds</h3>
+              <h3 className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">Section Backgrounds</h3>
               <div className="grid grid-cols-2 gap-4">
                 <div className="rounded-lg border border-sgwx-border bg-sgwx-bg p-4">
-                  <p className="font-mono text-[10px] text-sgwx-text-dim">bg-sgwx-bg</p>
+                  <p className="font-mono text-[14px] text-sgwx-text-dim">bg-sgwx-bg</p>
                   <p className="text-xs text-sgwx-text-muted">Primary sections</p>
                 </div>
                 <div className="rounded-lg border border-sgwx-border bg-sgwx-bg-alt p-4">
-                  <p className="font-mono text-[10px] text-sgwx-text-dim">bg-sgwx-bg-alt</p>
+                  <p className="font-mono text-[14px] text-sgwx-text-dim">bg-sgwx-bg-alt</p>
                   <p className="text-xs text-sgwx-text-muted">Alternating sections</p>
                 </div>
               </div>

@@ -72,23 +72,23 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
             <dl className="mt-10 flex flex-wrap gap-x-12 gap-y-4 border-t border-sgwx-border-subtle pt-8">
               {study.client && (
                 <div>
-                  <dt className="font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">Client</dt>
+                  <dt className="font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">Client</dt>
                   <dd className="mt-1 text-sm text-sgwx-text">{study.client}</dd>
                 </div>
               )}
               {study.year && (
                 <div>
-                  <dt className="font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">Year</dt>
+                  <dt className="font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">Year</dt>
                   <dd className="mt-1 text-sm text-sgwx-text">{study.year}</dd>
                 </div>
               )}
               <div>
-                <dt className="font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">Category</dt>
+                <dt className="font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">Category</dt>
                 <dd className="mt-1 text-sm text-sgwx-text">{study.category}</dd>
               </div>
               {study.tags && study.tags.length > 0 && (
                 <div>
-                  <dt className="font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">Services</dt>
+                  <dt className="font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">Services</dt>
                   <dd className="mt-1 text-sm text-sgwx-text-muted">
                     {study.tags.join(", ")}
                   </dd>
@@ -120,7 +120,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
                     <p className="text-sm text-sgwx-text">
                       {study.testimonial.author}
                     </p>
-                    <p className="mt-0.5 font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
+                    <p className="mt-0.5 font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">
                       {study.testimonial.role}
                     </p>
                   </footer>
@@ -155,7 +155,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
                   <div className="absolute inset-0 bg-sgwx-bg/30" />
                 </div>
                 <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-10">
-                  <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
+                  <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">
                     Previous Project
                   </p>
                   <p className="mt-2 text-2xl font-normal tracking-tight text-sgwx-text md:text-3xl">
@@ -186,7 +186,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
                   <div className="absolute inset-0 bg-sgwx-bg/30" />
                 </div>
                 <div className="absolute inset-0 flex flex-col justify-end p-8 text-right md:p-10">
-                  <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
+                  <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">
                     Next Project
                   </p>
                   <p className="mt-2 text-2xl font-normal tracking-tight text-sgwx-text md:text-3xl">

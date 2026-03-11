@@ -44,7 +44,7 @@ export default function Header({ navItems, ctaLabel, ctaHref }: HeaderProps) {
             height={40}
             priority
           />
-          <span className="flex items-center gap-1.5 rounded-full border border-sgwx-green/30 bg-sgwx-green/10 px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-widest text-sgwx-green">
+          <span className="flex items-center gap-1.5 rounded-full border border-sgwx-green/30 bg-sgwx-green/10 px-2.5 py-0.5 text-[14px] font-mono uppercase tracking-widest text-sgwx-green">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-sgwx-green-bright" />
             Online
           </span>

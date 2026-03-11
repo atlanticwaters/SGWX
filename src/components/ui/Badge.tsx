@@ -11,7 +11,7 @@ export default function Badge({ children, variant = "green", className = "" }: B
   };
 
   return (
-    <span className={`inline-block rounded-full border px-3 py-0.5 font-mono text-[10px] tracking-widest uppercase ${styles[variant]} ${className}`}>
+    <span className={`inline-block rounded-full border px-3 py-0.5 font-mono text-[14px] tracking-widest uppercase ${styles[variant]} ${className}`}>
       {children}
     </span>
   );

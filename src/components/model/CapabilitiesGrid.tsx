@@ -706,7 +706,7 @@ export default function CapabilitiesGrid({
 
       <Container className="relative z-2">
         <AnimatedSection>
-          <p className="mb-6 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+          <p className="mb-6 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
             {eyebrow ?? "Capabilities"}
           </p>
 
@@ -745,7 +745,7 @@ export default function CapabilitiesGrid({
                     handleTabChange(next);
                     tabRefs.current[next]?.focus();
                   }}
-                  className={`rounded-full border px-5 py-2 font-mono text-[10px] tracking-widest uppercase transition-all duration-300 ${
+                  className={`rounded-full border px-5 py-2 font-mono text-[14px] tracking-widest uppercase transition-all duration-300 ${
                     isActive
                       ? `${c.borderActive} ${c.titleText} bg-sgwx-surface/60`
                       : "border-sgwx-border bg-sgwx-surface/40 text-sgwx-text-muted hover:border-sgwx-green/30 hover:text-sgwx-text"

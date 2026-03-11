@@ -42,7 +42,7 @@ export default function LogoWall({
   if (logos && logos.length > 0) {
     return (
       <div className="mt-16">
-        <p className="mb-8 text-center font-mono text-[10px] uppercase tracking-widest text-sgwx-text-dim">
+        <p className="mb-8 text-center font-mono text-[14px] uppercase tracking-widest text-sgwx-text-dim">
           {heading}
         </p>
         <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
@@ -64,7 +64,7 @@ export default function LogoWall({
 
   return (
     <div className="mt-16">
-      <p className="mb-6 text-center font-mono text-[10px] uppercase tracking-widest text-sgwx-text-dim">
+      <p className="mb-6 text-center font-mono text-[14px] uppercase tracking-widest text-sgwx-text-dim">
         {heading}
       </p>
       <div className="relative overflow-hidden">

@@ -39,7 +39,7 @@ export default function ProcessFitSection({ eyebrow, heading, goodItems, notItem
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
           <AnimatedSection delay={0.1}>
             <Card hover={false} className="h-full">
-              <p className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-check">
+              <p className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-check">
                 We&apos;re A Good Fit If
               </p>
               <ul className="space-y-3">
@@ -57,7 +57,7 @@ export default function ProcessFitSection({ eyebrow, heading, goodItems, notItem
 
           <AnimatedSection delay={0.18}>
             <Card hover={false} className="h-full">
-              <p className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-cross">
+              <p className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-cross">
                 Not a Fit If
               </p>
               <ul className="space-y-3">

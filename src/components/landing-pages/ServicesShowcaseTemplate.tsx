@@ -46,7 +46,7 @@ export default function ServicesShowcaseTemplate({ page, caseStudies }: Services
         <Container>
           <motion.div className="max-w-3xl" {...fadeUp} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}>
             {page.clientName && (
-              <p className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+              <p className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                 Services for {page.clientName}
               </p>
             )}
@@ -69,7 +69,7 @@ export default function ServicesShowcaseTemplate({ page, caseStudies }: Services
       <section className="border-t border-sgwx-border py-20">
         <Container>
           <AnimatedSection>
-            <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+            <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
               Capabilities
             </p>
             <h2 className="mt-2 text-3xl font-thin tracking-tight text-sgwx-text md:text-4xl">
@@ -91,7 +91,7 @@ export default function ServicesShowcaseTemplate({ page, caseStudies }: Services
       <section className="border-t border-sgwx-border py-20">
         <Container>
           <AnimatedSection>
-            <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+            <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
               Why Sageworx
             </p>
             <h2 className="mt-2 text-3xl font-thin tracking-tight text-sgwx-text">
@@ -101,10 +101,10 @@ export default function ServicesShowcaseTemplate({ page, caseStudies }: Services
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-sgwx-border text-left">
-                    <th className="py-3 pr-6 font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">Criteria</th>
-                    <th className="py-3 pr-6 font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">Traditional Agency</th>
-                    <th className="py-3 pr-6 font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">Freelancers</th>
-                    <th className="py-3 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">Sageworx</th>
+                    <th className="py-3 pr-6 font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">Criteria</th>
+                    <th className="py-3 pr-6 font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">Traditional Agency</th>
+                    <th className="py-3 pr-6 font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">Freelancers</th>
+                    <th className="py-3 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">Sageworx</th>
                   </tr>
                 </thead>
                 <tbody>

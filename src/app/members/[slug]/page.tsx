@@ -110,7 +110,7 @@ export default async function MemberPage({ params }: MemberPageProps) {
             {member.characterMetaphor && (
               <AnimatedSection delay={0.2}>
                 <div className="mt-8">
-                  <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+                  <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                     Character Metaphor
                   </p>
                   <p className="mt-2 text-base leading-relaxed text-sgwx-text">
@@ -124,7 +124,7 @@ export default async function MemberPage({ params }: MemberPageProps) {
             {member.bio && (
               <AnimatedSection delay={0.25}>
                 <div className="mt-8">
-                  <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+                  <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                     About
                   </p>
                   <p className="mt-2 text-base leading-relaxed text-sgwx-text-muted">
@@ -139,7 +139,7 @@ export default async function MemberPage({ params }: MemberPageProps) {
               <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
                 {member.favoriteTools && (
                   <div>
-                    <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+                    <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                       Favorite Tools
                     </p>
                     <p className="mt-2 text-sm leading-relaxed text-sgwx-text-muted">
@@ -150,7 +150,7 @@ export default async function MemberPage({ params }: MemberPageProps) {
 
                 {member.link?.url && (
                   <div>
-                    <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+                    <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                       Connect
                     </p>
                     <Link

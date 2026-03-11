@@ -90,7 +90,7 @@ export default function WorkHero({
 
         {/* HUD status line */}
         <motion.div
-          className="mt-8 flex items-center justify-end gap-8 font-mono text-[10px] tracking-widest uppercase"
+          className="mt-8 flex items-center justify-end gap-8 font-mono text-[14px] tracking-widest uppercase"
           {...fadeUp}
           transition={transition(0.24)}
         >

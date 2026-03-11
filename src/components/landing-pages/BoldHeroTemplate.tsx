@@ -31,7 +31,7 @@ export default function BoldHeroTemplate({ page, caseStudies, testimonials }: Bo
         <Container>
           <motion.div className="max-w-3xl" {...fadeUp} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}>
             {page.clientName && (
-              <p className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+              <p className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                 Prepared for {page.clientName}
               </p>
             )}
@@ -79,7 +79,7 @@ export default function BoldHeroTemplate({ page, caseStudies, testimonials }: Bo
         <section className="border-t border-sgwx-border py-20">
           <Container>
             <AnimatedSection>
-              <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+              <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                 Relevant Work
               </p>
               <h2 className="mt-2 text-3xl font-thin tracking-tight text-sgwx-text md:text-4xl">
@@ -114,7 +114,7 @@ export default function BoldHeroTemplate({ page, caseStudies, testimonials }: Bo
                 <footer className="mt-6">
                   <p className="text-sm text-sgwx-text">{testimonials[0].authorName}</p>
                   {testimonials[0].role && (
-                    <p className="mt-0.5 font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
+                    <p className="mt-0.5 font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">
                       {testimonials[0].role}{testimonials[0].company ? ` — ${testimonials[0].company}` : ""}
                     </p>
                   )}

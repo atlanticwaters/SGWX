@@ -44,7 +44,7 @@ export default function CaseStudyCard({
         )}
         {/* Category badge overlaid bottom-left */}
         <div className="absolute bottom-3 left-3">
-          <span className="rounded-full border border-sgwx-green/30 bg-sgwx-bg/80 px-3 py-0.5 font-mono text-[10px] tracking-widest uppercase text-sgwx-green backdrop-blur-sm">
+          <span className="rounded-full border border-sgwx-green/30 bg-sgwx-bg/80 px-3 py-0.5 font-mono text-[14px] tracking-widest uppercase text-sgwx-green backdrop-blur-sm">
             {category}
           </span>
         </div>
@@ -58,7 +58,7 @@ export default function CaseStudyCard({
         <p className="mt-2 flex-1 text-sm leading-relaxed text-sgwx-text-muted">
           {description}
         </p>
-        <div className="mt-4 flex items-center gap-1.5 font-mono text-[10px] font-semibold tracking-widest uppercase text-sgwx-green transition-colors group-hover:text-sgwx-green-bright">
+        <div className="mt-4 flex items-center gap-1.5 font-mono text-[14px] font-semibold tracking-widest uppercase text-sgwx-green transition-colors group-hover:text-sgwx-green-bright">
           View Case Study
           <span
             className="transition-transform duration-150 group-hover:translate-x-0.5"

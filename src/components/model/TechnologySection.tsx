@@ -33,7 +33,7 @@ export default function TechnologySection({ eyebrow, heading, paragraphs, backgr
         </AnimatedSection>
 
         <AnimatedSection delay={0.12}>
-          <div className="mt-8 max-w-3xl space-y-6 text-base leading-relaxed text-sgwx-text-muted md:text-lg">
+          <div className="mt-8 ml-auto max-w-3xl space-y-6 text-right text-base leading-relaxed text-sgwx-text-muted md:text-lg">
             {paras.map((p, i) => (
               <p key={i}>{p}</p>
             ))}

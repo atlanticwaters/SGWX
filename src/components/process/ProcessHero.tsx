@@ -61,7 +61,7 @@ export default function ProcessHero({ backgroundUrl, overlayColor, eyebrow, head
         style={{ y: contentY, opacity: contentOpacity, marginTop: "-5vh" }}
       >
         <motion.p
-          className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green"
+          className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-green"
           {...fadeUp}
           transition={transition(0)}
           aria-hidden="true"

@@ -54,7 +54,7 @@ export default function PrinciplesSection({ eyebrow, heading, subheading, cards 
           {allCards.map((card, i) => (
             <AnimatedSection key={card.badge} delay={0.1 + i * 0.08}>
               <Card hover={false} className="h-full">
-                <p className="mb-4 font-mono text-[10px] font-medium uppercase tracking-widest text-sgwx-green">
+                <p className="mb-4 font-mono text-[14px] font-medium uppercase tracking-widest text-sgwx-green">
                   {card.badge}
                 </p>
                 <h3 className="text-2xl font-normal tracking-tight text-sgwx-text md:text-3xl">

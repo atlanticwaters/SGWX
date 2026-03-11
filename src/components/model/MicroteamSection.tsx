@@ -37,13 +37,13 @@ export default function MicroteamSection({ eyebrow, heading, body, bullets, clos
         </AnimatedSection>
 
         <AnimatedSection delay={0.12}>
-          <p className="mt-8 max-w-3xl text-base leading-relaxed text-sgwx-text-muted md:text-lg">
+          <p className="mt-8 ml-auto max-w-3xl text-right text-base leading-relaxed text-sgwx-text-muted md:text-lg">
             {body ??
               "Our microteams are intentionally lean and deeply experienced. This isn\u2019t about saving money; it\u2019s about saving time and getting to better outcomes, faster. When every member of the team is a seasoned pro, you eliminate the endless review cycles and communication breakdowns that stifle creativity."}
           </p>
         </AnimatedSection>
 
-        <ul className="mt-8 max-w-3xl space-y-4">
+        <ul className="mt-8 ml-auto max-w-3xl space-y-4">
           {items.map((bullet, i) => (
             <AnimatedSection key={bullet} delay={0.2 + i * 0.08}>
               <li className="flex items-start gap-3">
@@ -60,7 +60,7 @@ export default function MicroteamSection({ eyebrow, heading, body, bullets, clos
         </ul>
 
         <AnimatedSection delay={0.5}>
-          <p className="mt-8 max-w-3xl text-base leading-relaxed text-sgwx-text-muted md:text-lg">
+          <p className="mt-8 ml-auto max-w-3xl text-right text-base leading-relaxed text-sgwx-text-muted md:text-lg">
             {closing ??
               "You\u2019re not managing vendors. You\u2019re collaborating with a single, unified team that takes ownership of the outcomes."}
           </p>

@@ -29,7 +29,7 @@ export default function MinimalTemplate({ page, blogPosts, testimonials }: Minim
         <Container>
           <motion.div className="max-w-2xl" {...fadeUp} transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}>
             {page.clientName && (
-              <p className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+              <p className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                 For {page.clientName}
               </p>
             )}
@@ -49,7 +49,7 @@ export default function MinimalTemplate({ page, blogPosts, testimonials }: Minim
           <AnimatedSection>
             <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
               <div>
-                <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+                <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                   The Sageworx Difference
                 </p>
                 <h2 className="mt-2 text-3xl font-thin tracking-tight text-sgwx-text">
@@ -85,7 +85,7 @@ export default function MinimalTemplate({ page, blogPosts, testimonials }: Minim
                     </p>
                     <p className="mt-4 text-sm font-medium text-sgwx-text">{t.authorName}</p>
                     {t.role && (
-                      <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
+                      <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">
                         {t.role}
                       </p>
                     )}
@@ -102,7 +102,7 @@ export default function MinimalTemplate({ page, blogPosts, testimonials }: Minim
         <section className="border-t border-sgwx-border py-20">
           <Container>
             <AnimatedSection>
-              <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+              <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                 Insights
               </p>
               <h2 className="mt-2 text-3xl font-thin tracking-tight text-sgwx-text">
@@ -115,7 +115,7 @@ export default function MinimalTemplate({ page, blogPosts, testimonials }: Minim
                     href={`/spotlights/${post.slug}`}
                     className="block rounded-lg border border-sgwx-border p-6 transition-colors hover:border-sgwx-green/30 hover:bg-sgwx-surface"
                   >
-                    <span className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+                    <span className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                       {post.tag}
                     </span>
                     <h3 className="mt-1 text-lg font-normal text-sgwx-text">{post.title}</h3>

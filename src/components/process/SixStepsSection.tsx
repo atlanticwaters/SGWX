@@ -176,7 +176,7 @@ export default function SixStepsSection({ eyebrow, heading, steps }: SixStepsSec
                       >
                         <div className="grid grid-cols-1 gap-6 pb-6 pl-8 md:grid-cols-3 md:pl-14">
                           <div>
-                            <p className="mb-2 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+                            <p className="mb-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                               What&apos;s Happening
                             </p>
                             <p className="text-sm leading-relaxed text-sgwx-text-muted">
@@ -184,7 +184,7 @@ export default function SixStepsSection({ eyebrow, heading, steps }: SixStepsSec
                             </p>
                           </div>
                           <div>
-                            <p className="mb-2 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+                            <p className="mb-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                               Why It Matters
                             </p>
                             <p className="text-sm leading-relaxed text-sgwx-text-muted">
@@ -192,7 +192,7 @@ export default function SixStepsSection({ eyebrow, heading, steps }: SixStepsSec
                             </p>
                           </div>
                           <div>
-                            <p className="mb-2 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+                            <p className="mb-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                               What You Get
                             </p>
                             <p className="text-sm leading-relaxed text-sgwx-text-muted">

@@ -111,7 +111,7 @@ export default function StageSection({
 
       {/* Sideways label */}
       <motion.div
-        className={`absolute top-1/2 origin-center -translate-y-1/2 -rotate-90 whitespace-nowrap font-mono text-[10px] font-medium tracking-[0.4em] uppercase text-sgwx-text-dim max-md:hidden ${
+        className={`absolute top-1/2 origin-center -translate-y-1/2 -rotate-90 whitespace-nowrap font-mono text-[14px] font-medium tracking-[0.4em] uppercase text-sgwx-text-dim max-md:hidden ${
           numeralOnLeft ? "right-12" : "left-12"
         }`}
         initial={{ opacity: 0 }}
@@ -182,7 +182,7 @@ export default function StageSection({
       >
         {/* Stage label */}
         <motion.div
-          className={`mb-4 font-mono text-[10px] font-medium tracking-widest uppercase ${colors.label}`}
+          className={`mb-4 font-mono text-[14px] font-medium tracking-widest uppercase ${colors.label}`}
           variants={itemVariant}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >

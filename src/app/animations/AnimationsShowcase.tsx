@@ -241,7 +241,7 @@ export default function AnimationsShowcase({ headerHeading, headerSubheading, th
         <div className="my-12 h-px bg-gradient-to-r from-transparent via-sgwx-border to-transparent" />
 
         <AnimatedSection>
-          <h2 className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+          <h2 className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
             Three.js / WebGL
           </h2>
           <p className="mt-2 text-sm text-sgwx-text-muted">
@@ -289,7 +289,7 @@ export default function AnimationsShowcase({ headerHeading, headerSubheading, th
 
                   {/* Technical details */}
                   <div className="mt-6 space-y-3">
-                    <h4 className="font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
+                    <h4 className="font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">
                       Canvas Configuration
                     </h4>
                     <div className="rounded-lg border border-sgwx-border-subtle bg-sgwx-bg-alt p-4 font-mono text-xs leading-relaxed text-sgwx-text-muted">
@@ -329,7 +329,7 @@ export default function AnimationsShowcase({ headerHeading, headerSubheading, th
         <div className="my-16 h-px bg-gradient-to-r from-transparent via-sgwx-border to-transparent" />
 
         <AnimatedSection>
-          <h2 className="font-mono text-[10px] tracking-widest uppercase text-sgwx-cyan">
+          <h2 className="font-mono text-[14px] tracking-widest uppercase text-sgwx-cyan">
             Deep Fields / Canvas 2D
           </h2>
           <p className="mt-2 text-sm text-sgwx-text-muted">
@@ -373,7 +373,7 @@ export default function AnimationsShowcase({ headerHeading, headerSubheading, th
 
                 {/* Info panel */}
                 <div className="flex-1 pt-2">
-                  <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
+                  <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">
                     {df.subtitle}
                   </p>
                   <h3 className="mt-1 text-2xl font-normal tracking-tight text-sgwx-text">
@@ -385,7 +385,7 @@ export default function AnimationsShowcase({ headerHeading, headerSubheading, th
 
                   {/* Technical details */}
                   <div className="mt-6 space-y-3">
-                    <h4 className="font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
+                    <h4 className="font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">
                       Technique
                     </h4>
                     <div className="rounded-lg border border-sgwx-border-subtle bg-sgwx-bg-alt p-4 font-mono text-xs leading-relaxed text-sgwx-text-muted">

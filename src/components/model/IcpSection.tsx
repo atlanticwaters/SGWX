@@ -70,7 +70,7 @@ export default function IcpSection({ eyebrow, heading, subheading, cards, backgr
           {icpCards.map((card, i) => (
             <AnimatedSection key={card.badge} delay={0.1 + i * 0.08}>
               <Card className="flex h-full flex-col gap-4">
-                <p className="font-mono text-[10px] font-medium uppercase tracking-widest text-sgwx-green">
+                <p className="font-mono text-[14px] font-medium uppercase tracking-widest text-sgwx-green">
                   {card.badge}
                 </p>
 
@@ -90,7 +90,7 @@ export default function IcpSection({ eyebrow, heading, subheading, cards, backgr
                         &ldquo;{card.testimonialQuote}&rdquo;
                       </p>
                       <footer className="mt-3">
-                        <cite className="not-italic font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+                        <cite className="not-italic font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                           &mdash; {card.testimonialAttribution}
                         </cite>
                       </footer>

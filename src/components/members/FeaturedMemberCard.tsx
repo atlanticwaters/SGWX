@@ -56,7 +56,7 @@ export default function FeaturedMemberCard({ member }: FeaturedMemberCardProps) 
       <h3 className="text-xl font-semibold text-sgwx-text">{member.name}</h3>
 
       {/* Title */}
-      <p className="mt-1 font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+      <p className="mt-1 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
         {member.title}
       </p>
 
@@ -72,7 +72,7 @@ export default function FeaturedMemberCard({ member }: FeaturedMemberCardProps) 
 
       {/* Favorite Tools */}
       <div className="mt-4">
-        <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+        <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
           Favorite Tools
         </p>
         <p className="mt-1 text-sm leading-relaxed text-sgwx-text-muted">

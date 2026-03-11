@@ -218,22 +218,22 @@ export default function LandingPagesClient({ initialPages }: LandingPagesClientP
           <table className="w-full text-left text-sm">
             <thead>
               <tr className="border-b border-sgwx-border">
-                <th className="pb-3 pr-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
+                <th className="pb-3 pr-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">
                   Slug
                 </th>
-                <th className="pb-3 pr-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
+                <th className="pb-3 pr-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">
                   Client
                 </th>
-                <th className="pb-3 pr-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
+                <th className="pb-3 pr-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">
                   Template
                 </th>
-                <th className="pb-3 pr-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
+                <th className="pb-3 pr-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">
                   Verticals
                 </th>
-                <th className="pb-3 pr-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
+                <th className="pb-3 pr-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">
                   Status
                 </th>
-                <th className="pb-3 font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
+                <th className="pb-3 font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">
                   Actions
                 </th>
               </tr>
@@ -266,7 +266,7 @@ export default function LandingPagesClient({ initialPages }: LandingPagesClientP
                         ? page.verticals.map((v) => (
                             <span
                               key={v}
-                              className="rounded-full border border-sgwx-border bg-sgwx-surface px-2 py-0.5 text-[10px] text-sgwx-text-muted"
+                              className="rounded-full border border-sgwx-border bg-sgwx-surface px-2 py-0.5 text-[14px] text-sgwx-text-muted"
                             >
                               {v}
                             </span>
@@ -319,7 +319,7 @@ export default function LandingPagesClient({ initialPages }: LandingPagesClientP
 
             {/* Step 1 — Template Selection */}
             <div className="mb-8">
-              <label className="mb-3 block font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+              <label className="mb-3 block font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                 Step 1 — Template
               </label>
               <div className="grid gap-4 sm:grid-cols-3">
@@ -342,7 +342,7 @@ export default function LandingPagesClient({ initialPages }: LandingPagesClientP
 
             {/* Step 2 — Client Name & Slug */}
             <div className="mb-8">
-              <label className="mb-3 block font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+              <label className="mb-3 block font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                 Step 2 — Client Details
               </label>
               <div className="grid gap-4 sm:grid-cols-2">
@@ -377,7 +377,7 @@ export default function LandingPagesClient({ initialPages }: LandingPagesClientP
 
             {/* Step 3 — Verticals */}
             <div className="mb-8">
-              <label className="mb-3 block font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+              <label className="mb-3 block font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                 Step 3 — Verticals{" "}
                 <span className="text-sgwx-text-dim">(max 3)</span>
               </label>
@@ -407,7 +407,7 @@ export default function LandingPagesClient({ initialPages }: LandingPagesClientP
 
             {/* Hero Overrides */}
             <div className="mb-8">
-              <label className="mb-3 block font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+              <label className="mb-3 block font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                 Hero Overrides <span className="text-sgwx-text-dim">(optional)</span>
               </label>
               <div className="grid gap-4 sm:grid-cols-2">

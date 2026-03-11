@@ -36,7 +36,7 @@ export default function CaseStudyGrid({ caseStudies }: CaseStudyGridProps) {
       <Container>
         {/* Filter bar */}
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
+          <p className="font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">
             {filtered.length} Project{filtered.length !== 1 ? "s" : ""}
           </p>
           <div className="flex flex-wrap gap-2">
@@ -44,7 +44,7 @@ export default function CaseStudyGrid({ caseStudies }: CaseStudyGridProps) {
               <button
                 key={cat}
                 onClick={() => setActive(cat)}
-                className={`rounded-full border px-4 py-1.5 font-mono text-[10px] tracking-widest uppercase transition-all duration-200 ${
+                className={`rounded-full border px-4 py-1.5 font-mono text-[14px] tracking-widest uppercase transition-all duration-200 ${
                   active === cat
                     ? "border-sgwx-green bg-sgwx-green text-sgwx-bg"
                     : "border-sgwx-border text-sgwx-text-muted hover:border-sgwx-green/40 hover:text-sgwx-green"

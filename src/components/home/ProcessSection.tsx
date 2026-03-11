@@ -157,7 +157,7 @@ function StageCard({ stage, deepFieldVariant }: { stage: ProcessStage; deepField
       <div className="relative z-[2] flex flex-1 flex-col p-6">
         {/* Stage label */}
         <p
-          className="font-mono text-[10px] font-medium uppercase tracking-widest transition-colors duration-500"
+          className="font-mono text-[14px] font-medium uppercase tracking-widest transition-colors duration-500"
           style={{ color: hovered ? colors.labelBright : colors.label }}
         >
           stage {stage.number}
@@ -178,7 +178,7 @@ function StageCard({ stage, deepFieldVariant }: { stage: ProcessStage; deepField
 
         {/* Output */}
         {stage.output && (
-          <p className="mt-3 font-mono text-[10px] uppercase tracking-widest text-sgwx-text-dim">
+          <p className="mt-3 font-mono text-[14px] uppercase tracking-widest text-sgwx-text-dim">
             Output:{" "}
             <span className="text-sgwx-text-muted">{stage.output}</span>
           </p>
@@ -186,7 +186,7 @@ function StageCard({ stage, deepFieldVariant }: { stage: ProcessStage; deepField
 
         {/* Explore link — reveals on hover */}
         <div
-          className="mt-4 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest"
+          className="mt-4 flex items-center gap-1.5 font-mono text-[14px] uppercase tracking-widest"
           style={{
             color: colors.label,
             opacity: hovered ? 1 : 0,

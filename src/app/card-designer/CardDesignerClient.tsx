@@ -41,7 +41,7 @@ interface RadioGroupProps {
 function RadioGroup({ label, value, onChange, options }: RadioGroupProps) {
   return (
     <fieldset className="space-y-2">
-      <legend className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+      <legend className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
         {label}
       </legend>
       <div className="flex flex-wrap gap-2">
@@ -250,7 +250,7 @@ export default function CardDesignerClient({ initialStyles }: CardDesignerClient
           {/* ── Left sidebar: saved styles ─────────────────────────────── */}
           <aside className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+              <h2 className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                 Saved Styles
               </h2>
               <button
@@ -281,7 +281,7 @@ export default function CardDesignerClient({ initialStyles }: CardDesignerClient
                   }`}
                 >
                   <span className="block font-medium">{style.name}</span>
-                  <span className="block font-mono text-[10px] text-sgwx-text-muted">
+                  <span className="block font-mono text-[14px] text-sgwx-text-muted">
                     {style.slug}
                   </span>
                 </button>
@@ -295,7 +295,7 @@ export default function CardDesignerClient({ initialStyles }: CardDesignerClient
             <div className="space-y-2">
               <label
                 htmlFor="style-name"
-                className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green"
+                className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green"
               >
                 Style Name
               </label>
@@ -308,7 +308,7 @@ export default function CardDesignerClient({ initialStyles }: CardDesignerClient
                 className="w-full rounded-lg border border-sgwx-border bg-sgwx-surface px-4 py-2 text-sm text-sgwx-text placeholder:text-sgwx-text-muted focus:border-sgwx-green focus:outline-none"
               />
               {name && (
-                <p className="font-mono text-[10px] text-sgwx-text-muted">
+                <p className="font-mono text-[14px] text-sgwx-text-muted">
                   slug: {slugify(name)}
                 </p>
               )}
@@ -316,7 +316,7 @@ export default function CardDesignerClient({ initialStyles }: CardDesignerClient
 
             {/* Live Preview */}
             <div className="space-y-3">
-              <h2 className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+              <h2 className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                 Live Preview
               </h2>
               <div className="rounded-xl border border-sgwx-border bg-sgwx-bg-alt p-8">
@@ -409,7 +409,7 @@ export default function CardDesignerClient({ initialStyles }: CardDesignerClient
 
               {/* Show Border toggle */}
               <fieldset className="space-y-2">
-                <legend className="font-mono text-[10px] tracking-widest uppercase text-sgwx-green">
+                <legend className="font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                   Show Border
                 </legend>
                 <button

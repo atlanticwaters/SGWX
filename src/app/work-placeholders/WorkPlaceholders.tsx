@@ -121,7 +121,7 @@ export default function WorkPlaceholders() {
                 <Badge>{study.category}</Badge>
 
                 {/* Client name */}
-                <p className="mt-3 font-mono text-[10px] tracking-widest uppercase text-sgwx-text-dim">
+                <p className="mt-3 font-mono text-[14px] tracking-widest uppercase text-sgwx-text-dim">
                   {study.client}
                 </p>
 

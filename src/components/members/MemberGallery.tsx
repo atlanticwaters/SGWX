@@ -288,7 +288,7 @@ export default function MemberGallery({
                   key="message"
                   className="relative col-span-2 flex aspect-[2/1] flex-col justify-center rounded-2xl bg-sgwx-green/90 px-6 sm:px-8 lg:aspect-auto"
                 >
-                  <p className="font-mono text-[10px] tracking-widest uppercase text-white/70">
+                  <p className="font-mono text-[14px] tracking-widest uppercase text-white/70">
                     The Collective
                   </p>
                   <h2 className="mt-2 text-xl font-thin leading-snug tracking-tight text-white sm:text-2xl lg:text-3xl">

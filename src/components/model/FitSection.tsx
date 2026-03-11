@@ -58,7 +58,7 @@ export default function FitSection({ eyebrow, heading, subheading, goodItems, no
           {/* Good fit */}
           <AnimatedSection delay={0.1}>
             <Card hover={false} className="h-full">
-              <p className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-check">
+              <p className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-check">
                 You&apos;ll feel right at home if you&apos;re:
               </p>
               <ul className="space-y-3">
@@ -91,7 +91,7 @@ export default function FitSection({ eyebrow, heading, subheading, goodItems, no
           {/* Not a fit */}
           <AnimatedSection delay={0.18}>
             <Card hover={false} className="h-full">
-              <p className="mb-4 font-mono text-[10px] tracking-widest uppercase text-sgwx-cross">
+              <p className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-cross">
                 We&apos;re probably not the right solution if you&apos;re:
               </p>
               <ul className="space-y-3">

@@ -63,7 +63,7 @@ export default function StageNav() {
           }`}
           aria-label={`Scroll to ${stage.label}`}
         >
-          <span className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 whitespace-nowrap font-mono text-[10px] tracking-[0.2em] uppercase text-sgwx-text-dim opacity-0 transition-opacity group-hover:opacity-100 max-md:hidden">
+          <span className="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2 whitespace-nowrap font-mono text-[14px] tracking-[0.2em] uppercase text-sgwx-text-dim opacity-0 transition-opacity group-hover:opacity-100 max-md:hidden">
             {stage.label}
           </span>
         </button>
