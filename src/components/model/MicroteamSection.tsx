@@ -46,14 +46,14 @@ export default function MicroteamSection({ eyebrow, heading, body, bullets, clos
         <ul className="mt-8 ml-auto max-w-3xl space-y-4">
           {items.map((bullet, i) => (
             <AnimatedSection key={bullet} delay={0.2 + i * 0.08}>
-              <li className="flex items-start gap-3">
+              <li className="flex items-start justify-end gap-3">
+                <span className="text-right text-base leading-relaxed text-sgwx-text md:text-lg">
+                  {bullet}
+                </span>
                 <span
                   className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-sgwx-green"
                   aria-hidden="true"
                 />
-                <span className="text-base leading-relaxed text-sgwx-text md:text-lg">
-                  {bullet}
-                </span>
               </li>
             </AnimatedSection>
           ))}

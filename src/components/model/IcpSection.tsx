@@ -1,9 +1,11 @@
+"use client";
+
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
-import Card from "@/components/ui/Card";
 import AnimatedSection from "@/components/ui/AnimatedSection";
 import SectionBackground from "@/components/ui/SectionBackground";
 import type { OverlayColor } from "@/components/ui/SectionBackground";
+import { motion } from "framer-motion";
 
 interface IcpCard {
   badge: string;
@@ -40,6 +42,27 @@ const defaultCards: IcpCard[] = [
   },
 ];
 
+const CARD_COLORS = [
+  {
+    border: "border-sgwx-green/25",
+    bg: "bg-sgwx-green/[0.04]",
+    badge: "text-sgwx-green-bright",
+    divider: "bg-sgwx-green/15",
+  },
+  {
+    border: "border-sgwx-cyan/25",
+    bg: "bg-sgwx-cyan/[0.04]",
+    badge: "text-sgwx-cyan",
+    divider: "bg-sgwx-cyan/15",
+  },
+  {
+    border: "border-purple-400/20",
+    bg: "bg-purple-500/[0.04]",
+    badge: "text-purple-300",
+    divider: "bg-purple-400/15",
+  },
+];
+
 interface IcpSectionProps {
   eyebrow?: string;
   heading?: string;
@@ -66,40 +89,55 @@ export default function IcpSection({ eyebrow, heading, subheading, cards, backgr
           />
         </AnimatedSection>
 
-        <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-3">
-          {icpCards.map((card, i) => (
-            <AnimatedSection key={card.badge} delay={0.1 + i * 0.08}>
-              <Card className="flex h-full flex-col gap-4">
-                <p className="font-mono text-[14px] font-medium uppercase tracking-widest text-sgwx-green">
-                  {card.badge}
-                </p>
-
-                <h3 className="text-2xl font-normal tracking-tight text-sgwx-text md:text-3xl">
-                  {card.headline}
-                </h3>
-
-                <p className="text-base leading-relaxed text-sgwx-text-muted">
-                  {card.body}
-                </p>
-
-                {card.testimonialQuote && (
-                  <div className="mt-auto pt-6">
-                    <div className="h-px bg-sgwx-border-subtle" />
-                    <blockquote className="mt-4">
-                      <p className="text-xs italic leading-relaxed text-sgwx-text-dim">
-                        &ldquo;{card.testimonialQuote}&rdquo;
-                      </p>
-                      <footer className="mt-3">
-                        <cite className="not-italic font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
-                          &mdash; {card.testimonialAttribution}
-                        </cite>
-                      </footer>
-                    </blockquote>
+        <div className="mt-12 space-y-6">
+          {icpCards.map((card, i) => {
+            const colors = CARD_COLORS[i % CARD_COLORS.length];
+            return (
+              <motion.div
+                key={card.badge}
+                initial={{ opacity: 0, x: 60 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.6, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                className={`rounded-2xl border ${colors.border} ${colors.bg} p-6 md:p-8`}
+              >
+                <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-10">
+                  {/* Left — badge + headline */}
+                  <div className="shrink-0 md:w-[320px] lg:w-[380px]">
+                    <p className={`font-mono text-[14px] font-medium uppercase tracking-widest ${colors.badge}`}>
+                      {card.badge}
+                    </p>
+                    <h3 className="mt-3 text-2xl font-normal tracking-tight text-sgwx-text md:text-3xl">
+                      {card.headline}
+                    </h3>
                   </div>
-                )}
-              </Card>
-            </AnimatedSection>
-          ))}
+
+                  {/* Right — body + testimonial */}
+                  <div className="flex-1">
+                    <p className="text-base leading-relaxed text-sgwx-text-muted">
+                      {card.body}
+                    </p>
+
+                    {card.testimonialQuote && (
+                      <div className="mt-6 pt-6">
+                        <div className={`h-px ${colors.divider}`} />
+                        <blockquote className="mt-4">
+                          <p className="text-xs italic leading-relaxed text-sgwx-text-dim">
+                            &ldquo;{card.testimonialQuote}&rdquo;
+                          </p>
+                          <footer className="mt-3">
+                            <cite className={`not-italic font-mono text-[14px] tracking-widest uppercase ${colors.badge}`}>
+                              &mdash; {card.testimonialAttribution}
+                            </cite>
+                          </footer>
+                        </blockquote>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </Container>
     </section>

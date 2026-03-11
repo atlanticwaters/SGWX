@@ -55,17 +55,17 @@ export default function FitSection({ eyebrow, heading, subheading, goodItems, no
         </AnimatedSection>
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
-          {/* Good fit */}
+          {/* Good fit — green-tinted panel */}
           <AnimatedSection delay={0.1}>
-            <Card hover={false} className="h-full">
-              <p className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-check">
+            <div className="h-full rounded-2xl border border-sgwx-green/30 bg-sgwx-green/[0.06] p-6">
+              <p className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-green-bright">
                 You&apos;ll feel right at home if you&apos;re:
               </p>
               <ul className="space-y-3">
                 {goodFit.map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <svg
-                      className="mt-0.5 h-5 w-5 shrink-0 text-sgwx-check"
+                      className="mt-0.5 h-5 w-5 shrink-0 text-sgwx-green-bright"
                       viewBox="0 0 20 20"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -85,20 +85,20 @@ export default function FitSection({ eyebrow, heading, subheading, goodItems, no
                   </li>
                 ))}
               </ul>
-            </Card>
+            </div>
           </AnimatedSection>
 
-          {/* Not a fit */}
+          {/* Not a fit — muted warm panel */}
           <AnimatedSection delay={0.18}>
-            <Card hover={false} className="h-full">
-              <p className="mb-4 font-mono text-[14px] tracking-widest uppercase text-sgwx-cross">
+            <div className="h-full rounded-2xl border border-red-500/20 bg-red-950/[0.15] p-6">
+              <p className="mb-4 font-mono text-[14px] tracking-widest uppercase text-red-400/80">
                 We&apos;re probably not the right solution if you&apos;re:
               </p>
               <ul className="space-y-3">
                 {notFit.map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <svg
-                      className="mt-0.5 h-5 w-5 shrink-0 text-sgwx-cross"
+                      className="mt-0.5 h-5 w-5 shrink-0 text-red-400/70"
                       viewBox="0 0 20 20"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -112,13 +112,13 @@ export default function FitSection({ eyebrow, heading, subheading, goodItems, no
                         strokeLinejoin="round"
                       />
                     </svg>
-                    <span className="text-sm leading-relaxed text-sgwx-text">
+                    <span className="text-sm leading-relaxed text-sgwx-text-muted">
                       {item}
                     </span>
                   </li>
                 ))}
               </ul>
-            </Card>
+            </div>
           </AnimatedSection>
         </div>
 
