@@ -53,6 +53,37 @@ export const membersPage = defineType({
       of: [defineArrayMember({ type: 'text', rows: 4 })],
       group: 'growth',
     }),
+    defineField({
+      name: 'growthAlign',
+      type: 'string',
+      title: 'Alignment',
+      description: 'Left or right align the content',
+      group: 'growth',
+      options: {
+        list: [
+          { title: 'Left', value: 'left' },
+          { title: 'Right', value: 'right' },
+        ],
+        layout: 'radio',
+        direction: 'horizontal',
+      },
+      initialValue: 'right',
+    }),
+    defineField({
+      name: 'growthInlineImage',
+      type: 'image',
+      title: 'Inline Image',
+      description: 'Optional image displayed alongside the copy block',
+      group: 'growth',
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          type: 'string',
+          title: 'Alt Text',
+        }),
+      ],
+    }),
 
     // ── Stats ────────────────────────────────────────────────
     defineField({ name: 'statsEyebrow', type: 'string', title: 'Eyebrow', group: 'stats' }),
@@ -83,6 +114,37 @@ export const membersPage = defineType({
       group: 'join',
     }),
     defineField({ name: 'joinCta', type: 'callToAction', title: 'CTA', group: 'join' }),
+    defineField({
+      name: 'joinAlign',
+      type: 'string',
+      title: 'Alignment',
+      description: 'Left or right align the content',
+      group: 'join',
+      options: {
+        list: [
+          { title: 'Left', value: 'left' },
+          { title: 'Right', value: 'right' },
+        ],
+        layout: 'radio',
+        direction: 'horizontal',
+      },
+      initialValue: 'left',
+    }),
+    defineField({
+      name: 'joinInlineImage',
+      type: 'image',
+      title: 'Inline Image',
+      description: 'Optional image displayed alongside the copy block',
+      group: 'join',
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          type: 'string',
+          title: 'Alt Text',
+        }),
+      ],
+    }),
 
     // ── SEO ──────────────────────────────────────────────────
     defineField({ name: 'seo', type: 'seo', title: 'SEO', group: 'seo' }),
