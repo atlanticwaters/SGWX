@@ -38,23 +38,34 @@ export default function LogoWall({
 }: LogoWallProps) {
   const names = clientNames ?? defaultClientNames;
 
-  // If we have image logos, render them
+  // If we have image logos, render them as a scrolling ticker
   if (logos && logos.length > 0) {
+    const tickerLogos = [...logos, ...logos]; // duplicate for seamless loop
     return (
       <div className="mt-16">
-        <p className="mb-8 text-center font-mono text-[14px] uppercase tracking-widest text-sgwx-text-dim">
+        <p className="mb-6 text-center font-mono text-[14px] uppercase tracking-widest text-sgwx-text-dim">
           {heading}
         </p>
-        <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-          {logos.map((logo, i) => (
-            <img
-              key={logo.alt || i}
-              src={logo.imageUrl}
-              alt={logo.alt}
-              className="h-8 w-auto opacity-25 transition-opacity duration-300 hover:opacity-70"
-            />
-          ))}
+        <div className="relative overflow-hidden">
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-sgwx-bg to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-sgwx-bg to-transparent" />
+          <div className="flex animate-[scrollTicker_40s_linear_infinite] items-center gap-12 hover:[animation-play-state:paused] md:gap-16">
+            {tickerLogos.map((logo, i) => (
+              <img
+                key={`${logo.alt}-${i}`}
+                src={logo.imageUrl}
+                alt={logo.alt}
+                className="h-8 w-auto shrink-0 opacity-25 transition-opacity duration-300 hover:opacity-70"
+              />
+            ))}
+          </div>
         </div>
+        <style jsx global>{`
+          @keyframes scrollTicker {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+          }
+        `}</style>
       </div>
     );
   }
