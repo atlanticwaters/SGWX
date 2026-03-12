@@ -63,6 +63,8 @@ export default async function MembersPage() {
         eyebrow={data?.growthEyebrow}
         heading={data?.growthHeading}
         paragraphs={data?.growthParagraphs}
+        align={data?.growthAlign}
+        inlineImage={data?.growthInlineImage}
         backgroundUrl={growthBg?.imageUrl}
         overlayColor={growthBg?.overlayColor}
       />
@@ -85,6 +87,8 @@ export default async function MembersPage() {
         subheading={data?.joinSubheading}
         paragraphs={data?.joinParagraphs}
         cta={data?.joinCta}
+        align={data?.joinAlign}
+        inlineImage={data?.joinInlineImage}
         backgroundUrl={joinBg?.imageUrl}
         overlayColor={joinBg?.overlayColor}
       />

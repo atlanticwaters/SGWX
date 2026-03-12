@@ -50,6 +50,8 @@ export default async function ModelPage() {
         eyebrow={data?.rightTeamEyebrow}
         heading={data?.rightTeamHeading}
         paragraphs={data?.rightTeamParagraphs}
+        align={data?.rightTeamAlign}
+        inlineImage={data?.rightTeamInlineImage}
         backgroundUrl={data?.rightTeamBackground?.imageUrl}
         overlayColor={data?.rightTeamBackground?.overlayColor}
       />
@@ -65,6 +67,8 @@ export default async function ModelPage() {
         body={data?.microteamsBody}
         bullets={data?.microteamsBullets}
         closing={data?.microteamsClosing}
+        align={data?.microteamsAlign}
+        inlineImage={data?.microteamsInlineImage}
         backgroundUrl={data?.microteamsBackground?.imageUrl}
         overlayColor={data?.microteamsBackground?.overlayColor}
       />
@@ -74,6 +78,8 @@ export default async function ModelPage() {
         body={data?.momentumBody}
         bullets={data?.momentumBullets}
         closing={data?.momentumClosing}
+        align={data?.momentumAlign}
+        inlineImage={data?.momentumInlineImage}
         backgroundUrl={data?.momentumBackground?.imageUrl}
         overlayColor={data?.momentumBackground?.overlayColor}
       />
@@ -89,6 +95,8 @@ export default async function ModelPage() {
         eyebrow={data?.continuityEyebrow}
         heading={data?.continuityHeading}
         paragraphs={data?.continuityParagraphs}
+        align={data?.continuityAlign}
+        inlineImage={data?.continuityInlineImage}
         backgroundUrl={data?.continuityBackground?.imageUrl}
         overlayColor={data?.continuityBackground?.overlayColor}
       />
@@ -96,6 +104,8 @@ export default async function ModelPage() {
         eyebrow={data?.technologyEyebrow}
         heading={data?.technologyHeading}
         paragraphs={data?.technologyParagraphs}
+        align={data?.technologyAlign}
+        inlineImage={data?.technologyInlineImage}
         backgroundUrl={data?.technologyBackground?.imageUrl}
         overlayColor={data?.technologyBackground?.overlayColor}
       />
