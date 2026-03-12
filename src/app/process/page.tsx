@@ -5,7 +5,6 @@ import PrinciplesSection from "@/components/process/PrinciplesSection";
 import SixStepsSection from "@/components/process/SixStepsSection";
 import GovernanceSection from "@/components/process/GovernanceSection";
 import FinalCtaSection from "@/components/home/FinalCtaSection";
-import ProgressBar from "@/components/process/ProgressBar";
 import StageNav from "@/components/process/StageNav";
 import { getSectionBackgroundBySlug, getProcessPage } from "@/lib/sanity/queries";
 
@@ -34,7 +33,6 @@ export default async function ProcessPage() {
 
   return (
     <>
-      <ProgressBar />
       <StageNav />
       <ProcessHero
         backgroundUrl={heroBg?.imageUrl}

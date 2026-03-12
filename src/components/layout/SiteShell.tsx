@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import PageTransition from "@/components/layout/PageTransition";
+import ProgressBar from "@/components/layout/ProgressBar";
 
 interface SiteShellProps {
   children: React.ReactNode;
@@ -28,6 +29,7 @@ export default function SiteShell({
   return (
     <>
       <Header navItems={navItems} ctaLabel={ctaLabel} ctaHref={ctaHref} />
+      {!isStudio && <ProgressBar />}
       {!isStudio && <PageTransition />}
       <main className="pt-16">{children}</main>
       <Footer links={footerLinks} copyright={footerCopyright} />
