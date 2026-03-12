@@ -922,7 +922,7 @@ export async function getHomepage(): Promise<HomepageData | null> {
       },
       caseStudyDisplayCount,
       logoWallHeading,
-      logos[] { asset, alt },
+      logos[] { "asset": image.asset, alt },
       spotlightsEyebrow, spotlightsHeading,
       spotlightsCta { label, href, variant },
       finalCtaHeading,
@@ -955,7 +955,7 @@ export async function getHomepage(): Promise<HomepageData | null> {
       .filter((logo) => logo?.asset || logo?.alt)
       .map((logo) => ({
         imageUrl: logo.asset
-          ? urlFor(logo.asset).height(40).auto("format").url()
+          ? urlFor(logo.asset).height(80).quality(90).auto("format").url()
           : undefined,
         alt: logo.alt ?? "",
       })),

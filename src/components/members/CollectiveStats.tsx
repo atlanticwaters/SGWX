@@ -107,7 +107,7 @@ export default function CollectiveStats({ eyebrow, heading, paragraphs, stats, b
         </AnimatedSection>
 
         <AnimatedSection delay={0.12}>
-          <div className="mt-8 max-w-3xl space-y-6 text-base leading-relaxed text-sgwx-text-muted md:text-lg">
+          <div className="mt-8 space-y-6 text-base leading-relaxed text-sgwx-text-muted md:text-lg">
             {paras.map((p, i) => (
               <p key={i}>{p}</p>
             ))}
@@ -115,18 +115,27 @@ export default function CollectiveStats({ eyebrow, heading, paragraphs, stats, b
         </AnimatedSection>
 
         <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3 lg:gap-6">
-          {allStats.map((stat, i) => (
-            <AnimatedSection key={stat.label} delay={0.18 + i * 0.08}>
-              <Card hover={false} className="text-center">
-                <p className="text-3xl font-bold text-sgwx-green-bright md:text-4xl lg:text-5xl">
-                  <AnimatedCounter value={stat.value} suffix={stat.suffix} />
-                </p>
-                <p className="mt-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-text-muted">
-                  {stat.label}
-                </p>
-              </Card>
-            </AnimatedSection>
-          ))}
+          {allStats.map((stat, i) => {
+            const row = Math.floor(i / 3);
+            const tileColors = row % 2 === 0
+              ? "border-sgwx-green/20 bg-sgwx-green/[0.08]"
+              : "border-sgwx-cyan/20 bg-sgwx-cyan/[0.08]";
+            const numColor = row % 2 === 0
+              ? "text-sgwx-green-bright"
+              : "text-sgwx-cyan";
+            return (
+              <AnimatedSection key={stat.label} delay={0.18 + i * 0.08}>
+                <div className={`rounded-2xl border ${tileColors} p-6 text-center`}>
+                  <p className={`text-3xl font-bold md:text-4xl lg:text-5xl ${numColor}`}>
+                    <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                  </p>
+                  <p className="mt-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-text-muted">
+                    {stat.label}
+                  </p>
+                </div>
+              </AnimatedSection>
+            );
+          })}
         </div>
       </Container>
     </section>
