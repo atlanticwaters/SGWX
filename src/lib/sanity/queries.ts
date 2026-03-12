@@ -511,6 +511,10 @@ const HERO_BG_PROJECTION = `heroBackground-> { "imageUrl": image.asset->url + "?
 const SECTION_BG = (field: string) =>
   `${field}-> { "imageUrl": image.asset->url + "?w=1920&q=75&auto=format", overlayColor }`;
 
+/** Reusable projection for inline image fields */
+const INLINE_IMG = (field: string) =>
+  `"${field}": ${field} { "url": asset->url + "?w=800&q=80&auto=format", "alt": alt }`;
+
 // ─── Model Page Types & Query ───────────────────────────────────────────────
 
 type SectionBg = { imageUrl: string; overlayColor?: string };
@@ -526,6 +530,8 @@ export interface ModelPageData {
   rightTeamEyebrow?: string;
   rightTeamHeading?: string;
   rightTeamParagraphs?: string[];
+  rightTeamAlign?: string;
+  rightTeamInlineImage?: { url: string; alt: string };
   capabilitiesBackground?: SectionBg;
   capabilitiesEyebrow?: string;
   capabilitiesTabs?: { id: string; label: string; items: string[] }[];
@@ -535,12 +541,16 @@ export interface ModelPageData {
   microteamsBody?: string;
   microteamsBullets?: string[];
   microteamsClosing?: string;
+  microteamsAlign?: string;
+  microteamsInlineImage?: { url: string; alt: string };
   momentumBackground?: SectionBg;
   momentumEyebrow?: string;
   momentumHeading?: string;
   momentumBody?: string;
   momentumBullets?: string[];
   momentumClosing?: string;
+  momentumAlign?: string;
+  momentumInlineImage?: { url: string; alt: string };
   icpBackground?: SectionBg;
   icpEyebrow?: string;
   icpHeading?: string;
@@ -550,10 +560,14 @@ export interface ModelPageData {
   continuityEyebrow?: string;
   continuityHeading?: string;
   continuityParagraphs?: string[];
+  continuityAlign?: string;
+  continuityInlineImage?: { url: string; alt: string };
   technologyBackground?: SectionBg;
   technologyEyebrow?: string;
   technologyHeading?: string;
   technologyParagraphs?: string[];
+  technologyAlign?: string;
+  technologyInlineImage?: { url: string; alt: string };
   fitBackground?: SectionBg;
   fitEyebrow?: string;
   fitHeading?: string;
@@ -573,20 +587,25 @@ export async function getModelPage(): Promise<ModelPageData | null> {
       heroSecondaryCta { label, href, variant },
       ${SECTION_BG("rightTeamBackground")},
       rightTeamEyebrow, rightTeamHeading, rightTeamParagraphs,
+      rightTeamAlign, ${INLINE_IMG("rightTeamInlineImage")},
       ${SECTION_BG("capabilitiesBackground")},
       capabilitiesEyebrow,
       capabilitiesTabs[] { id, label, items },
       ${SECTION_BG("microteamsBackground")},
       microteamsEyebrow, microteamsHeading, microteamsBody, microteamsBullets, microteamsClosing,
+      microteamsAlign, ${INLINE_IMG("microteamsInlineImage")},
       ${SECTION_BG("momentumBackground")},
       momentumEyebrow, momentumHeading, momentumBody, momentumBullets, momentumClosing,
+      momentumAlign, ${INLINE_IMG("momentumInlineImage")},
       ${SECTION_BG("icpBackground")},
       icpEyebrow, icpHeading, icpSubheading,
       icpCards[] { badge, headline, body, testimonialQuote, testimonialAttribution, "testimonialPhotoUrl": testimonialPhoto.asset->url + "?w=200&h=200&fit=crop&auto=format" },
       ${SECTION_BG("continuityBackground")},
       continuityEyebrow, continuityHeading, continuityParagraphs,
+      continuityAlign, ${INLINE_IMG("continuityInlineImage")},
       ${SECTION_BG("technologyBackground")},
       technologyEyebrow, technologyHeading, technologyParagraphs,
+      technologyAlign, ${INLINE_IMG("technologyInlineImage")},
       ${SECTION_BG("fitBackground")},
       fitEyebrow, fitHeading, fitSubheading, fitGoodItems, fitNotItems,
       seo { title, description, noIndex }
@@ -656,6 +675,8 @@ export interface MembersPageData {
   growthEyebrow?: string;
   growthHeading?: string;
   growthParagraphs?: string[];
+  growthAlign?: string;
+  growthInlineImage?: { url: string; alt: string };
   statsEyebrow?: string;
   statsHeading?: string;
   statsParagraphs?: string[];
@@ -664,6 +685,8 @@ export interface MembersPageData {
   joinSubheading?: string;
   joinParagraphs?: string[];
   joinCta?: HomepageCta;
+  joinAlign?: string;
+  joinInlineImage?: { url: string; alt: string };
   seo?: { title?: string; description?: string; noIndex?: boolean };
 }
 
@@ -675,10 +698,12 @@ export async function getMembersPage(): Promise<MembersPageData | null> {
       heroHeading, heroBody,
       originEyebrow, originHeading, originParagraphs,
       growthEyebrow, growthHeading, growthParagraphs,
+      growthAlign, ${INLINE_IMG("growthInlineImage")},
       statsEyebrow, statsHeading, statsParagraphs,
       statsItems[] { value, suffix, label },
       joinHeading, joinSubheading, joinParagraphs,
       joinCta { label, href, variant },
+      joinAlign, ${INLINE_IMG("joinInlineImage")},
       seo { title, description, noIndex }
     }`
   );
