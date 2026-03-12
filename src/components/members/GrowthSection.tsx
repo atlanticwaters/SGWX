@@ -1,8 +1,7 @@
-import Container from "@/components/ui/Container";
+import SectionLayout from "@/components/ui/SectionLayout";
+import type { InlineImage } from "@/components/ui/SectionLayout";
 import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
-import SectionBackground from "@/components/ui/SectionBackground";
-import type { OverlayColor } from "@/components/ui/SectionBackground";
 
 const defaultParagraphs = [
   "Over the past six years, that small group of 21 has grown into a network of over 100 specialists. This growth has been intentional, not accidental. From the beginning, Sageworx has actively sought out the best M-shaped professionals\u2014people who are not only deeply skilled in one discipline but also highly proficient in others. Think creative director\u2013sonic branding strategist\u2013technologist. Or art director\u2013NFT creator\u2013social content strategist.",
@@ -14,34 +13,41 @@ interface GrowthSectionProps {
   eyebrow?: string;
   heading?: string;
   paragraphs?: string[];
+  align?: string;
+  inlineImage?: InlineImage;
   backgroundUrl?: string;
   overlayColor?: string;
 }
 
-export default function GrowthSection({ eyebrow, heading, paragraphs, backgroundUrl, overlayColor }: GrowthSectionProps) {
+export default function GrowthSection({ eyebrow, heading, paragraphs, align, inlineImage, backgroundUrl, overlayColor }: GrowthSectionProps) {
   const paras = paragraphs ?? defaultParagraphs;
+  const sectionAlign = (align as "left" | "right") ?? "right";
+  const isRight = sectionAlign === "right";
 
   return (
-    <section className="relative overflow-hidden bg-sgwx-bg py-16 md:py-24">
-      {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as OverlayColor} />}
-      <Container>
-        <AnimatedSection>
-          <SectionHeading
-            eyebrow={eyebrow ?? "How We've Grown"}
-            heading={heading ?? "Growth Fueled by M-Shaped Makers and Marketers."}
-            size="medium"
-            align="right"
-          />
-        </AnimatedSection>
+    <SectionLayout
+      align={sectionAlign}
+      bgColor="default"
+      backgroundUrl={backgroundUrl}
+      overlayColor={overlayColor}
+      inlineImage={inlineImage}
+    >
+      <AnimatedSection>
+        <SectionHeading
+          eyebrow={eyebrow ?? "How We've Grown"}
+          heading={heading ?? "Growth Fueled by M-Shaped Makers and Marketers."}
+          size="medium"
+          align={sectionAlign}
+        />
+      </AnimatedSection>
 
-        <AnimatedSection delay={0.12}>
-          <div className="mt-8 max-w-3xl space-y-6 text-base leading-relaxed text-sgwx-text-muted md:text-lg">
-            {paras.map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
-          </div>
-        </AnimatedSection>
-      </Container>
-    </section>
+      <AnimatedSection delay={0.12}>
+        <div className={`mt-8 max-w-3xl space-y-6 text-base leading-relaxed text-sgwx-text-muted md:text-lg ${isRight ? "ml-auto text-right" : ""}`}>
+          {paras.map((p, i) => (
+            <p key={i}>{p}</p>
+          ))}
+        </div>
+      </AnimatedSection>
+    </SectionLayout>
   );
 }
