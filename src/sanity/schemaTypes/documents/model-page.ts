@@ -75,6 +75,37 @@ export const modelPage = defineType({
       group: 'rightTeam',
     }),
     defineField({
+      name: 'rightTeamAlign',
+      type: 'string',
+      title: 'Alignment',
+      description: 'Left or right align the content',
+      group: 'rightTeam',
+      options: {
+        list: [
+          { title: 'Left', value: 'left' },
+          { title: 'Right', value: 'right' },
+        ],
+        layout: 'radio',
+        direction: 'horizontal',
+      },
+      initialValue: 'right',
+    }),
+    defineField({
+      name: 'rightTeamInlineImage',
+      type: 'image',
+      title: 'Inline Image',
+      description: 'Optional image displayed alongside the copy block',
+      group: 'rightTeam',
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          type: 'string',
+          title: 'Alt Text',
+        }),
+      ],
+    }),
+    defineField({
       name: 'rightTeamEyebrow',
       type: 'string',
       title: 'Eyebrow',
@@ -144,6 +175,37 @@ export const modelPage = defineType({
       group: 'microteams',
     }),
     defineField({
+      name: 'microteamsAlign',
+      type: 'string',
+      title: 'Alignment',
+      description: 'Left or right align the content',
+      group: 'microteams',
+      options: {
+        list: [
+          { title: 'Left', value: 'left' },
+          { title: 'Right', value: 'right' },
+        ],
+        layout: 'radio',
+        direction: 'horizontal',
+      },
+      initialValue: 'right',
+    }),
+    defineField({
+      name: 'microteamsInlineImage',
+      type: 'image',
+      title: 'Inline Image',
+      description: 'Optional image displayed alongside the copy block',
+      group: 'microteams',
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          type: 'string',
+          title: 'Alt Text',
+        }),
+      ],
+    }),
+    defineField({
       name: 'microteamsEyebrow',
       type: 'string',
       title: 'Eyebrow',
@@ -185,6 +247,37 @@ export const modelPage = defineType({
       description: 'Optional background image for this section',
       to: [{ type: 'sectionBackground' }],
       group: 'momentum',
+    }),
+    defineField({
+      name: 'momentumAlign',
+      type: 'string',
+      title: 'Alignment',
+      description: 'Left or right align the content',
+      group: 'momentum',
+      options: {
+        list: [
+          { title: 'Left', value: 'left' },
+          { title: 'Right', value: 'right' },
+        ],
+        layout: 'radio',
+        direction: 'horizontal',
+      },
+      initialValue: 'left',
+    }),
+    defineField({
+      name: 'momentumInlineImage',
+      type: 'image',
+      title: 'Inline Image',
+      description: 'Optional image displayed alongside the copy block',
+      group: 'momentum',
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          type: 'string',
+          title: 'Alt Text',
+        }),
+      ],
     }),
     defineField({
       name: 'momentumEyebrow',
@@ -281,6 +374,37 @@ export const modelPage = defineType({
       group: 'continuity',
     }),
     defineField({
+      name: 'continuityAlign',
+      type: 'string',
+      title: 'Alignment',
+      description: 'Left or right align the content',
+      group: 'continuity',
+      options: {
+        list: [
+          { title: 'Left', value: 'left' },
+          { title: 'Right', value: 'right' },
+        ],
+        layout: 'radio',
+        direction: 'horizontal',
+      },
+      initialValue: 'left',
+    }),
+    defineField({
+      name: 'continuityInlineImage',
+      type: 'image',
+      title: 'Inline Image',
+      description: 'Optional image displayed alongside the copy block',
+      group: 'continuity',
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          type: 'string',
+          title: 'Alt Text',
+        }),
+      ],
+    }),
+    defineField({
       name: 'continuityEyebrow',
       type: 'string',
       title: 'Eyebrow',
@@ -308,6 +432,37 @@ export const modelPage = defineType({
       description: 'Optional background image for this section',
       to: [{ type: 'sectionBackground' }],
       group: 'technology',
+    }),
+    defineField({
+      name: 'technologyAlign',
+      type: 'string',
+      title: 'Alignment',
+      description: 'Left or right align the content',
+      group: 'technology',
+      options: {
+        list: [
+          { title: 'Left', value: 'left' },
+          { title: 'Right', value: 'right' },
+        ],
+        layout: 'radio',
+        direction: 'horizontal',
+      },
+      initialValue: 'right',
+    }),
+    defineField({
+      name: 'technologyInlineImage',
+      type: 'image',
+      title: 'Inline Image',
+      description: 'Optional image displayed alongside the copy block',
+      group: 'technology',
+      options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          type: 'string',
+          title: 'Alt Text',
+        }),
+      ],
     }),
     defineField({
       name: 'technologyEyebrow',
