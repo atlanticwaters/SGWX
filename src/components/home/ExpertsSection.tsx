@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useRef, useCallback, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Container from "@/components/ui/Container";
@@ -108,6 +108,42 @@ export default function ExpertsSection({
   // Duplicate the list for seamless looping
   const loopItems = useMemo(() => [...shuffled, ...shuffled], [shuffled]);
 
+  // ── Drag-to-scroll state ──────────────────────────────────
+  const stripRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragState = useRef({ startX: 0, scrollLeft: 0, hasMoved: false });
+
+  const onPointerDown = useCallback((e: React.PointerEvent) => {
+    const el = stripRef.current;
+    if (!el) return;
+    setIsDragging(true);
+    el.setPointerCapture(e.pointerId);
+    dragState.current = {
+      startX: e.clientX,
+      scrollLeft: el.scrollLeft,
+      hasMoved: false,
+    };
+  }, []);
+
+  const onPointerMove = useCallback((e: React.PointerEvent) => {
+    if (!isDragging || !stripRef.current) return;
+    const dx = e.clientX - dragState.current.startX;
+    if (Math.abs(dx) > 3) dragState.current.hasMoved = true;
+    stripRef.current.scrollLeft = dragState.current.scrollLeft - dx;
+  }, [isDragging]);
+
+  const onPointerUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  // Block link navigation when the user was dragging
+  const onClickCapture = useCallback((e: React.MouseEvent) => {
+    if (dragState.current.hasMoved) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, []);
+
   return (
     <section className="relative py-20 md:py-32">
       {backgroundUrl && <SectionBackground src={backgroundUrl} overlayColor={overlayColor as "sage" | "steel" | "teal" | "amber" | "carbon"} />}
@@ -124,11 +160,20 @@ export default function ExpertsSection({
       </Container>
 
       <AnimatedSection delay={0.15}>
-        <div className="group/strip mt-12 overflow-hidden">
+        <div
+          ref={stripRef}
+          className={`group/strip mt-12 overflow-x-auto scrollbar-none ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
+          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+          onClickCapture={onClickCapture}
+        >
           <div
             className="flex gap-4 md:gap-5"
             style={{
-              animation: `experts-scroll ${shuffled.length * 4}s linear infinite`,
+              animation: isDragging ? "none" : `experts-scroll ${shuffled.length * 4}s linear infinite`,
               width: "max-content",
             }}
           >
@@ -146,6 +191,7 @@ export default function ExpertsSection({
           .group\\/strip:hover > div {
             animation-play-state: paused;
           }
+          .scrollbar-none::-webkit-scrollbar { display: none; }
         `}</style>
       </AnimatedSection>
     </section>
