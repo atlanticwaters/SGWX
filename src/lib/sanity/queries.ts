@@ -947,7 +947,7 @@ export async function getHomepage(): Promise<HomepageData | null> {
       },
       caseStudyDisplayCount,
       logoWallHeading,
-      logos[] { "asset": image.asset, alt },
+      logos[] { "asset": coalesce(image.asset, asset), alt },
       spotlightsEyebrow, spotlightsHeading,
       spotlightsCta { label, href, variant },
       finalCtaHeading,
