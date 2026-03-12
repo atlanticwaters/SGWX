@@ -31,6 +31,7 @@ export const modelPage = defineType({
       title: 'Hero Background',
       description: 'Background image for the hero section',
       to: [{ type: 'sectionBackground' }],
+      weak: true,
       group: 'hero',
     }),
     defineField({
@@ -72,6 +73,7 @@ export const modelPage = defineType({
       title: 'Background',
       description: 'Optional background image for this section',
       to: [{ type: 'sectionBackground' }],
+      weak: true,
       group: 'rightTeam',
     }),
     defineField({
@@ -132,6 +134,7 @@ export const modelPage = defineType({
       title: 'Background',
       description: 'Optional background image for this section',
       to: [{ type: 'sectionBackground' }],
+      weak: true,
       group: 'capabilities',
     }),
     defineField({
@@ -172,6 +175,7 @@ export const modelPage = defineType({
       title: 'Background',
       description: 'Optional background image for this section',
       to: [{ type: 'sectionBackground' }],
+      weak: true,
       group: 'microteams',
     }),
     defineField({
@@ -246,6 +250,7 @@ export const modelPage = defineType({
       title: 'Background',
       description: 'Optional background image for this section',
       to: [{ type: 'sectionBackground' }],
+      weak: true,
       group: 'momentum',
     }),
     defineField({
@@ -320,6 +325,7 @@ export const modelPage = defineType({
       title: 'Background',
       description: 'Optional background image for this section',
       to: [{ type: 'sectionBackground' }],
+      weak: true,
       group: 'icp',
     }),
     defineField({
@@ -371,6 +377,7 @@ export const modelPage = defineType({
       title: 'Background',
       description: 'Optional background image for this section',
       to: [{ type: 'sectionBackground' }],
+      weak: true,
       group: 'continuity',
     }),
     defineField({
@@ -431,6 +438,7 @@ export const modelPage = defineType({
       title: 'Background',
       description: 'Optional background image for this section',
       to: [{ type: 'sectionBackground' }],
+      weak: true,
       group: 'technology',
     }),
     defineField({
@@ -491,6 +499,7 @@ export const modelPage = defineType({
       title: 'Background',
       description: 'Optional background image for this section',
       to: [{ type: 'sectionBackground' }],
+      weak: true,
       group: 'fit',
     }),
     defineField({
