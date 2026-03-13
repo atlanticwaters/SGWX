@@ -302,14 +302,10 @@ export const homepage = defineType({
       group: 'impact',
       of: [
         {
-          type: 'object',
+          type: 'image',
           fields: [
-            defineField({ name: 'image', type: 'image', title: 'Logo Image' }),
             defineField({ name: 'alt', type: 'string', title: 'Alt Text' }),
           ],
-          preview: {
-            select: { title: 'alt', media: 'image' },
-          },
         },
       ],
     }),
