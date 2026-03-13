@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useCallback, useState } from "react";
+import { useMemo, useRef, useCallback, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Container from "@/components/ui/Container";
@@ -78,10 +78,10 @@ function MemberCard({ member }: { member: StripMember }) {
 
         {/* Info overlay */}
         <div className="absolute inset-x-0 bottom-0 translate-y-0 p-4 transition-all duration-500 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100">
-          <p className="text-base font-light tracking-tight text-white md:text-lg">
+          <p className="text-lg font-light tracking-tight text-white md:text-xl">
             {member.name}
           </p>
-          <p className="mt-0.5 font-mono text-[9px] uppercase tracking-widest text-sgwx-green">
+          <p className="mt-0.5 font-mono text-[11px] uppercase tracking-widest text-sgwx-green">
             {member.title}
           </p>
           {member.mantra && (
@@ -105,18 +105,64 @@ export default function ExpertsSection({
 }: ExpertsSectionProps) {
   const shuffled = useMemo(() => interleaveMembers(members), [members]);
 
-  // Duplicate the list for seamless looping
-  const loopItems = useMemo(() => [...shuffled, ...shuffled], [shuffled]);
+  // Triple the list so we can seamlessly wrap
+  const loopItems = useMemo(() => [...shuffled, ...shuffled, ...shuffled], [shuffled]);
 
-  // ── Drag-to-scroll state ──────────────────────────────────
+  // ── Scroll refs & state ─────────────────────────────────────
   const stripRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const dragState = useRef({ startX: 0, scrollLeft: 0, hasMoved: false });
+  const pausedRef = useRef(false);
 
+  // ── rAF continuous scroll with wraparound ───────────────────
+  useEffect(() => {
+    const el = stripRef.current;
+    const inner = innerRef.current;
+    if (!el || !inner) return;
+
+    // Width of one set of members (1/3 of total since we tripled)
+    const getSetWidth = () => inner.scrollWidth / 3;
+
+    // Start in the middle set so we can scroll in either direction
+    const initialOffset = getSetWidth();
+    el.scrollLeft = initialOffset;
+
+    let rafId: number;
+    let lastTime: number | null = null;
+    const speed = 0.5; // px per ms (≈30px/s)
+
+    const tick = (time: number) => {
+      if (lastTime !== null && !pausedRef.current) {
+        const dt = time - lastTime;
+        el.scrollLeft += speed * dt;
+
+        // Wraparound: when we've scrolled past the 2nd set, jump back by one set width
+        const setW = getSetWidth();
+        if (el.scrollLeft >= setW * 2) {
+          el.scrollLeft -= setW;
+        } else if (el.scrollLeft <= 0) {
+          el.scrollLeft += setW;
+        }
+      }
+      lastTime = time;
+      rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, [shuffled]);
+
+  // ── Pause on hover ──────────────────────────────────────────
+  const onMouseEnter = useCallback(() => { pausedRef.current = true; }, []);
+  const onMouseLeave = useCallback(() => { if (!isDragging) pausedRef.current = false; }, [isDragging]);
+
+  // ── Drag-to-scroll ─────────────────────────────────────────
   const onPointerDown = useCallback((e: React.PointerEvent) => {
     const el = stripRef.current;
     if (!el) return;
     setIsDragging(true);
+    pausedRef.current = true;
     el.setPointerCapture(e.pointerId);
     dragState.current = {
       startX: e.clientX,
@@ -134,6 +180,7 @@ export default function ExpertsSection({
 
   const onPointerUp = useCallback(() => {
     setIsDragging(false);
+    pausedRef.current = false;
   }, []);
 
   // Block link navigation when the user was dragging
@@ -162,8 +209,10 @@ export default function ExpertsSection({
       <AnimatedSection delay={0.15}>
         <div
           ref={stripRef}
-          className={`group/strip mt-12 overflow-x-auto scrollbar-none ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
+          className={`mt-12 overflow-x-auto ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={onPointerUp}
@@ -171,11 +220,9 @@ export default function ExpertsSection({
           onClickCapture={onClickCapture}
         >
           <div
+            ref={innerRef}
             className="flex gap-4 md:gap-5"
-            style={{
-              animation: isDragging ? "none" : `experts-scroll ${shuffled.length * 4}s linear infinite`,
-              width: "max-content",
-            }}
+            style={{ width: "max-content" }}
           >
             {loopItems.map((member, i) => (
               <MemberCard key={`${member._id}-${i}`} member={member} />
@@ -184,14 +231,7 @@ export default function ExpertsSection({
         </div>
 
         <style>{`
-          @keyframes experts-scroll {
-            from { transform: translateX(0); }
-            to { transform: translateX(-50%); }
-          }
-          .group\\/strip:hover > div {
-            animation-play-state: paused;
-          }
-          .scrollbar-none::-webkit-scrollbar { display: none; }
+          [style*="scrollbar-width"]::-webkit-scrollbar { display: none; }
         `}</style>
       </AnimatedSection>
     </section>
