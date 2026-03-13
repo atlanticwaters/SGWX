@@ -42,12 +42,24 @@ export default async function ProcessPage() {
         body={data?.heroBody}
       />
       <ProcessIntro />
-      <PrinciplesSection />
-      <SixStepsSection />
-      <GovernanceSection />
+      <PrinciplesSection
+        eyebrow={data?.principlesEyebrow}
+        heading={data?.principlesHeading}
+        cards={data?.principlesCards}
+      />
+      <SixStepsSection
+        eyebrow={data?.sixStepsEyebrow}
+        heading={data?.sixStepsHeading}
+        steps={data?.sixStepsItems}
+      />
+      <GovernanceSection
+        eyebrow={data?.governanceEyebrow}
+        heading={data?.governanceHeading}
+        bullets={data?.governanceBullets}
+      />
       <FinalCtaSection
-        heading="From clarity to momentum, without friction."
-        primaryCta={{ label: "Activate Your Team", href: "/contact" }}
+        heading={data?.closeHeading}
+        primaryCta={data?.closeCta ? { label: data.closeCta.label, href: data.closeCta.href } : undefined}
       />
     </>
   );

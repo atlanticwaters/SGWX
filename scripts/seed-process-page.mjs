@@ -20,110 +20,6 @@ const processPageData = {
   heroBody:
     "The ultimate growth partner — built for every stage of your brand's evolution.",
 
-  // ── Stages ───────────────────────────────────────────────
-  stages: [
-    {
-      _key: "stage-launch",
-      id: "launch",
-      number: "01",
-      name: "Launch",
-      accent: "green",
-      focus:
-        "Brand foundation + market entry. Positioning, messaging, identity, strategy — the elements that define how you show up and why it matters.",
-      services: [
-        "brand architecture",
-        "visual identity systems",
-        "positioning strategy",
-        "marketing roadmaps",
-        "messaging",
-        "MVPs",
-      ],
-      proof: {
-        client: "EverPass Media — NFL Sunday Ticket®",
-        description:
-          "Redesigned the brand + product identity for the commercial streaming market. New logo system, go-to-market strategy, full visual language.",
-        result: "Brand launch across B2B streaming vertical",
-      },
-      glowPosition: "bottom-right",
-      deepFieldVariant: 1,
-    },
-    {
-      _key: "stage-engage",
-      id: "engage",
-      number: "02",
-      name: "Engage",
-      accent: "cyan",
-      focus:
-        "Creating content + experiences that connect. Campaigns, video, interactive, experiential — the work that moves people to act.",
-      services: [
-        "campaigns",
-        "content",
-        "games",
-        "experiences",
-        "activations",
-        "engagement",
-      ],
-      proof: {
-        client: "JULABO USA — One Degree Can Change Everything",
-        description:
-          "Cinematic video campaign fusing AI-enhanced visuals with human storytelling for aerospace + defense audiences.",
-        result: "Scalable brand content system for B2B tech",
-      },
-      glowPosition: "top-left",
-      deepFieldVariant: 3,
-    },
-    {
-      _key: "stage-mobilize",
-      id: "mobilize",
-      number: "03",
-      name: "Mobilize",
-      accent: "green",
-      focus:
-        "Building communities + amplifying reach. Turning customers into advocates and audiences into movements.",
-      services: [
-        "community growth",
-        "membership + loyalty",
-        "ambassadors",
-        "influencers + KOLs",
-        "creator partnerships",
-        "amplification",
-      ],
-      proof: {
-        client: "Dr. Squatch — Sydney Sweeney's Bathwater Bliss",
-        description:
-          "5,000-bar limited drop with influencer activation, creator content strategy + managed legal/reputational risk.",
-        result: "Sold out instantly · Trended across social · Late-night mentions",
-      },
-      glowPosition: "right-center",
-      deepFieldVariant: 5,
-    },
-    {
-      _key: "stage-transform",
-      id: "transform",
-      number: "04",
-      name: "Transform",
-      accent: "cyan",
-      focus:
-        "Internal alignment + organizational evolution. When the mission shifts from marketing to culture, we engineer the change.",
-      services: [
-        "transformation strategy",
-        "organizational alignment",
-        "cross-cultural adoption",
-        "engagement initiatives",
-        "celebratory moments",
-        "generative AI + automation",
-      ],
-      proof: {
-        client: "Mindstrong — Corporate Summit",
-        description:
-          "Designed + produced an in-person summit for a distributed healthcare/tech company rebuilding connection post-pandemic.",
-        result: "91% satisfaction · 95% connection score (vs 55% pre-summit)",
-      },
-      glowPosition: "bottom-left",
-      deepFieldVariant: 6,
-    },
-  ],
-
   // ── Six Steps ────────────────────────────────────────────
   sixStepsEyebrow: "The Process",
   sixStepsHeading: "Six Steps. No Wasted Motion.",
@@ -226,40 +122,8 @@ const processPageData = {
     "You pay for active senior expertise—not bench time, training, or layers.",
   ],
 
-  // ── Fit Check ────────────────────────────────────────────
-  fitEyebrow: "Fit Check",
-  fitHeading: "Is This Right for You?",
-  fitGoodItems: [
-    "You need senior expertise without long-term overhead",
-    "You value speed, clarity, and follow-through",
-    "You want teams who integrate, not perform",
-  ],
-  fitNotItems: [
-    "You're primarily looking for decks, frameworks, or performative deliverables rather than forward motion and real execution",
-    "You require constant staffing changes, repeated onboarding, or junior-heavy teams that reset context and slow progress",
-    "You're optimizing for optics, signaling, or internal theater over measurable outcomes and sustained momentum",
-  ],
-
-  // ── Closing ──────────────────────────────────────────────
-  closingStageWords: [
-    { _key: "word-launch", text: "launch", color: "text-sgwx-green" },
-    { _key: "word-engage", text: "engage", color: "text-sgwx-cyan" },
-    { _key: "word-mobilize", text: "mobilize", color: "text-sgwx-green" },
-    { _key: "word-transform", text: "transform", color: "text-sgwx-cyan" },
-  ],
-  closingWordmark: "SAGEWORX",
-  closingTagline: "Emerge. Engage. Evolve.",
-  closingCta: {
-    _type: "callToAction",
-    label: "Activate Your Team",
-    href: "/contact",
-    variant: "primary",
-  },
-
-  // ── Close Section ────────────────────────────────────────
+  // ── CTA ─────────────────────────────────────────────────
   closeHeading: "From clarity to momentum, without friction.",
-  closeBody:
-    "The goal isn't just to finish the work. It's to leave you better equipped for what comes next.",
   closeCta: {
     _type: "callToAction",
     label: "Activate Your Team",

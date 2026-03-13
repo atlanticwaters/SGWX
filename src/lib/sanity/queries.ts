@@ -712,18 +712,6 @@ export async function getMembersPage(): Promise<MembersPageData | null> {
 
 // ─── Process Page Types & Query ─────────────────────────────────────────────
 
-export interface ProcessStageData {
-  id: string;
-  number: string;
-  name: string;
-  accent: "green" | "cyan";
-  focus: string;
-  services: string[];
-  proof: { client: string; description: string; result: string };
-  glowPosition: string;
-  deepFieldVariant: number;
-}
-
 export interface ProcessStepData {
   num: string;
   title: string;
@@ -743,27 +731,17 @@ export interface ProcessPageData {
   heroEyebrow?: string;
   heroHeading?: string;
   heroBody?: string;
-  stages?: ProcessStageData[];
-  sixStepsEyebrow?: string;
-  sixStepsHeading?: string;
-  sixStepsItems?: ProcessStepData[];
   principlesEyebrow?: string;
   principlesHeading?: string;
   principlesSubheading?: string;
   principlesCards?: ProcessPrincipleCard[];
+  sixStepsEyebrow?: string;
+  sixStepsHeading?: string;
+  sixStepsItems?: ProcessStepData[];
   governanceEyebrow?: string;
   governanceHeading?: string;
   governanceBullets?: string[];
-  fitEyebrow?: string;
-  fitHeading?: string;
-  fitGoodItems?: string[];
-  fitNotItems?: string[];
-  closingStageWords?: { text: string; color: string }[];
-  closingWordmark?: string;
-  closingTagline?: string;
-  closingCta?: HomepageCta;
   closeHeading?: string;
-  closeBody?: string;
   closeCta?: HomepageCta;
   seo?: { title?: string; description?: string; noIndex?: boolean };
 }
@@ -774,17 +752,12 @@ export async function getProcessPage(): Promise<ProcessPageData | null> {
     `*[_type == "processPage" && _id == "processPage"][0] {
       ${HERO_BG_PROJECTION},
       heroEyebrow, heroHeading, heroBody,
-      stages[] { id, number, name, accent, focus, services, proof { client, description, result }, glowPosition, deepFieldVariant },
-      sixStepsEyebrow, sixStepsHeading,
-      sixStepsItems[] { num, title, whatsHappening, whyItMatters, whatYouGet },
       principlesEyebrow, principlesHeading, principlesSubheading,
       principlesCards[] { badge, title, paragraphs },
+      sixStepsEyebrow, sixStepsHeading,
+      sixStepsItems[] { num, title, whatsHappening, whyItMatters, whatYouGet },
       governanceEyebrow, governanceHeading, governanceBullets,
-      fitEyebrow, fitHeading, fitGoodItems, fitNotItems,
-      closingStageWords[] { text, color },
-      closingWordmark, closingTagline,
-      closingCta { label, href, variant },
-      closeHeading, closeBody,
+      closeHeading,
       closeCta { label, href, variant },
       seo { title, description, noIndex }
     }`
