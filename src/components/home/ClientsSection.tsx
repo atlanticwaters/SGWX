@@ -106,7 +106,7 @@ function ClientCard({
               <path d="M3 8h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
             <div>
-              <p className="font-mono text-[14px] font-medium uppercase tracking-widest text-sgwx-text-dim">
+              <p className="font-mono text-[14px] font-medium uppercase tracking-widest text-white">
                 The Pain Point
               </p>
               <p
