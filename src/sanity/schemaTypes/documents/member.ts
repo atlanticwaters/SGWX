@@ -40,6 +40,14 @@ export const member = defineType({
       title: 'Role/Title',
     }),
     defineField({
+      name: 'profileTitles',
+      type: 'array',
+      title: 'Profile Titles',
+      description: 'Three title lines shown on the member profile page (instead of Role/Title)',
+      of: [{ type: 'string' }],
+      validation: (rule) => rule.max(3),
+    }),
+    defineField({
       name: 'mantra',
       type: 'text',
       title: 'Mantra',

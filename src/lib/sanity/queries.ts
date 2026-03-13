@@ -57,6 +57,7 @@ export interface MemberItem {
   name: string;
   slug: string;
   title: string;
+  profileTitles?: string[];
   mantra: string;
   characterMetaphor: string;
   bio: string;
@@ -237,7 +238,7 @@ export async function getFeaturedMembers(): Promise<MemberItem[]> {
     (Omit<MemberItem, "photoUrl"> & { photo?: SanityImageSource })[]
   >(
     `*[_type == "member" && isFeatured == true] | order(order asc) {
-      _id, name, "slug": slug.current, title, mantra, characterMetaphor,
+      _id, name, "slug": slug.current, title, profileTitles, mantra, characterMetaphor,
       bio, favoriteTools, photo, "link": link { label, url }, isFeatured, order
     }`
   );
@@ -296,7 +297,7 @@ export async function getMemberBySlug(slug: string): Promise<MemberItem | null> 
     (Omit<MemberItem, "photoUrl"> & { photo?: SanityImageSource }) | null
   >(
     `*[_type == "member" && slug.current == $slug][0] {
-      _id, name, "slug": slug.current, title, mantra, characterMetaphor,
+      _id, name, "slug": slug.current, title, profileTitles, mantra, characterMetaphor,
       bio, favoriteTools, photo, "link": link { label, url }, isFeatured, order
     }`,
     { slug }

@@ -90,9 +90,19 @@ export default async function MemberPage({ params }: MemberPageProps) {
               <h1 className="text-4xl font-normal tracking-tight text-sgwx-text md:text-5xl">
                 {member.name}
               </h1>
-              <p className="mt-2 font-mono text-sm tracking-widest uppercase text-sgwx-green">
-                {member.title}
-              </p>
+              {member.profileTitles && member.profileTitles.length > 0 ? (
+                <div className="mt-2 space-y-0.5">
+                  {member.profileTitles.map((line, i) => (
+                    <p key={i} className="font-mono text-sm tracking-widest uppercase text-sgwx-green">
+                      {line}
+                    </p>
+                  ))}
+                </div>
+              ) : (
+                <p className="mt-2 font-mono text-sm tracking-widest uppercase text-sgwx-green">
+                  {member.title}
+                </p>
+              )}
             </AnimatedSection>
 
             {/* Mantra */}
