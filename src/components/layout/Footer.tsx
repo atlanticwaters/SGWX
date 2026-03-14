@@ -31,7 +31,7 @@ export default function Footer({ links, copyright }: FooterProps) {
 
   return (
     <footer className="relative overflow-hidden">
-      <div className="absolute inset-0 scale-[3] -z-10">
+      <div className="absolute -inset-y-[300px] inset-x-0 -z-10">
         <AnimationCanvas
           cameraPosition={[0, 0, 80]}
           cameraFov={85}
