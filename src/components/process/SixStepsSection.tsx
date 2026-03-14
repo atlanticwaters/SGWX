@@ -193,7 +193,7 @@ export default function SixStepsSection({ eyebrow, heading, steps }: SixStepsSec
                     className="pointer-events-none absolute z-[1] select-none text-[clamp(6rem,12vw,8rem)] font-black leading-none text-transparent"
                     style={{
                       bottom: "-1rem",
-                      right: "-0.5rem",
+                      left: "-0.5rem",
                       WebkitTextStroke: `1.5px ${isHovered || isActive ? colors.strokeHover : colors.stroke}`,
                       transform: isHovered || isActive ? "translateY(-4px)" : "translateY(0)",
                       transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), -webkit-text-stroke 0.5s",
@@ -213,19 +213,21 @@ export default function SixStepsSection({ eyebrow, heading, steps }: SixStepsSec
                       onKeyDown={(e) => handleKeyDown(e, i)}
                       className="flex w-full items-center gap-4 p-6 text-left md:gap-6"
                     >
-                      <span
-                        className="font-mono text-[14px] font-medium uppercase tracking-widest transition-colors duration-500"
-                        style={{ color: isHovered || isActive ? colors.labelBright : colors.label }}
-                      >
-                        stage {step.num}
-                      </span>
-                      <span
-                        className={`flex-1 text-xl font-thin tracking-tight md:text-2xl lg:text-3xl ${
-                          isActive ? "text-sgwx-text" : "text-sgwx-text-muted"
-                        } transition-colors`}
-                      >
-                        {step.title}
-                      </span>
+                      <div className="flex flex-1 flex-col gap-1">
+                        <span
+                          className="font-mono text-[14px] font-medium uppercase tracking-widest transition-colors duration-500"
+                          style={{ color: isHovered || isActive ? colors.labelBright : colors.label }}
+                        >
+                          stage {step.num}
+                        </span>
+                        <span
+                          className={`text-xl font-thin tracking-tight md:text-2xl lg:text-3xl ${
+                            isActive ? "text-sgwx-text" : "text-sgwx-text-muted"
+                          } transition-colors`}
+                        >
+                          {step.title}
+                        </span>
+                      </div>
                       <svg
                         className={`h-5 w-5 shrink-0 transition-transform duration-300 ${
                           isActive ? "rotate-180" : ""
