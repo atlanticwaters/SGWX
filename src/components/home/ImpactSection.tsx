@@ -56,7 +56,7 @@ export default function ImpactSection({
           <div className="mt-10 text-center">
             <Link
               href="/work"
-              className="inline-flex items-center gap-2 rounded-full border border-sgwx-green px-6 py-3 font-mono text-[13px] tracking-widest uppercase text-sgwx-green ring-1 ring-sgwx-green ring-offset-[3px] ring-offset-sgwx-bg transition-all hover:bg-sgwx-green/10 hover:text-sgwx-green-bright"
+              className="inline-flex items-center gap-2 rounded-full border border-sgwx-green px-6 py-3 font-mono text-[13px] tracking-widest uppercase text-sgwx-green transition-all hover:bg-sgwx-green/10 hover:text-sgwx-green-bright"
             >
               View More Work
               <span aria-hidden="true">&rarr;</span>

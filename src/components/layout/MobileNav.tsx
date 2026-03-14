@@ -45,7 +45,7 @@ export default function MobileNav({ items, ctaLabel, ctaHref, onClose }: MobileN
         <Link
           href={ctaHref ?? "/contact"}
           onClick={onClose}
-          className="mt-2 rounded-full border border-sgwx-green px-5 py-3 text-center font-mono text-[13px] tracking-widest uppercase text-sgwx-green ring-1 ring-sgwx-green ring-offset-[3px] ring-offset-sgwx-bg transition-all hover:bg-sgwx-green/10"
+          className="mt-2 rounded-full border border-sgwx-green px-5 py-3 text-center font-mono text-[13px] tracking-widest uppercase text-sgwx-green transition-all hover:bg-sgwx-green/10"
         >
           {ctaLabel ?? "Let\u2019s Chat!"}
         </Link>
