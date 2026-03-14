@@ -55,7 +55,7 @@ export default function Footer({ links, copyright }: FooterProps) {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm text-sgwx-text-muted transition-colors hover:text-sgwx-text"
+              className="font-mono text-[13px] tracking-widest uppercase text-sgwx-cyan transition-colors hover:text-sgwx-text"
             >
               {link.label}
             </Link>
