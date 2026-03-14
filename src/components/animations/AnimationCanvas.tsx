@@ -11,6 +11,8 @@ interface AnimationCanvasProps {
   cameraFar?: number;
   fogColor?: number;
   fogDensity?: number;
+  /** Custom CSS background for the vignette overlay. Pass `"none"` to disable. */
+  vignette?: string;
 }
 
 export default function AnimationCanvas({
@@ -21,7 +23,11 @@ export default function AnimationCanvas({
   cameraFar = 400,
   fogColor = 0x0c0f0e,
   fogDensity = 0.012,
+  vignette,
 }: AnimationCanvasProps) {
+  const vignetteBackground =
+    vignette ??
+    "radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(12,15,14,0.55) 65%, rgba(12,15,14,0.92) 100%)";
   return (
     <div className={`absolute inset-0 -z-10 ${className}`}>
       <Canvas
@@ -35,13 +41,12 @@ export default function AnimationCanvas({
         </Suspense>
       </Canvas>
       {/* Vignette overlay */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(12,15,14,0.55) 65%, rgba(12,15,14,0.92) 100%)",
-        }}
-      />
+      {vignetteBackground !== "none" && (
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{ background: vignetteBackground }}
+        />
+      )}
       {/* Grain overlay */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.045] mix-blend-screen"

@@ -37,10 +37,11 @@ export default function Footer({ links, copyright }: FooterProps) {
         cameraFar={500}
         fogColor={0x080e12}
         fogDensity={0.004}
+        vignette="linear-gradient(to right, rgba(12,15,14,0.8) 0%, transparent 15%, transparent 85%, rgba(12,15,14,0.8) 100%), linear-gradient(to bottom, rgba(12,15,14,0.6) 0%, transparent 30%, transparent 70%, rgba(12,15,14,0.6) 100%)"
       >
         <FooterNetwork />
       </AnimationCanvas>
-      <div className="relative z-10 mx-auto flex min-h-[280px] max-w-7xl flex-col items-end justify-end gap-4 px-6 pb-8 pt-16 md:flex-row md:items-end md:justify-between">
+      <div className="relative z-10 mx-auto flex max-w-7xl flex-col items-end gap-4 px-6 py-10 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-4 md:order-first">
           <Image
             src="/sgwx-white.svg"
