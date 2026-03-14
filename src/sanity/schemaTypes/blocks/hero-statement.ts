@@ -6,14 +6,16 @@ export const heroStatement = defineType({
   title: 'Hero Statement',
   type: 'object',
   icon: StarIcon,
+  description: 'Full-width hero with heading, subheading, CTAs, and optional background image',
   preview: {
     select: {
       title: 'heading',
+      bg: 'backgroundImage',
     },
-    prepare({ title }) {
+    prepare({ title, bg }) {
       return {
         title: title || 'Hero Statement',
-        subtitle: 'Hero Statement',
+        subtitle: bg ? 'Hero Statement / Has background' : 'Hero Statement',
       }
     },
   },

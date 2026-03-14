@@ -6,14 +6,16 @@ export const statsGrid = defineType({
   title: 'Stats Grid',
   type: 'object',
   icon: BarChartIcon,
+  description: 'Animated number stats with values, suffixes, and labels',
   preview: {
     select: {
       title: 'heading',
+      eyebrow: 'eyebrow',
     },
-    prepare({ title }) {
+    prepare({ title, eyebrow }) {
       return {
         title: title || 'Stats Grid',
-        subtitle: 'Stats Grid',
+        subtitle: eyebrow ? `Stats Grid / ${eyebrow}` : 'Stats Grid',
       }
     },
   },

@@ -6,14 +6,16 @@ export const caseStudyFeed = defineType({
   title: 'Case Study Feed',
   type: 'object',
   icon: ProjectsIcon,
+  description: 'Auto-populated feed of latest case studies / work',
   preview: {
     select: {
       title: 'heading',
+      count: 'count',
     },
-    prepare({ title }) {
+    prepare({ title, count }) {
       return {
         title: title || 'Case Study Feed',
-        subtitle: 'Case Study Feed',
+        subtitle: count ? `Case Study Feed / ${count} studies` : 'Case Study Feed',
       }
     },
   },

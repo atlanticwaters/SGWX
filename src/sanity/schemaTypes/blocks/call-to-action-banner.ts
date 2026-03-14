@@ -6,14 +6,16 @@ export const callToActionBanner = defineType({
   title: 'Call to Action Banner',
   type: 'object',
   icon: RocketIcon,
+  description: 'Full-width CTA with heading, subheading, buttons, and optional background',
   preview: {
     select: {
       title: 'heading',
+      bg: 'backgroundImage',
     },
-    prepare({ title }) {
+    prepare({ title, bg }) {
       return {
         title: title || 'Call to Action Banner',
-        subtitle: 'Call to Action Banner',
+        subtitle: bg ? 'CTA Banner / Has background' : 'Call to Action Banner',
       }
     },
   },

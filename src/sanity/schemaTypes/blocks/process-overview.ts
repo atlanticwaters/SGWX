@@ -6,14 +6,16 @@ export const processOverview = defineType({
   title: 'Process Overview',
   type: 'object',
   icon: ActivityIcon,
+  description: 'Numbered process stages with services, focus areas, and accent colors',
   preview: {
     select: {
       title: 'heading',
+      eyebrow: 'eyebrow',
     },
-    prepare({ title }) {
+    prepare({ title, eyebrow }) {
       return {
         title: title || 'Process Overview',
-        subtitle: 'Process Overview',
+        subtitle: eyebrow ? `Process Overview / ${eyebrow}` : 'Process Overview',
       }
     },
   },

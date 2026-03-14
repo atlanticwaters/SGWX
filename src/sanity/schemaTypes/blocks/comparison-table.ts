@@ -6,6 +6,7 @@ export const comparisonTable = defineType({
   title: 'Comparison Table',
   type: 'object',
   icon: ThListIcon,
+  description: 'Side-by-side comparison grid (Traditional vs Freelancers vs Sageworx)',
   preview: {
     select: {
       title: 'heading',

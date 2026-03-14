@@ -6,14 +6,16 @@ export const richTextSection = defineType({
   title: 'Rich Text Section',
   type: 'object',
   icon: TextIcon,
+  description: 'Free-form rich text with inline images and optional background',
   preview: {
     select: {
       title: 'heading',
+      bg: 'backgroundImage',
     },
-    prepare({ title }) {
+    prepare({ title, bg }) {
       return {
         title: title || 'Rich Text Section',
-        subtitle: 'Rich Text Section',
+        subtitle: bg ? 'Rich Text / Has background' : 'Rich Text Section',
       }
     },
   },

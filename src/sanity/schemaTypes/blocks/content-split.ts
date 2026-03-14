@@ -6,14 +6,20 @@ export const contentSplit = defineType({
   title: 'Content Split',
   type: 'object',
   icon: SplitHorizontalIcon,
+  description: 'Two-column layout with rich text on one side and image on the other',
   preview: {
     select: {
       title: 'heading',
+      orientation: 'orientation',
+      bg: 'backgroundImage',
     },
-    prepare({ title }) {
+    prepare({ title, orientation, bg }) {
+      const parts = ['Content Split']
+      if (orientation) parts.push(orientation === 'imageLeft' ? 'Image Left' : 'Image Right')
+      if (bg) parts.push('Has background')
       return {
         title: title || 'Content Split',
-        subtitle: 'Content Split',
+        subtitle: parts.join(' / '),
       }
     },
   },

@@ -6,14 +6,16 @@ export const clientSegments = defineType({
   title: 'Client Segments',
   type: 'object',
   icon: UsersIcon,
+  description: 'Audience segments with labels, descriptions, and bullet lists',
   preview: {
     select: {
       title: 'heading',
+      eyebrow: 'eyebrow',
     },
-    prepare({ title }) {
+    prepare({ title, eyebrow }) {
       return {
         title: title || 'Client Segments',
-        subtitle: 'Client Segments',
+        subtitle: eyebrow ? `Client Segments / ${eyebrow}` : 'Client Segments',
       }
     },
   },

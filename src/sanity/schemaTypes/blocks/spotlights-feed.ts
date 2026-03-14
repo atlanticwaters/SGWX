@@ -6,14 +6,16 @@ export const spotlightsFeed = defineType({
   title: 'Spotlights Feed',
   type: 'object',
   icon: DocumentTextIcon,
+  description: 'Auto-populated feed of latest blog posts / spotlights',
   preview: {
     select: {
       title: 'heading',
+      count: 'count',
     },
-    prepare({ title }) {
+    prepare({ title, count }) {
       return {
         title: title || 'Spotlights Feed',
-        subtitle: 'Spotlights Feed',
+        subtitle: count ? `Spotlights Feed / ${count} posts` : 'Spotlights Feed',
       }
     },
   },

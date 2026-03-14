@@ -6,6 +6,7 @@ export const logoWall = defineType({
   title: 'Logo Wall',
   type: 'object',
   icon: BlockElementIcon,
+  description: 'Scrolling wall of client / partner logos',
   preview: {
     select: {
       title: 'heading',

@@ -6,14 +6,16 @@ export const featureCards = defineType({
   title: 'Feature Cards',
   type: 'object',
   icon: InlineElementIcon,
+  description: 'Grid of cards with icons, headings, and body text',
   preview: {
     select: {
       title: 'heading',
+      eyebrow: 'eyebrow',
     },
-    prepare({ title }) {
+    prepare({ title, eyebrow }) {
       return {
         title: title || 'Feature Cards',
-        subtitle: 'Feature Cards',
+        subtitle: eyebrow ? `Feature Cards / ${eyebrow}` : 'Feature Cards',
       }
     },
   },
