@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { Suspense } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 
 interface AnimationCanvasProps {
   children: React.ReactNode;
@@ -25,15 +25,31 @@ export default function AnimationCanvas({
   fogDensity = 0.012,
   vignette,
 }: AnimationCanvasProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { rootMargin: "200px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   const vignetteBackground =
     vignette ??
     "radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(12,15,14,0.55) 65%, rgba(12,15,14,0.92) 100%)";
   return (
-    <div className={`absolute inset-0 -z-10 ${className}`}>
+    <div ref={containerRef} className={`absolute inset-0 -z-10 ${className}`}>
       <Canvas
         camera={{ position: cameraPosition, fov: cameraFov, near: 0.1, far: cameraFar }}
         gl={{ antialias: true, alpha: true }}
         dpr={[1, 2]}
+        frameloop={visible ? "always" : "never"}
       >
         <Suspense fallback={null}>
           <fogExp2 attach="fog" args={[fogColor, fogDensity]} />
