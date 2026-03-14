@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo, useEffect } from "react";
+import { useRef, useMemo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -152,8 +152,6 @@ export default function FooterNetwork() {
     t: 0,
     lastSpawn: 0,
     camTheta: 0,
-    mouseX: 0,
-    mouseY: 0,
     pulses: [] as PulseData[],
     activeEdges: [] as ActiveEdge[],
   });
@@ -229,18 +227,6 @@ export default function FooterNetwork() {
   const glowMatRef = useRef<THREE.ShaderMaterial>(null);
 
   const camTarget = useMemo(() => new THREE.Vector3(0, 0, 0), []);
-
-  // ─── Mouse tracking ─────────────────────────────────────────────────────
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      stateRef.current.mouseX =
-        (e.clientX / window.innerWidth - 0.5) * 2;
-      stateRef.current.mouseY =
-        (e.clientY / window.innerHeight - 0.5) * 2;
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
 
   // ─── Spawn pulse helper ──────────────────────────────────────────────────
   const spawnPulse = () => {
@@ -374,10 +360,10 @@ export default function FooterNetwork() {
       pg.needsUpdate = true;
     }
 
-    // ─── Camera: gentle drift, no orbit ──────────────────────────────────
+    // ─── Camera: gentle auto-drift only ─────────────────────────────────
     state.camTheta += 0.001;
-    const tx = state.mouseX * 6 + Math.sin(state.camTheta) * 4;
-    const ty = -state.mouseY * 3 + Math.sin(t * 0.1) * 3;
+    const tx = Math.sin(state.camTheta) * 5;
+    const ty = Math.sin(t * 0.1) * 3;
     camera.position.x += (tx - camera.position.x) * 0.02;
     camera.position.y += (ty - camera.position.y) * 0.02;
     camera.position.z = 80 + Math.sin(t * 0.06) * 3;

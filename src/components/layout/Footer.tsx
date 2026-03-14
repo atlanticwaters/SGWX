@@ -32,12 +32,12 @@ export default function Footer({ links, copyright }: FooterProps) {
   return (
     <footer className="relative overflow-hidden">
       <AnimationCanvas
-        cameraPosition={[0, 0, 55]}
+        cameraPosition={[0, 0, 80]}
         cameraFov={85}
         cameraFar={500}
         fogColor={0x080e12}
         fogDensity={0.004}
-        vignette="linear-gradient(to right, rgba(12,15,14,0.8) 0%, transparent 15%, transparent 85%, rgba(12,15,14,0.8) 100%), linear-gradient(to bottom, rgba(12,15,14,0.6) 0%, transparent 30%, transparent 70%, rgba(12,15,14,0.6) 100%)"
+        vignette="linear-gradient(to right, rgba(12,15,14,0.7) 0%, transparent 8%, transparent 88%, rgba(12,15,14,0.8) 100%), linear-gradient(to bottom, rgba(12,15,14,0.5) 0%, transparent 25%, transparent 75%, rgba(12,15,14,0.5) 100%)"
       >
         <FooterNetwork />
       </AnimationCanvas>
