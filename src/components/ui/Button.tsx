@@ -12,9 +12,9 @@ interface ButtonProps {
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-sgwx-green text-sgwx-bg font-semibold hover:bg-sgwx-green-bright hover:animate-[pulse-glow-primary_2s_ease-in-out_infinite] transition-all",
+    "bg-sgwx-green text-sgwx-bg font-semibold ring-1 ring-sgwx-green ring-offset-[3px] ring-offset-sgwx-bg hover:bg-sgwx-green-bright hover:ring-sgwx-green-bright hover:animate-[pulse-glow-primary_2s_ease-in-out_infinite] transition-all",
   secondary:
-    "border border-sgwx-green text-sgwx-green hover:bg-sgwx-green/10 hover:animate-[pulse-glow-secondary_2s_ease-in-out_infinite] transition-all",
+    "border border-sgwx-green text-sgwx-green ring-1 ring-sgwx-green ring-offset-[3px] ring-offset-sgwx-bg hover:bg-sgwx-green/10 hover:animate-[pulse-glow-secondary_2s_ease-in-out_infinite] transition-all",
   ghost:
     "text-sgwx-text-muted hover:text-sgwx-text transition-colors",
 };
@@ -26,7 +26,7 @@ export default function Button({
   className = "",
   ...props
 }: ButtonProps & ComponentPropsWithoutRef<"button">) {
-  const classes = `inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm tracking-widest uppercase ${variants[variant]} ${className}`;
+  const classes = `inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 font-mono text-sm tracking-widest uppercase ${variants[variant]} ${className}`;
 
   if (href) {
     return (

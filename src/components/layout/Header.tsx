@@ -58,7 +58,7 @@ export default function Header({ navItems, ctaLabel, ctaHref }: HeaderProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative pb-1 text-sm tracking-wide transition-colors ${
+                className={`relative pb-1 font-mono text-[13px] tracking-widest uppercase transition-colors ${
                   isActive ? "text-sgwx-text" : "text-sgwx-text-muted hover:text-sgwx-text"
                 }`}
               >
@@ -71,7 +71,7 @@ export default function Header({ navItems, ctaLabel, ctaHref }: HeaderProps) {
           })}
           <Link
             href={cta.href}
-            className="rounded-full border border-sgwx-green text-sgwx-green px-5 py-2 font-mono text-[14px] tracking-widest uppercase transition-all hover:bg-sgwx-green/10"
+            className="rounded-full border border-sgwx-green text-sgwx-green px-5 py-2 font-mono text-[13px] tracking-widest uppercase ring-1 ring-sgwx-green ring-offset-[3px] ring-offset-sgwx-bg transition-all hover:bg-sgwx-green/10"
           >
             {cta.label}
           </Link>
