@@ -32,15 +32,15 @@ export default function Footer({ links, copyright }: FooterProps) {
   return (
     <footer className="relative overflow-hidden">
       <AnimationCanvas
-        cameraPosition={[0, 0, 80]}
-        cameraFov={70}
+        cameraPosition={[0, 0, 55]}
+        cameraFov={85}
         cameraFar={500}
         fogColor={0x080e12}
-        fogDensity={0.006}
+        fogDensity={0.004}
       >
         <FooterNetwork />
       </AnimationCanvas>
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col items-end gap-4 px-6 py-10 md:flex-row md:items-center md:justify-between">
+      <div className="relative z-10 mx-auto flex min-h-[280px] max-w-7xl flex-col items-end justify-end gap-4 px-6 pb-8 pt-16 md:flex-row md:items-end md:justify-between">
         <div className="flex items-center gap-4 md:order-first">
           <Image
             src="/sgwx-white.svg"
