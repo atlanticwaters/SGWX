@@ -2,9 +2,15 @@
 
 import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import dynamic from "next/dynamic";
 import Container from "@/components/ui/Container";
 import SectionHeading from "@/components/ui/SectionHeading";
 import AnimatedSection from "@/components/ui/AnimatedSection";
+
+const DeepFieldCanvas = dynamic(
+  () => import("@/components/animations/DeepFieldCanvas"),
+  { ssr: false }
+);
 
 interface Step {
   num: string;
@@ -64,6 +70,29 @@ const expandVariants = {
   expanded: { height: "auto", opacity: 1 },
 };
 
+const DEEP_FIELD_VARIANTS = [1, 3, 5, 6] as const;
+
+const accentColors = {
+  green: {
+    label: "#6EA87F",
+    labelBright: "#9FDBB0",
+    border: "rgba(110,168,127,0.4)",
+    glow: "rgba(110,168,127,0.1)",
+    stroke: "rgba(110,168,127,0.15)",
+    strokeHover: "rgba(159,219,176,0.3)",
+  },
+  cyan: {
+    label: "#88EEFF",
+    labelBright: "#AAFFFF",
+    border: "rgba(136,238,255,0.4)",
+    glow: "rgba(136,238,255,0.1)",
+    stroke: "rgba(136,238,255,0.15)",
+    strokeHover: "rgba(170,255,255,0.3)",
+  },
+};
+
+const STEP_ACCENTS: ("green" | "cyan")[] = ["green", "cyan", "green", "cyan", "green", "cyan"];
+
 interface SixStepsSectionProps {
   eyebrow?: string;
   heading?: string;
@@ -72,6 +101,7 @@ interface SixStepsSectionProps {
 
 export default function SixStepsSection({ eyebrow, heading, steps }: SixStepsSectionProps) {
   const [activeStep, setActiveStep] = useState(0);
+  const [hoveredStep, setHoveredStep] = useState<number | null>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const allSteps = steps ?? defaultSteps;
 
@@ -108,102 +138,169 @@ export default function SixStepsSection({ eyebrow, heading, steps }: SixStepsSec
           />
         </AnimatedSection>
 
-        <div className="mx-auto mt-12 max-w-4xl">
+        <div className="mx-auto mt-12 max-w-4xl space-y-4">
           {allSteps.map((step, i) => {
             const isActive = activeStep === i;
+            const isHovered = hoveredStep === i;
             const panelId = `step-panel-${step.num}`;
             const triggerId = `step-trigger-${step.num}`;
+            const accent = STEP_ACCENTS[i % STEP_ACCENTS.length];
+            const colors = accentColors[accent];
+            const deepFieldVariant = DEEP_FIELD_VARIANTS[i % DEEP_FIELD_VARIANTS.length];
 
             return (
               <AnimatedSection key={step.num} delay={0.1 + i * 0.08}>
                 <div
-                  className={`border-b border-sgwx-border transition-colors ${
-                    isActive ? "border-sgwx-green/30" : ""
-                  }`}
+                  className="group relative overflow-hidden rounded-2xl border bg-sgwx-surface"
+                  style={{
+                    borderColor: isHovered || isActive ? colors.border : "rgba(255,255,255,0.06)",
+                    boxShadow: isHovered || isActive ? `0 0 40px ${colors.glow}` : undefined,
+                    transition: "border-color 0.5s, box-shadow 0.6s",
+                  }}
+                  onMouseEnter={() => setHoveredStep(i)}
+                  onMouseLeave={() => setHoveredStep(null)}
                 >
-                  <button
-                    ref={(el) => { buttonRefs.current[i] = el; }}
-                    id={triggerId}
-                    aria-expanded={isActive}
-                    aria-controls={panelId}
-                    onClick={() => toggleStep(i)}
-                    onKeyDown={(e) => handleKeyDown(e, i)}
-                    className="flex w-full items-center gap-4 py-5 text-left transition-colors hover:bg-sgwx-surface/30 md:gap-6 md:py-6"
+                  {/* Deep Field canvas background */}
+                  <div
+                    className="pointer-events-none absolute inset-0 z-0 overflow-hidden transition-opacity duration-700"
+                    style={{ opacity: isHovered || isActive ? 0.5 : 0.2 }}
                   >
-                    <span className="font-mono text-sm tracking-widest text-sgwx-green md:text-base">
-                      {step.num}
-                    </span>
-                    <span
-                      className={`flex-1 text-xl font-normal tracking-tight md:text-2xl lg:text-3xl ${
-                        isActive ? "text-sgwx-text" : "text-sgwx-text-muted"
-                      } transition-colors`}
+                    <div
+                      className="absolute left-1/2 top-1/2"
+                      style={{
+                        width: "400px",
+                        height: "400px",
+                        transform: "translate(-50%, -50%) scale(3)",
+                        transformOrigin: "center center",
+                      }}
                     >
-                      {step.title}
-                    </span>
-                    <svg
-                      className={`h-5 w-5 shrink-0 text-sgwx-green transition-transform duration-300 ${
-                        isActive ? "rotate-180" : ""
-                      }`}
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M5 8l5 5 5-5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
+                      <DeepFieldCanvas variant={deepFieldVariant} size={400} />
+                    </div>
+                  </div>
 
-                  <AnimatePresence initial={false}>
-                    {isActive && (
-                      <motion.div
-                        id={panelId}
-                        role="region"
-                        aria-labelledby={triggerId}
-                        initial="collapsed"
-                        animate="expanded"
-                        exit="collapsed"
-                        variants={expandVariants}
-                        transition={{
-                          duration: 0.35,
-                          ease: [0.16, 1, 0.3, 1],
-                        }}
-                        className="overflow-hidden"
+                  {/* Gradient overlay */}
+                  <div
+                    className="pointer-events-none absolute inset-0 z-[1] transition-opacity duration-500"
+                    style={{
+                      background: isHovered || isActive
+                        ? "linear-gradient(180deg, rgba(22,28,25,0.5) 0%, rgba(22,28,25,0.3) 50%, rgba(22,28,25,0.6) 100%)"
+                        : "linear-gradient(180deg, rgba(22,28,25,0.7) 0%, rgba(22,28,25,0.5) 50%, rgba(22,28,25,0.7) 100%)",
+                    }}
+                  />
+
+                  {/* Watermark number */}
+                  <div
+                    className="pointer-events-none absolute z-[1] select-none text-[clamp(6rem,12vw,8rem)] font-black leading-none text-transparent"
+                    style={{
+                      bottom: "-1rem",
+                      right: "-0.5rem",
+                      WebkitTextStroke: `1.5px ${isHovered || isActive ? colors.strokeHover : colors.stroke}`,
+                      transform: isHovered || isActive ? "translateY(-4px)" : "translateY(0)",
+                      transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), -webkit-text-stroke 0.5s",
+                    }}
+                  >
+                    {step.num}
+                  </div>
+
+                  {/* Content */}
+                  <div className="relative z-[2]">
+                    <button
+                      ref={(el) => { buttonRefs.current[i] = el; }}
+                      id={triggerId}
+                      aria-expanded={isActive}
+                      aria-controls={panelId}
+                      onClick={() => toggleStep(i)}
+                      onKeyDown={(e) => handleKeyDown(e, i)}
+                      className="flex w-full items-center gap-4 p-6 text-left md:gap-6"
+                    >
+                      <span
+                        className="font-mono text-[14px] font-medium uppercase tracking-widest transition-colors duration-500"
+                        style={{ color: isHovered || isActive ? colors.labelBright : colors.label }}
                       >
-                        <div className="grid grid-cols-1 gap-6 pb-6 pl-8 md:grid-cols-3 md:pl-14">
-                          <div>
-                            <p className="mb-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
-                              What&apos;s Happening
-                            </p>
-                            <p className="text-sm leading-relaxed text-sgwx-text-muted">
-                              {step.whatsHappening}
-                            </p>
+                        stage {step.num}
+                      </span>
+                      <span
+                        className={`flex-1 text-xl font-thin tracking-tight md:text-2xl lg:text-3xl ${
+                          isActive ? "text-sgwx-text" : "text-sgwx-text-muted"
+                        } transition-colors`}
+                      >
+                        {step.title}
+                      </span>
+                      <svg
+                        className={`h-5 w-5 shrink-0 transition-transform duration-300 ${
+                          isActive ? "rotate-180" : ""
+                        }`}
+                        style={{ color: colors.label }}
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M5 8l5 5 5-5"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+
+                    <AnimatePresence initial={false}>
+                      {isActive && (
+                        <motion.div
+                          id={panelId}
+                          role="region"
+                          aria-labelledby={triggerId}
+                          initial="collapsed"
+                          animate="expanded"
+                          exit="collapsed"
+                          variants={expandVariants}
+                          transition={{
+                            duration: 0.35,
+                            ease: [0.16, 1, 0.3, 1],
+                          }}
+                          className="overflow-hidden"
+                        >
+                          <div className="grid grid-cols-1 gap-6 px-6 pb-6 md:grid-cols-3">
+                            <div>
+                              <p
+                                className="mb-2 font-mono text-[14px] tracking-widest uppercase transition-colors duration-500"
+                                style={{ color: colors.label }}
+                              >
+                                What&apos;s Happening
+                              </p>
+                              <p className="text-sm leading-relaxed text-sgwx-text-muted">
+                                {step.whatsHappening}
+                              </p>
+                            </div>
+                            <div>
+                              <p
+                                className="mb-2 font-mono text-[14px] tracking-widest uppercase transition-colors duration-500"
+                                style={{ color: colors.label }}
+                              >
+                                Why It Matters
+                              </p>
+                              <p className="text-sm leading-relaxed text-sgwx-text-muted">
+                                {step.whyItMatters}
+                              </p>
+                            </div>
+                            <div>
+                              <p
+                                className="mb-2 font-mono text-[14px] tracking-widest uppercase transition-colors duration-500"
+                                style={{ color: colors.label }}
+                              >
+                                What You Get
+                              </p>
+                              <p className="text-sm leading-relaxed text-sgwx-text-muted">
+                                {step.whatYouGet}
+                              </p>
+                            </div>
                           </div>
-                          <div>
-                            <p className="mb-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
-                              Why It Matters
-                            </p>
-                            <p className="text-sm leading-relaxed text-sgwx-text-muted">
-                              {step.whyItMatters}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="mb-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
-                              What You Get
-                            </p>
-                            <p className="text-sm leading-relaxed text-sgwx-text-muted">
-                              {step.whatYouGet}
-                            </p>
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
               </AnimatedSection>
             );
