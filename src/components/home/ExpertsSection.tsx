@@ -130,7 +130,7 @@ export default function ExpertsSection({
 
     let rafId: number;
     let lastTime: number | null = null;
-    const speed = 0.5; // px per ms (≈30px/s)
+    const speed = 0.2; // px per ms (≈12px/s)
 
     const tick = (time: number) => {
       if (lastTime !== null && !pausedRef.current) {

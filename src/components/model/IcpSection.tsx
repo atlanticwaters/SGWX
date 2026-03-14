@@ -103,7 +103,7 @@ export default function IcpSection({ eyebrow, heading, subheading, cards, backgr
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{ duration: 0.6, delay: i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-                className={`rounded-2xl border ${colors.border} ${colors.bg} p-6 md:p-8`}
+                className={`rounded-2xl border ${colors.border} ${colors.bg} p-6 backdrop-blur-sm md:p-8`}
               >
                 <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-10">
                   {/* Left — badge + headline */}
