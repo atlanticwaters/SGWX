@@ -266,7 +266,7 @@ export default function ProcessSection({
           <div className="mt-10 text-center">
             <Link
               href={footerLink.href}
-              className="inline-flex items-center gap-2 text-sm tracking-wide text-sgwx-green transition-colors hover:text-sgwx-green-bright"
+              className="inline-flex items-center gap-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-green transition-colors hover:text-sgwx-green-bright"
             >
               {footerLink.label}
               <svg

@@ -145,7 +145,7 @@ export default function WorkPlaceholders() {
                 </div>
 
                 {/* Placeholder CTA */}
-                <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-sgwx-green">
+                <span className="mt-4 inline-flex items-center gap-1.5 font-mono text-[14px] tracking-widest uppercase text-sgwx-green">
                   View Case Study
                   <span aria-hidden="true">&rarr;</span>
                 </span>

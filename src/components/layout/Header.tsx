@@ -44,7 +44,7 @@ export default function Header({ navItems, ctaLabel, ctaHref }: HeaderProps) {
             height={40}
             priority
           />
-          <span className="flex items-center gap-1.5 rounded-full border border-sgwx-green/30 bg-sgwx-green/10 px-2.5 py-0.5 text-[14px] font-mono uppercase tracking-widest text-sgwx-green">
+          <span className="flex items-center gap-1.5 font-mono text-[14px] tracking-widest uppercase text-sgwx-green/70">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-sgwx-green-bright" />
             Online
           </span>
@@ -52,18 +52,26 @@ export default function Header({ navItems, ctaLabel, ctaHref }: HeaderProps) {
 
         {/* Desktop Nav */}
         <nav className="hidden items-center gap-8 lg:flex">
-          {items.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-sm tracking-wide text-sgwx-text-muted transition-colors hover:text-sgwx-text"
-            >
-              {item.label}
-            </Link>
-          ))}
+          {items.map((item) => {
+            const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`relative pb-1 text-sm tracking-wide transition-colors ${
+                  isActive ? "text-sgwx-text" : "text-sgwx-text-muted hover:text-sgwx-text"
+                }`}
+              >
+                {item.label}
+                {isActive && (
+                  <span className="absolute bottom-0 left-1/2 h-px w-4 -translate-x-1/2 bg-sgwx-green" />
+                )}
+              </Link>
+            );
+          })}
           <Link
             href={cta.href}
-            className="rounded-full border border-sgwx-green bg-sgwx-green/10 px-5 py-2 text-sm font-medium text-sgwx-green transition-all hover:bg-sgwx-green/20"
+            className="rounded-full border border-sgwx-green text-sgwx-green px-5 py-2 font-mono text-[14px] tracking-widest uppercase transition-all hover:bg-sgwx-green/10"
           >
             {cta.label}
           </Link>

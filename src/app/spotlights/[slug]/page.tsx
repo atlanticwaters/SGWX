@@ -42,7 +42,7 @@ export default async function SpotlightDetailPage({
         <AnimatedSection>
           <Link
             href="/spotlights"
-            className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-sgwx-green transition-colors hover:text-sgwx-green-bright"
+            className="mb-8 inline-flex items-center gap-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-green transition-colors hover:text-sgwx-green-bright"
           >
             <span aria-hidden="true">&larr;</span>
             Back to Spotlights
@@ -87,7 +87,7 @@ export default async function SpotlightDetailPage({
           <div className="mt-16 border-t border-sgwx-border pt-10">
             <Link
               href="/spotlights"
-              className="inline-flex items-center gap-2 text-sm font-medium text-sgwx-green transition-colors hover:text-sgwx-green-bright"
+              className="inline-flex items-center gap-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-green transition-colors hover:text-sgwx-green-bright"
             >
               <span aria-hidden="true">&larr;</span>
               Back to all Spotlights

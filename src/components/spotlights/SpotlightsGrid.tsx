@@ -35,10 +35,10 @@ export default function SpotlightsGrid({ spotlights }: SpotlightsGridProps) {
               key={tag}
               onClick={() => setActiveTag(tag)}
               aria-pressed={activeTag === tag}
-              className={`rounded-full border px-4 py-1.5 font-mono text-[14px] tracking-widest uppercase transition-all ${
+              className={`rounded-full border px-4 py-1.5 font-mono text-[14px] tracking-widest uppercase transition-all duration-200 ${
                 activeTag === tag
-                  ? "border-sgwx-green bg-sgwx-green/10 text-sgwx-green"
-                  : "border-sgwx-border bg-sgwx-surface text-sgwx-text-muted hover:border-sgwx-green/30 hover:text-sgwx-text"
+                  ? "border-sgwx-green bg-sgwx-green text-sgwx-bg"
+                  : "border-sgwx-border text-sgwx-text-muted hover:border-sgwx-green/40 hover:text-sgwx-green"
               }`}
             >
               {tag}

@@ -52,7 +52,7 @@ export default async function MemberPage({ params }: MemberPageProps) {
         <AnimatedSection>
           <Link
             href="/members"
-            className="group inline-flex items-center gap-2 text-sm text-sgwx-text-muted transition-colors hover:text-sgwx-green"
+            className="group inline-flex items-center gap-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-text-muted transition-colors hover:text-sgwx-green"
           >
             <span className="transition-transform group-hover:-translate-x-1">&larr;</span>
             Back to Members
@@ -167,7 +167,7 @@ export default async function MemberPage({ params }: MemberPageProps) {
                       href={member.link.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-2 inline-flex items-center gap-2 text-sm text-sgwx-text transition-colors hover:text-sgwx-green"
+                      className="mt-2 inline-flex items-center gap-2 font-mono text-[14px] tracking-widest uppercase text-sgwx-green transition-colors hover:text-sgwx-green-bright"
                     >
                       {member.link.label || "View Profile"}
                       <span aria-hidden="true">&rarr;</span>

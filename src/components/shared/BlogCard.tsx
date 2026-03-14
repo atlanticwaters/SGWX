@@ -20,9 +20,10 @@ export default function BlogCard({ tag, title, description, href }: BlogCardProp
       </p>
       <Link
         href={href}
-        className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-sgwx-green transition-colors hover:text-sgwx-green-bright"
+        className="mt-4 inline-flex items-center gap-1.5 font-mono text-[14px] tracking-widest uppercase text-sgwx-green transition-colors hover:text-sgwx-green-bright"
       >
-        Read More <span aria-hidden="true">&rarr;</span>
+        Read More
+        <span aria-hidden="true">&rarr;</span>
       </Link>
     </Card>
   );
