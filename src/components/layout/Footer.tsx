@@ -8,8 +8,8 @@ const AnimationCanvas = dynamic(
   () => import("@/components/animations/AnimationCanvas"),
   { ssr: false }
 );
-const NetworkBackground = dynamic(
-  () => import("@/components/animations/NetworkBackground"),
+const FooterNetwork = dynamic(
+  () => import("@/components/animations/FooterNetwork"),
   { ssr: false }
 );
 
@@ -32,11 +32,13 @@ export default function Footer({ links, copyright }: FooterProps) {
   return (
     <footer className="relative overflow-hidden">
       <AnimationCanvas
-        cameraPosition={[0, 0, 50]}
-        cameraFov={58}
-        fogDensity={0.01}
+        cameraPosition={[0, 0, 80]}
+        cameraFov={70}
+        cameraFar={500}
+        fogColor={0x080e12}
+        fogDensity={0.006}
       >
-        <NetworkBackground />
+        <FooterNetwork />
       </AnimationCanvas>
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col items-end gap-4 px-6 py-10 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-4 md:order-first">
