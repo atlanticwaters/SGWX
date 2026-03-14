@@ -31,16 +31,18 @@ export default function Footer({ links, copyright }: FooterProps) {
 
   return (
     <footer className="relative overflow-hidden">
-      <AnimationCanvas
-        cameraPosition={[0, 0, 80]}
-        cameraFov={85}
-        cameraFar={500}
-        fogColor={0x080e12}
-        fogDensity={0.004}
-        vignette="linear-gradient(to right, rgba(12,15,14,0.7) 0%, transparent 8%, transparent 88%, rgba(12,15,14,0.8) 100%), linear-gradient(to bottom, rgba(12,15,14,0.5) 0%, transparent 25%, transparent 75%, rgba(12,15,14,0.5) 100%)"
-      >
-        <FooterNetwork />
-      </AnimationCanvas>
+      <div className="absolute inset-0 scale-[3] -z-10">
+        <AnimationCanvas
+          cameraPosition={[0, 0, 80]}
+          cameraFov={85}
+          cameraFar={500}
+          fogColor={0x080e12}
+          fogDensity={0.004}
+          vignette="none"
+        >
+          <FooterNetwork />
+        </AnimationCanvas>
+      </div>
       <div className="relative z-10 mx-auto flex max-w-7xl flex-col items-end gap-4 px-6 py-10 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-4 md:order-first">
           <Image
