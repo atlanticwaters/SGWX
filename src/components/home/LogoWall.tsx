@@ -43,7 +43,7 @@ export default function LogoWall({
     const tickerLogos = [...logos, ...logos]; // duplicate for seamless loop
     return (
       <div className="mt-16">
-        <p className="mb-6 text-center font-mono text-[14px] uppercase tracking-widest text-sgwx-text-dim">
+        <p className="mb-6 text-center font-mono text-[14px] uppercase tracking-widest text-white">
           {heading}
         </p>
         <div className="relative overflow-hidden">
@@ -75,7 +75,7 @@ export default function LogoWall({
 
   return (
     <div className="mt-16">
-      <p className="mb-6 text-center font-mono text-[14px] uppercase tracking-widest text-sgwx-text-dim">
+      <p className="mb-6 text-center font-mono text-[14px] uppercase tracking-widest text-white">
         {heading}
       </p>
       <div className="relative overflow-hidden">

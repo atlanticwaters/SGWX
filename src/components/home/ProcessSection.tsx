@@ -178,7 +178,10 @@ function StageCard({ stage, deepFieldVariant }: { stage: ProcessStage; deepField
 
         {/* Output */}
         {stage.output && (
-          <p className="mt-3 font-mono text-[14px] uppercase tracking-widest text-sgwx-text-dim">
+          <p
+            className="mt-3 font-mono text-[14px] uppercase tracking-widest transition-colors duration-500"
+            style={{ color: hovered ? colors.labelBright : colors.label }}
+          >
             Output:{" "}
             <span className="text-sgwx-text-muted">{stage.output}</span>
           </p>
